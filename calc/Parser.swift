@@ -16,9 +16,15 @@ class Parser {
     private let lexer: Lexer
     private let source: String?
     private var tokens: [Token]? = nil      // 未パースであれば null. パース開始以降0個以上の要素
-    private var rootNode: RootNode? = nil
+    private var _rootNode: RootNode? = nil
     private var bracketStack: Stack<Node> = Stack<Node>()
        
+    
+    var rootNode: RootNode? {
+        get {
+            return _rootNode
+        }
+    }
     
     init(source: String) {
         self.source = source
@@ -56,7 +62,7 @@ class Parser {
         if tokens == nil {
             try tokens = lexicalAnalize()
         }
-        self.rootNode = RootNode(token: nil)
+        self._rootNode = RootNode(token: nil)
         try parseWithTokens()
         return self.rootNode!
     }

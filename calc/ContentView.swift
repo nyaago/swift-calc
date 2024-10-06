@@ -23,7 +23,7 @@ struct ContentView: View {
                 .font(.title)
                 .foregroundColor(Color.labelTextColor)
                 .background(Color.labelBackColor)
-            Text("")
+            Text(viewModel.stringValue)
                 .font(.title)
                 .border(Color.textBackColor)
                 .frame(maxWidth: .infinity,

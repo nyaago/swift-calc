@@ -12,7 +12,7 @@ import Foundation
     var expr: String?
     private var parser: Parser?
     private var lexer: Lexer?
-
+    
     init() {
     }
    
@@ -61,7 +61,16 @@ import Foundation
             return curLexer.tokens
         }
     }
-        
+    
+    var stringValue: String {
+        get {
+            if let rootNode = parser?.rootNode {
+                return rootNode.value.stringValue
+            }
+            return ""
+        }
+    }
+    
     func toInt() -> Int {
         let v = calc()
         return Int(v)

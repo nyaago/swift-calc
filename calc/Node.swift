@@ -97,6 +97,12 @@ class Node: CustomStringConvertible, Equatable {
             return false
         }
     }
+    
+    var value: NumericWrapper {
+        get {
+            return 0
+        }
+    }
 
 }
 
@@ -111,12 +117,33 @@ class RootNode: Node {
             return false
         }
     }
+    
+    override var value: NumericWrapper {
+        get {
+            guard let lhs = self.lhs else {
+                return 0
+            }
+            return lhs.value
+        }
+    }
 }
 
 class IntegerNode: Node {
     override class var priority: Int {
         get {
             return 1000
+        }
+    }
+    override var value: NumericWrapper {
+        get {
+            guard let token = self.token else {
+                return 0
+            }
+            let wrappedVal = Int64(token.string)
+            guard let val = wrappedVal else {
+                return 0
+            }
+            return NumericWrapper(value: val)
         }
     }
 }
@@ -126,6 +153,19 @@ class NumericNode: Node {
     override class var priority: Int {
         get {
             return IntegerNode.priority
+        }
+    }
+    
+    override var value: NumericWrapper {
+        get {
+            guard let token = self.token else {
+                return 0
+            }
+            let wrappedVal = Double(token.string)
+            guard let val = wrappedVal else {
+                return NumericWrapper(value: 0.0)
+            }
+            return NumericWrapper(value: val)
         }
     }
 }
@@ -152,6 +192,33 @@ class OperatorNode: Node {
             self.newPriority = newValue
         }
     }
+    
+    
+    override var value: NumericWrapper {
+        get {
+            var leftVal: NumericWrapper = 0
+            var rightVal: NumericWrapper = 0
+            if let lhs = self.lhs {
+                leftVal = lhs.value
+            }
+            if let rhs = self.rhs {
+                rightVal = rhs.value
+            }
+            switch self.string {
+            case "+":
+                return leftVal + rightVal
+            case "-":
+                return leftVal - rightVal
+            case "*":
+                return leftVal * rightVal
+            case "/":
+                return leftVal / rightVal
+            default:
+                return 0
+            }
+        }
+    }
+
 }
 
 class BraceNode: Node {
@@ -183,6 +250,15 @@ class BraceNode: Node {
     override var canHasRhs: Bool {
         get {
             return false
+        }
+    }
+    
+    override var value: NumericWrapper {
+        get {
+            guard let lhs = self.lhs else {
+                return 0
+            }
+            return lhs.value
         }
     }
 }
