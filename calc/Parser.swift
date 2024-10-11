@@ -15,7 +15,7 @@ class Parser {
     
     private let lexer: Lexer
     private let source: String?
-    private var tokens: [Token]? = nil      // 未パースであれば null. パース開始以降0個以上の要素
+    private var tokens: [any Token]? = nil      // 未パースであれば null. パース開始以降0個以上の要素
     private var _rootNode: RootNode? = nil
     private var bracketStack: Stack<Node> = Stack<Node>()
        
@@ -49,7 +49,7 @@ class Parser {
     /**
      - throws: LexerError
      */
-    private func lexicalAnalize() throws -> [Token]? {
+    private func lexicalAnalize() throws -> [any Token]? {
         return try lexer.analize()
     }
     
@@ -78,7 +78,7 @@ class Parser {
         }
     }
     
-    private func parseWithToken(token: Token) {
+    private func parseWithToken(token: any Token) {
         let node = NodeFactory.createNode(token: token)
         _ = insertNode(newNode: node)
     }

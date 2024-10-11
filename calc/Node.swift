@@ -9,7 +9,7 @@ import Foundation
 
 
 class NodeFactory {
-    static func createNode(token: Token) -> Node {
+    static func createNode(token: any Token) -> Node {
         switch token.tokenKind {
         case TokenKind.integer:
             return IntegerNode(token: token)
@@ -29,14 +29,14 @@ class NodeFactory {
 
 
 class Node: CustomStringConvertible, Equatable {
-    let token: Token?
+    let token: (any Token)?
     public var lhs: Node?
     public var rhs: Node?
     public var parent: Node?
     
     fileprivate var newPriority: Int?
     
-    init(token: Token?) {
+    init(token: (any Token)?) {
         self.token = token
     }
     

@@ -22,7 +22,7 @@ import Foundation
         }
         self.parser = Parser(source: newExpr)
         do {
-            let rootNode = try parser!.parse()
+            let _ = try parser!.parse()
         }
         catch {
             return 0.0
@@ -53,7 +53,7 @@ import Foundation
         return curLexer.description
     }
 
-    var tokens : [Token]? {
+    var tokens : [any Token]? {
         get  {
             guard let curLexer = self.lexer else {
                 return []

@@ -164,7 +164,7 @@ public class Lexer: CustomStringConvertible {
     
     
     private let scanner: Scanner
-    private var cachedTokens: [Token]? = nil
+    private var cachedTokens: [any Token]? = nil
     private var _errorMessages: [String] = []
     
     init(source: String) {
@@ -174,7 +174,7 @@ public class Lexer: CustomStringConvertible {
     /**
      - throws: LexerError
     */
-    public var tokens:  [Token]? {
+    public var tokens:  [any Token]? {
         get {
             do {
                 guard let unwrapedTokens = cachedTokens else {
@@ -226,11 +226,11 @@ public class Lexer: CustomStringConvertible {
      - throws: (unknown error - bug?)
      - returns: [Token]
     */
-    public func analize() throws -> [Token]  {
+    public func analize() throws -> [any Token]  {
         cachedTokens = []
         while !scanner.isEnd {
             do {
-                if let token: Token = try nextToken() {
+                if let token: any Token = try nextToken() {
                     cachedTokens!.append(token)
                 }
             }
@@ -255,7 +255,7 @@ public class Lexer: CustomStringConvertible {
      - throws: LexerError
      - returns: Token? テキストの終わりであれば nil
     */
-    public func nextToken() throws -> Token? {
+    public func nextToken() throws -> (any Token)? {
         while let char = scanner.currentChar, char.isWhitespace {
             scanner.consume()
         }
@@ -277,7 +277,7 @@ public class Lexer: CustomStringConvertible {
         }
     }
     
-    private func numericToken() -> Token {
+    private func numericToken() -> any Token {
         let s = gatherWhile(condition: { $0.isNumeric })
         if s.contains(".") {
             return NumericToken(string: s)
@@ -287,22 +287,22 @@ public class Lexer: CustomStringConvertible {
         }
     }
     
-    public func operatorToken() -> Token {
+    public func operatorToken() -> any Token {
         let s = gatherWhile(condition: { $0.isOperator })
         return OperatorToken(string: s)
     }
     
-    public func leftBracketToken() -> Token {
+    public func leftBracketToken() -> any Token {
         let s = gatherWhile(condition: { $0.isLeftBracket })
         return LeftBracketToken(string: s)
     }
 
-    public func rightBracketToken() -> Token {
+    public func rightBracketToken() -> any Token {
         let s = gatherWhile(condition: { $0.isRightBracket })
         return RightBracketToken(string: s)
     }
 
-    public func wordToken() -> Token {
+    public func wordToken() -> any Token {
         let s = gatherWhile(condition: { $0.isAlpha || $0.isNumeric })
         return WordToken(string: s)
     }
