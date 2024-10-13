@@ -23,6 +23,8 @@ class NodeFactory {
             return RightBraceNode(token: token)
         case .word:
             return WordNode(token: token)
+        case .expressionSeparator:
+            return ExpressionNode(token: token)
         }
     }
 }
@@ -184,6 +186,8 @@ class OperatorNode: Node {
                 return type(of: self).priority - 10
             case "*", "/":
                 return type(of: self).priority - 5
+            case "=":
+                return ExpressionNode.priority + 5
             default:
                 return type(of: self).priority
             }
@@ -193,11 +197,22 @@ class OperatorNode: Node {
         }
     }
     
+    override var canHasRhs: Bool {
+        get {
+            /*
+            if self.string == "=" {
+                return false
+            }
+             */
+            return true
+        }
+    }
+
     
     override var value: NumericWrapper {
         get {
-            var leftVal: NumericWrapper = 0
-            var rightVal: NumericWrapper = 0
+            var leftVal: NumericWrapper = NumericWrapper(value: Double.nan)
+            var rightVal: NumericWrapper = NumericWrapper(value: Double.nan)
             if let lhs = self.lhs {
                 leftVal = lhs.value
             }
@@ -213,6 +228,8 @@ class OperatorNode: Node {
                 return leftVal * rightVal
             case "/":
                 return leftVal / rightVal
+            case "=":
+                return rightVal
             default:
                 return 0
             }
@@ -279,7 +296,32 @@ class RightBraceNode: Node {
 class WordNode: Node {
     override class var priority: Int {
         get {
-            return 1000
+            return IntegerNode.priority
         }
+    }
+}
+
+class ExpressionNode: Node {
+    override class var priority: Int {
+        get {
+            return RootNode.priority + 5
+        }
+    }
+    
+    override var value: NumericWrapper {
+        get {
+            // 右側(後にある)式の結果を優先して返す
+            var val: NumericWrapper = 0
+            if let lhs = self.lhs {
+                val = lhs.value
+            }
+            if let rhs = self.rhs {
+                val = rhs.value
+            }
+            return val
+        }
+    }
+    override var description: String {
+        return "exporession"
     }
 }

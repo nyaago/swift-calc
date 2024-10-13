@@ -11,7 +11,13 @@ fileprivate extension UnicodeScalar {
     
     var isWhitespace: Bool {
         get {
-            self == " " || self == "\n" || self == "\r" || self == "\t"
+            self == " " || self == "\t"
+        }
+    }
+    
+    var isExpressionSeparator: Bool {
+        get {
+            self == "\n" || self == "\r"
         }
     }
     
@@ -79,6 +85,7 @@ public enum TokenKind: String {
     case `numeric`
     case `integer`
     case `word`
+    case `expressionSeparator`
 }
 
 public protocol Token: CustomStringConvertible {
@@ -154,6 +161,15 @@ public struct WordToken: Token {
     public var description: String { return string }
 }
 
+public struct ExpressionSeparatorToken: Token {
+    public let string: String
+    public let tokenKind: TokenKind = .expressionSeparator
+    
+    public init(string: String) {
+        self.string = string
+    }
+    public var description: String { return string }
+}
 
 public enum LexerError: Error {
   case invalidString(String, Int)
@@ -270,6 +286,8 @@ public class Lexer: CustomStringConvertible {
             return rightBracketToken()
         case let .some(char) where char.isAlpha:
             return wordToken()
+        case let .some(char) where char.isExpressionSeparator:
+            return expressionSeparator()
         case let .some(char): // とりあえず想定外の文字なら例外にする
             throw LexerError.invalidString(String(char), scanner.currentPosition)
         default:
@@ -306,7 +324,12 @@ public class Lexer: CustomStringConvertible {
         let s = gatherWhile(condition: { $0.isAlpha || $0.isNumeric })
         return WordToken(string: s)
     }
-    
+
+    public func expressionSeparator() -> any Token {
+        let s = gatherWhile(condition: { $0.isExpressionSeparator })
+        return ExpressionSeparatorToken(string: s)
+    }
+
     private func gatherWhile(condition: (UnicodeScalar) -> Bool ) -> String {
         var string: String = ""
         while let char = scanner.currentChar, condition(char) {

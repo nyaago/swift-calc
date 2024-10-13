@@ -12,6 +12,7 @@ import Foundation
     var expr: String?
     private var parser: Parser?
     private var lexer: Lexer?
+    private var currentValue: NumericWrapper? = nil
     
     init() {
     }

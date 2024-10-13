@@ -7,22 +7,43 @@
 
 import Foundation
 
-enum NumericWrapperType {
-    case Double
-    case Int
+enum NumericWrapperType: Int8 {
+    case Double = 1
+    case Int  = 2
+}
+
+enum NumericWrapperErrorType: Int8, CustomStringConvertible {
+    case devideByZero = 1
+    case incompletedExpression = 2
+    case other = 127
+    
+    var description: String {
+        get {
+            switch self {
+            case .devideByZero:
+                return "devided by zero"
+            case .incompletedExpression:
+                return "incompleted expression"
+            default:
+                return "some error occured"
+            }
+        }
+    }
+
 }
 
 struct NumericWrapper: SignedNumeric, Comparable {
     
     static private let maxOfInt = Double(Int64.max)
     static private let minOfInt = Double(Int64.min)
+    static private let invalidValue = NumericWrapper(value: Double.nan)
     
     typealias IntegerLiteralType = Int64
     typealias Magnitude = Double
 
     private var _valueType: NumericWrapperType
     private var _value: Double?
-    
+    private var _errorType: NumericWrapperErrorType?
     
     
     var valueType: NumericWrapperType {
@@ -46,6 +67,12 @@ struct NumericWrapper: SignedNumeric, Comparable {
         }
     }
     
+    var errotType: NumericWrapperErrorType? {
+        get {
+            return _errorType
+        }
+    }
+    
     var magnitude: Double {
         get {
             return value.magnitude
@@ -54,12 +81,36 @@ struct NumericWrapper: SignedNumeric, Comparable {
     
     var stringValue: String {
         get {
+            if isNotValid {
+                guard let errorType = self.errotType else {
+                    return "?"
+                }
+                return errorType.description
+            }
             if valueType == .Double {
                 return String(value)
             }
             else {
                 return String(intValue)
             }
+        }
+    }
+    
+    var isValid: Bool {
+        get {
+            guard let currentValue = _value else {
+                return false
+            }
+            if currentValue.isNaN {
+                return false
+            }
+            return true
+        }
+    }
+    
+    var isNotValid: Bool {
+        get {
+            return !isValid
         }
     }
     
@@ -72,11 +123,20 @@ struct NumericWrapper: SignedNumeric, Comparable {
     init(value: Double) {
         self._value = value
         self._valueType = .Double
+        if value.isNaN {
+            self._errorType = .incompletedExpression
+        }
     }
 
     init(value: Int64) {
         self._value = Double(value)
         self._valueType = .Int
+    }
+    
+    init(errorType: NumericWrapperErrorType) {
+        self._value = Self.invalidValue.value
+        self._valueType = .Double
+        self._errorType = errorType
     }
 
     init?<T>(exactly source: T) where T : BinaryInteger {
@@ -85,6 +145,12 @@ struct NumericWrapper: SignedNumeric, Comparable {
     }
 
     static func - (lhs: NumericWrapper, rhs: NumericWrapper) -> NumericWrapper {
+        if lhs.isNotValid  {
+            return NumericWrapper(errorType: lhs._errorType ?? NumericWrapperErrorType.other)
+        }
+        if rhs.isNotValid  {
+            return NumericWrapper(errorType: rhs._errorType ?? NumericWrapperErrorType.other)
+        }
         let newValue =  NumericWrapper(value: lhs.value - rhs.value)
         if lhs._valueType == .Double || rhs._valueType == .Double {
             return newValue
@@ -96,6 +162,10 @@ struct NumericWrapper: SignedNumeric, Comparable {
     }
     
     static func *= (lhs: inout NumericWrapper, rhs: NumericWrapper) {
+        if lhs.isNotValid || rhs.isNotValid {
+            return;
+        }
+
         let newValue = lhs.value * rhs.value
         if lhs._valueType == .Double || rhs._valueType == .Double {
             lhs._value = newValue
@@ -111,6 +181,9 @@ struct NumericWrapper: SignedNumeric, Comparable {
     }
 
     static func < (lhs: NumericWrapper, rhs: NumericWrapper) -> Bool {
+        if lhs.isNotValid || rhs.isNotValid {
+            return false;
+        }
         if lhs._valueType == .Double || rhs._valueType == .Double {
             return lhs.value < rhs.value
         }
@@ -120,6 +193,12 @@ struct NumericWrapper: SignedNumeric, Comparable {
     }
     
     static func * (lhs: NumericWrapper, rhs: NumericWrapper) -> NumericWrapper {
+        if lhs.isNotValid  {
+            return NumericWrapper(errorType: lhs._errorType ?? NumericWrapperErrorType.other)
+        }
+        if rhs.isNotValid  {
+            return NumericWrapper(errorType: rhs._errorType ?? NumericWrapperErrorType.other)
+        }
         let newValue = NumericWrapper(value: lhs.value * rhs.value)
         if lhs._valueType == .Double || rhs._valueType == .Double {
             return newValue
@@ -133,15 +212,33 @@ struct NumericWrapper: SignedNumeric, Comparable {
     }
 
     static func / (lhs: NumericWrapper, rhs: NumericWrapper) -> NumericWrapper {
+        if lhs.isNotValid  {
+            return NumericWrapper(errorType: lhs._errorType ?? NumericWrapperErrorType.other)
+        }
+        if rhs.isNotValid  {
+            return NumericWrapper(errorType: rhs._errorType ?? NumericWrapperErrorType.other)
+        }
         if lhs._valueType == .Double || rhs._valueType == .Double {
             return NumericWrapper(value: lhs.value / rhs.value)
         }
         else {
+            if rhs.value.isNaN {
+                return NumericWrapper(errorType: .incompletedExpression)
+            }
+            if rhs.intValue == 0 {
+                return NumericWrapper(errorType: .devideByZero)
+            }
             return NumericWrapper(value: lhs.intValue / rhs.intValue)
         }
     }
 
     static func + (lhs: NumericWrapper, rhs: NumericWrapper) -> NumericWrapper {
+        if lhs.isNotValid  {
+            return NumericWrapper(errorType: lhs._errorType ?? NumericWrapperErrorType.other)
+        }
+        if rhs.isNotValid  {
+            return NumericWrapper(errorType: rhs._errorType ?? NumericWrapperErrorType.other)
+        }
         let newValue = NumericWrapper(value: lhs.value + rhs.value)
         if lhs._valueType == .Double || rhs._valueType == .Double {
             return newValue
