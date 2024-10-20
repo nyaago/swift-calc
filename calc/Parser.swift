@@ -8,7 +8,20 @@
 import Foundation
 
 enum ParseError: Error {
-  case logical(String)
+    case symbolNotFound(symbolName: String)
+    case logical(message: String)
+    
+    var errorDescription: String? {
+        get {
+            switch self {
+            case .symbolNotFound(symbolName: let symbolName):
+                return "symbol not found :\(symbolName) not found"
+            case .logical(message: let message):
+                return message
+                
+            }
+        }
+    }
 }
 
 class Parser {
@@ -16,6 +29,7 @@ class Parser {
     private let lexer: Lexer
     private let source: String?
     private var tokens: [any Token]? = nil      // 未パースであれば null. パース開始以降0個以上の要素
+    private var symbolTable: SymbolTable
     private var _rootNode: RootNode? = nil
     private var bracketStack: Stack<Node> = Stack<Node>()
        
@@ -29,11 +43,13 @@ class Parser {
     init(source: String) {
         self.source = source
         self.lexer = Lexer(source: source)
+        self.symbolTable = SymbolTable()
     }
     
     init(lexer: Lexer) {
         self.source = nil
         self.lexer = lexer
+        self.symbolTable = SymbolTable()
     }
     
     public func nodesDescription() -> String {
@@ -64,14 +80,13 @@ class Parser {
         }
         self._rootNode = RootNode(token: nil)
         try parseWithTokens()
+        try _ = semanticAnalize()
         return self.rootNode!
     }
     
-    
-    
     private func parseWithTokens() throws {
         guard let curTokens = tokens else {
-            throw ParseError.logical("tokens is null")
+            throw ParseError.logical(message: "tokens is null")
         }
         curTokens.forEach{
             parseWithToken(token: $0)
@@ -81,6 +96,59 @@ class Parser {
     private func parseWithToken(token: any Token) {
         let node = NodeFactory.createNode(token: token)
         _ = insertNode(newNode: node)
+    }
+    
+    private func semanticAnalize() throws -> SymbolTable {
+        guard let rootNode = self.rootNode else {
+            return SymbolTable()
+        }
+        let traverser = Traverser(rootNode: rootNode)
+        /*
+        var symbolTable = traverser.reduce(initialResult: SymbolTable(), closer:{ node, result in
+            let symbolTalbe = insertOrUpdateSymbol(node: node, symbolTable: result)
+            return symbolTalbe
+        } )
+         */
+        var symbolTable = SymbolTable()
+        traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
+            _ = insertOrUpdateSymbol(node: node, symbolTable: result)
+            return
+        } )
+        if symbolTable.invalidSymbols().count > 0 {
+            //throw ParseError.symbolNotFound(symbolName: symbolTable.invalidSymbols()[0])
+        }
+        return symbolTable
+    }
+    
+    private func insertOrUpdateSymbol(node: Node, symbolTable: SymbolTable) -> SymbolTable {
+        if node.isSymbol {
+            guard let token = node.token else {
+                return symbolTable
+            }
+            if let symbolValue = symbolTable[token.string] {
+                node.value = symbolValue
+            }
+            if !symbolTable.contains(symbol: token.string) {
+                symbolTable.appendSymbol(symbol: token.string)
+                if node.isLeftExpression {
+                    if let parent = node.parent  {
+                        node.value = parent.value
+                    }
+                    if node.value.isValid {
+                        symbolTable[token.string] = node.value
+                    }
+                    else {
+                        symbolTable[token.string] = NumericWrapper(value: Double.nan)
+                    }
+                }
+            }
+            if node.value.isValid {
+                if !symbolTable.containsValue(symbol: token.string) {
+                    symbolTable[token.string] = node.value
+                }
+            }
+        }
+        return symbolTable
     }
     
     private func insertNode(newNode: Node) -> Node? {
@@ -110,15 +178,10 @@ class Parser {
     }
     
     private func insertNodeAt(newNode: Node, currentNode: Node?, parentNode: Node?) -> Node? {
-        /* imposible
-        if currentNode == nil {
-            return false
-        }
-        */
         if newNode.rightBrace {
             return currentNode
         }
-        if newNode.priority > currentNode!.priority {
+        if newNode.highPriorityWith(other: currentNode!) {
             if currentNode!.lhs == nil {
                 currentNode!.lhs = newNode
                 newNode.parent = currentNode

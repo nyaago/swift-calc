@@ -20,6 +20,7 @@
 		729DA9882709FC380029B74B /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729DA9872709FC380029B74B /* Node.swift */; };
 		729DA98A270DDF7F0029B74B /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729DA989270DDF7F0029B74B /* Parser.swift */; };
 		72A56DD126B679B1005B7DBA /* color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A56DD026B679B1005B7DBA /* color.swift */; };
+		72FC37702CC4DED20024BDDB /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FC376F2CC4DECE0024BDDB /* SymbolTable.swift */; };
 		72FD57AB26E116D8009F77D5 /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FD57AA26E116D8009F77D5 /* Scanner.swift */; };
 		72FD57AD26E3B1FE009F77D5 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FD57AC26E3B1FE009F77D5 /* Lexer.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,7 @@
 		729DA9872709FC380029B74B /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		729DA989270DDF7F0029B74B /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		72A56DD026B679B1005B7DBA /* color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = color.swift; sourceTree = "<group>"; };
+		72FC376F2CC4DECE0024BDDB /* SymbolTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTable.swift; sourceTree = "<group>"; };
 		72FD57AA26E116D8009F77D5 /* Scanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scanner.swift; sourceTree = "<group>"; };
 		72FD57AC26E3B1FE009F77D5 /* Lexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,6 +115,7 @@
 		723B22BB260B880200A616FA /* calc */ = {
 			isa = PBXGroup;
 			children = (
+				72FC376F2CC4DECE0024BDDB /* SymbolTable.swift */,
 				7287444127285305009D2B5B /* Traverser.swift */,
 				723B22BC260B880200A616FA /* calcApp.swift */,
 				723B22BE260B880200A616FA /* ContentView.swift */,
@@ -297,6 +300,7 @@
 				728D262B2CB285990019BAC5 /* NumericWrapper.swift in Sources */,
 				72FD57AB26E116D8009F77D5 /* Scanner.swift in Sources */,
 				729DA98A270DDF7F0029B74B /* Parser.swift in Sources */,
+				72FC37702CC4DED20024BDDB /* SymbolTable.swift in Sources */,
 				72FD57AD26E3B1FE009F77D5 /* Lexer.swift in Sources */,
 				72080351272AFD1A002C64BB /* Stack.swift in Sources */,
 				723B22BD260B880200A616FA /* calcApp.swift in Sources */,

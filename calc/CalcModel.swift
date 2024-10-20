@@ -28,7 +28,12 @@ import Observation
         do {
             let _ = try parser!.parse()
         }
+        catch let error as ParseError {
+            self.stringValue = error.errorDescription ?? "error"
+            return NumericWrapper(value: 0.0)
+        }
         catch {
+            self.stringValue = error.localizedDescription
             return NumericWrapper(value: 0.0)
         }
         

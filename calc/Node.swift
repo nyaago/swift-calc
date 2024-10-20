@@ -88,6 +88,12 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
     
+    var isAssignmentOperator:Bool {
+        get {
+            return false
+        }
+    }
+    
     var leftBrace: Bool {
         get {
             return false
@@ -104,8 +110,36 @@ class Node: CustomStringConvertible, Equatable {
         get {
             return 0
         }
+        set {
+            
+        }
+    }
+    
+    var isSymbol: Bool {
+        get {
+            return false
+        }
     }
 
+    var isLeftExpression: Bool {
+        get {
+            return false
+        }
+    }
+    
+    var isFirstOfExpression: Bool {
+        get {
+            if parent is RootNode {
+                return true
+            }
+            // 改行後
+            return false
+        }
+    }
+    
+    func highPriorityWith(other: Node) -> Bool {
+        return self.priority > other.priority
+    }
 }
 
 class RootNode: Node {
@@ -127,6 +161,9 @@ class RootNode: Node {
             }
             return lhs.value
         }
+        set {
+            
+        }
     }
 }
 
@@ -147,9 +184,25 @@ class IntegerNode: Node {
             }
             return NumericWrapper(value: val)
         }
+        set {
+            
+        }
     }
-}
+    
+    override func highPriorityWith(other: Node) -> Bool {
+        if other.isAssignmentOperator {
+            return true
+        }
+        if other.isLeftExpression {
+            
+            return true
+        }
+        else {
+            return self.priority > other.priority
+        }
+    }
 
+}
 
 class NumericNode: Node {
     override class var priority: Int {
@@ -168,6 +221,9 @@ class NumericNode: Node {
                 return NumericWrapper(value: 0.0)
             }
             return NumericWrapper(value: val)
+        }
+        set {
+            
         }
     }
 }
@@ -199,15 +255,21 @@ class OperatorNode: Node {
     
     override var canHasRhs: Bool {
         get {
-            /*
-            if self.string == "=" {
+            if isAssignmentOperator {
                 return false
             }
-             */
             return true
         }
     }
-
+    
+    override var isAssignmentOperator: Bool {
+        get {
+            if self.string == "=" {
+                return true
+            }
+            return super.isAssignmentOperator
+        }
+    }
     
     override var value: NumericWrapper {
         get {
@@ -229,13 +291,36 @@ class OperatorNode: Node {
             case "/":
                 return leftVal / rightVal
             case "=":
-                return rightVal
+                if rightVal.isValid {
+                    return rightVal
+                }
+                return leftVal
             default:
                 return 0
             }
         }
+        set {
+            
+        }
     }
-
+    
+    override func highPriorityWith(other: Node) -> Bool {
+        if self.isAssignmentOperator && other.isSymbol {
+            return true
+        }
+        else {
+            if other.isAssignmentOperator {
+                return true
+            }
+            else if other.isLeftExpression {
+                return true
+            }
+            else {
+                return self.priority > other.priority
+            }
+        }
+        
+    }
 }
 
 class BraceNode: Node {
@@ -277,6 +362,9 @@ class BraceNode: Node {
             }
             return lhs.value
         }
+        set {
+            
+        }
     }
 }
 
@@ -299,6 +387,64 @@ class WordNode: Node {
             return IntegerNode.priority
         }
     }
+    
+    override var isSymbol: Bool {
+        get {
+            return true
+        }
+    }
+    
+    override var canHasRhs: Bool {
+        get {
+            if isLeftExpression {
+                return false
+            }
+            return true
+        }
+    }
+
+    
+    private var _value: NumericWrapper?
+    override var value: NumericWrapper {
+        get {
+            if let v = _value  {
+                return v
+            }
+            guard let lhs = self.lhs else {
+                return NumericWrapper(value: Double.nan)
+            }
+            return lhs.value
+        }
+        set {
+            self._value = newValue
+        }
+    }
+    
+    override var isLeftExpression:Bool {
+        get {
+            guard let parent = self.parent else {
+                return false
+            }
+            if parent is RootNode {
+                return true
+            }
+            if parent is ExpressionNode {
+                return true
+            }
+            return false
+        }
+    }
+    
+    override func highPriorityWith(other: Node) -> Bool {
+        if other.isLeftExpression {
+            return true
+        }
+        
+        else {
+            return self.priority > other.priority
+        }
+    }
+
 }
 
 class ExpressionNode: Node {
@@ -320,8 +466,25 @@ class ExpressionNode: Node {
             }
             return val
         }
+        set {
+            
+        }
     }
+    override var priority: Int {
+        get {
+            if parent != nil {
+                return 1000
+            }
+            else {
+                return Self.priority
+            }
+        }
+        set(newValue) {
+            self.newPriority = newValue
+        }
+    }
+    
     override var description: String {
-        return "exporession"
+        return "expression"
     }
 }
