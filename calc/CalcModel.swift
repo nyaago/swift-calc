@@ -6,29 +6,45 @@
 //
 
 import Foundation
+import Observation
 
-@Observable class CalcModel: ObservableObject, CustomStringConvertible {
+@Observable class CalcModel: CustomStringConvertible {
     
     var expr: String?
-    private var parser: Parser?
-    private var lexer: Lexer?
-    private var currentValue: NumericWrapper? = nil
+    var stringValue: String = ""
+
+    @ObservationIgnored private var parser: Parser?
+    @ObservationIgnored private var lexer: Lexer?
+    private var currentValue: NumericWrapper?
     
     init() {
     }
    
-    func calc()  -> Double {
+    func calc()  -> NumericWrapper? {
         guard let newExpr = self.expr else {
-            return 0.0
+            return NumericWrapper(value: 0.0)
         }
         self.parser = Parser(source: newExpr)
         do {
             let _ = try parser!.parse()
         }
         catch {
-            return 0.0
+            return NumericWrapper(value: 0.0)
         }
-        return 0.0  // TODO 計算結果
+        
+        if let rootNode = parser?.rootNode {
+            if self.currentValue == rootNode.value {
+                // 値が変わらなければ更新しない
+                return NumericWrapper(value: 0.0)
+            }
+            if self.currentValue?.isNotValid ?? true && rootNode.value.isNotValid {
+                // 無効値 -> 無効値なら更新しない
+                return NumericWrapper(value: 0.0)
+            }
+            self.currentValue = rootNode.value
+            self.stringValue = rootNode.value.stringValue
+        }
+        return self.currentValue
     }
     
     var description: String {
@@ -63,6 +79,7 @@ import Foundation
         }
     }
     
+    /*
     var stringValue: String {
         get {
             if let rootNode = parser?.rootNode {
@@ -71,7 +88,9 @@ import Foundation
             return ""
         }
     }
+     */
     
+    /*
     func toInt() -> Int {
         let v = calc()
         return Int(v)
@@ -81,4 +100,5 @@ import Foundation
         let v = toInt()
         return String(v)
     }
+     */
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var editText = ""
-    @Bindable var viewModel = CalcModel()
+    var viewModel = CalcModel()
     
     init() {
         UITextView.appearance().backgroundColor = .clear

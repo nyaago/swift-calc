@@ -41,7 +41,7 @@ class Parser {
             return ""
         }
         let traverser = Traverser(rootNode: rootNode)
-        print(traverser.description)
+        // print(traverser.description)
         return traverser.description
 
     }
