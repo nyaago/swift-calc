@@ -9,9 +9,9 @@ import Foundation
 
 class Traverser: CustomStringConvertible {
     
-    private let rootNode: RootNode
+    private let rootNode: Node
     
-    init(rootNode: RootNode) {
+    init(rootNode: Node) {
         self.rootNode = rootNode
     }
     

@@ -80,7 +80,7 @@ struct ContentView: View {
                     print("OnAppear")
                 }
                 .onChange(of: self.editText) { oldText, newText in
-                    print("OnChange")
+                    //print("OnChange")
                     viewModel.expr = newText
                     _ = viewModel.calc()
                 }

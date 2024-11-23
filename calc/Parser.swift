@@ -31,6 +31,7 @@ class Parser {
     private var tokens: [any Token]? = nil      // 未パースであれば null. パース開始以降0個以上の要素
     private var symbolTable: SymbolTable
     private var _rootNode: RootNode? = nil
+    private var _sentenceNde: SentenceNode? = nil
     private var bracketStack: Stack<Node> = Stack<Node>()
        
     
@@ -39,6 +40,16 @@ class Parser {
             return _rootNode
         }
     }
+
+    var currentSentenceNode: SentenceNode? {
+        get {
+            return _sentenceNde
+        }
+        set {
+            _sentenceNde = newValue
+        }
+    }
+
     
     init(source: String) {
         self.source = source
@@ -56,10 +67,12 @@ class Parser {
         guard let rootNode = self.rootNode else {
             return ""
         }
-        let traverser = Traverser(rootNode: rootNode)
-        // print(traverser.description)
-        return traverser.description
-
+        let desc = rootNode.sentences.reduce("") { result, sentenceNode in
+            let traverser = Traverser(rootNode: sentenceNode)
+            let desc = traverser.description
+            return "\(result) \n \(desc)"
+        }
+        return desc
     }
     
     /**
@@ -88,8 +101,19 @@ class Parser {
         guard let curTokens = tokens else {
             throw ParseError.logical(message: "tokens is null")
         }
+        self.currentSentenceNode = SentenceNode(token: nil)
+        rootNode!.appendSentence(sentenceNode: currentSentenceNode!)
         curTokens.forEach{
-            parseWithToken(token: $0)
+            let token = $0
+            if token.tokenKind == .expressionSeparator {
+                // new sentence
+                currentSentenceNode = SentenceNode(token: token)
+                rootNode!.appendSentence(sentenceNode: currentSentenceNode!)
+                bracketStack = Stack<Node>()
+            }
+            else {
+                parseWithToken(token: $0)
+            }
         }
     }
     
@@ -102,18 +126,22 @@ class Parser {
         guard let rootNode = self.rootNode else {
             return SymbolTable()
         }
-        let traverser = Traverser(rootNode: rootNode)
-        /*
-        var symbolTable = traverser.reduce(initialResult: SymbolTable(), closer:{ node, result in
-            let symbolTalbe = insertOrUpdateSymbol(node: node, symbolTable: result)
-            return symbolTalbe
-        } )
-         */
         var symbolTable = SymbolTable()
-        traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
-            _ = insertOrUpdateSymbol(node: node, symbolTable: result)
-            return
-        } )
+        rootNode.sentences.forEach {
+            let sentenceNode = $0
+            let traverser = Traverser(rootNode: sentenceNode)
+            /*
+            var symbolTable = traverser.reduce(initialResult: SymbolTable(), closer:{ node, result in
+                let symbolTalbe = insertOrUpdateSymbol(node: node, symbolTable: result)
+                return symbolTalbe
+            } )
+             */
+            traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
+                _ = insertOrUpdateSymbol(node: node, symbolTable: result)
+                return
+            } )
+        }
+
         if symbolTable.invalidSymbols().count > 0 {
             //throw ParseError.symbolNotFound(symbolName: symbolTable.invalidSymbols()[0])
         }
@@ -158,7 +186,7 @@ class Parser {
         }
         else if newNode.rightBrace {
             let childNode: Node? = bracketStack.pop()
-            let parentNode = bracketStack.isEmpty ? rootNode! : bracketStack.peek()!
+            let parentNode = bracketStack.isEmpty ? currentSentenceNode! : bracketStack.peek()!
             guard let node = childNode else {
                 return nil
             }
@@ -167,7 +195,7 @@ class Parser {
         else {
             let currentRootNode: Node
             if bracketStack.isEmpty {
-                currentRootNode = rootNode!
+                currentRootNode = currentSentenceNode!
             }
             else {
                 currentRootNode = bracketStack.peek()!
@@ -205,14 +233,15 @@ class Parser {
         else  { // newNode.priority <= currentNode!.priority
             newNode.lhs = currentNode
             newNode.parent = currentNode!.parent
-            if currentNode!.parent!.lhs == currentNode {
-                currentNode!.parent!.lhs = newNode
-            }
-            else if currentNode!.parent!.rhs == currentNode {
-                currentNode!.parent!.rhs = newNode
+            if let parent = currentNode!.parent {
+                if parent.lhs == currentNode  {
+                    parent.lhs = newNode
+                }
+                else if parent.rhs == currentNode {
+                    parent.rhs = newNode
+                }
             }
             currentNode!.parent = newNode
-
             return newNode
         }
     }
