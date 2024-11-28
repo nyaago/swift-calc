@@ -181,16 +181,8 @@ class Parser {
     
     private func insertNode(newNode: Node) -> Node? {
         var intertedNode: Node?
-        if newNode.leftBrace {
-            bracketStack.push(element: newNode)
-        }
-        else if newNode.rightBrace {
-            let childNode: Node? = bracketStack.pop()
-            let parentNode = bracketStack.isEmpty ? currentSentenceNode! : bracketStack.peek()!
-            guard let node = childNode else {
-                return nil
-            }
-            intertedNode = insertNodeAt(newNode: node, currentNode: parentNode, parentNode: nil)
+        if newNode.rightBrace {
+            _ = bracketStack.pop()
         }
         else {
             let currentRootNode: Node
@@ -202,6 +194,10 @@ class Parser {
             }
             intertedNode = insertNodeAt(newNode: newNode, currentNode: currentRootNode, parentNode: nil)
         }
+        if newNode.leftBrace {
+            bracketStack.push(element: newNode)
+        }
+
         return intertedNode
     }
     
