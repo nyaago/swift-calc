@@ -317,19 +317,7 @@ class OperatorNode: Node {
         }
         else {
             return self.priority > other.priority
-            /*
-            if other.isAssignmentOperator {
-                return true
-            }
-            else if other.isLeftExpression {
-                return true
-            }
-            else {
-                return self.priority > other.priority
-            }
-             */
         }
-        
     }
 }
 

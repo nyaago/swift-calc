@@ -34,7 +34,6 @@ class Parser {
     private var _sentenceNde: SentenceNode? = nil
     private var bracketStack: Stack<Node> = Stack<Node>()
        
-    
     var rootNode: RootNode? {
         get {
             return _rootNode
@@ -49,7 +48,6 @@ class Parser {
             _sentenceNde = newValue
         }
     }
-
     
     init(source: String) {
         self.source = source
@@ -130,6 +128,8 @@ class Parser {
         rootNode.sentences.forEach {
             let sentenceNode = $0
             let traverser = Traverser(rootNode: sentenceNode)
+            
+            // とりあえず、こちらでは正常動作していないので 下の forEachWithCloser で実装
             /*
             var symbolTable = traverser.reduce(initialResult: SymbolTable(), closer:{ node, result in
                 let symbolTalbe = insertOrUpdateSymbol(node: node, symbolTable: result)

@@ -75,7 +75,6 @@ class Traverser: CustomStringConvertible {
         }
         return
     }
-
     
     var description: String {
         get {
