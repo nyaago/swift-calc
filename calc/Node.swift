@@ -24,7 +24,7 @@ class NodeFactory {
         case .word:
             return WordNode(token: token)
         case .expressionSeparator:
-            return ExpressionNode(token: token)
+            return SentenceNode(token: token)
         }
     }
 }
@@ -143,6 +143,10 @@ class Node: CustomStringConvertible, Equatable {
 }
 
 class RootNode: Node {
+    
+    private var _sentences: Array<SentenceNode> = Array()
+    
+    
     override class var priority: Int {
         get {
             return 0
@@ -154,16 +158,27 @@ class RootNode: Node {
         }
     }
     
+    
     override var value: NumericWrapper {
         get {
-            guard let lhs = self.lhs else {
-                return 0
+            if sentences.count == 0 {
+                return NumericWrapper(value: Double.nan)
             }
-            return lhs.value
+            return sentences.last!.value
         }
         set {
             
         }
+    }
+    
+    var sentences: Array<SentenceNode> {
+        get {
+            return _sentences
+        }
+    }
+    
+    func appendSentence(sentenceNode: SentenceNode) {
+        _sentences.append(sentenceNode)
     }
 }
 
@@ -190,16 +205,7 @@ class IntegerNode: Node {
     }
     
     override func highPriorityWith(other: Node) -> Bool {
-        if other.isAssignmentOperator {
-            return true
-        }
-        if other.isLeftExpression {
-            
-            return true
-        }
-        else {
-            return self.priority > other.priority
-        }
+        return self.priority > other.priority
     }
 
 }
@@ -243,7 +249,7 @@ class OperatorNode: Node {
             case "*", "/":
                 return type(of: self).priority - 5
             case "=":
-                return ExpressionNode.priority + 5
+                return SentenceNode.priority + 5
             default:
                 return type(of: self).priority
             }
@@ -304,22 +310,14 @@ class OperatorNode: Node {
         }
     }
     
+    
     override func highPriorityWith(other: Node) -> Bool {
-        if self.isAssignmentOperator && other.isSymbol {
+        if self.isAssignmentOperator && other.isSymbol && other.parent is SentenceNode {
             return true
         }
         else {
-            if other.isAssignmentOperator {
-                return true
-            }
-            else if other.isLeftExpression {
-                return true
-            }
-            else {
-                return self.priority > other.priority
-            }
+            return self.priority > other.priority
         }
-        
     }
 }
 
@@ -388,6 +386,20 @@ class WordNode: Node {
         }
     }
     
+    override var priority: Int {
+        get {
+            if isLeftExpression {
+                return SentenceNode.priority + 1
+            }
+            else {
+                return Self.priority
+            }
+        }
+        set {
+            
+        }
+    }
+    
     override var isSymbol: Bool {
         get {
             return true
@@ -422,37 +434,30 @@ class WordNode: Node {
     
     override var isLeftExpression:Bool {
         get {
-            guard let parent = self.parent else {
-                return false
-            }
-            if parent is RootNode {
-                return true
-            }
-            if parent is ExpressionNode {
+            if self.parent is SentenceNode {
                 return true
             }
             return false
         }
     }
     
+    
+    
     override func highPriorityWith(other: Node) -> Bool {
-        if other.isLeftExpression {
-            return true
-        }
-        
-        else {
-            return self.priority > other.priority
-        }
+        return self.priority > other.priority
     }
 
 }
 
-class ExpressionNode: Node {
+class SentenceNode: Node {
+    
+    
     override class var priority: Int {
         get {
             return RootNode.priority + 5
         }
     }
+   
     
     override var value: NumericWrapper {
         get {
@@ -484,7 +489,13 @@ class ExpressionNode: Node {
         }
     }
     
+    override var canHasRhs: Bool {
+        get {
+            return false
+        }
+    }
+    
     override var description: String {
-        return "expression"
+        return "sentence"
     }
 }
