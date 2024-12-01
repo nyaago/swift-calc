@@ -66,8 +66,14 @@ class Parser {
             return ""
         }
         let desc = rootNode.sentences.reduce("") { result, sentenceNode in
+            if sentenceNode.lhs == nil && sentenceNode.rhs == nil { // 空行
+                return result
+            }
             let traverser = Traverser(rootNode: sentenceNode)
             let desc = traverser.description
+            if result.count == 0 { // 1行目
+                return ""
+            }
             return "\(result) \n \(desc)"
         }
         return desc
