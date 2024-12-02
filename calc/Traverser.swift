@@ -18,8 +18,13 @@ class Traverser: CustomStringConvertible {
     func map<T>(closer:  (Node) -> T) -> [T] {
         mapNext(node: self.rootNode, closer: closer)
     }
+
+    func map<T>(closer:  (Node) -> T, closerWhenReturned:  (Node) -> T) -> [T] {
+        mapNext(node: self.rootNode, closer: closer, closerWhenReturned: closerWhenReturned)
+    }
+
     
-    func mapNext<T>(node: Node?, closer:  (Node) -> T) -> [T] {
+    private func mapNext<T>(node: Node?, closer:  (Node) -> T) -> [T] {
         var array: [T] = []
         if let currentNode = node {
             array.append(closer(currentNode))
@@ -28,6 +33,19 @@ class Traverser: CustomStringConvertible {
         }
         return array
     }
+
+    private func mapNext<T>(node: Node?, closer:  (Node) -> T, closerWhenReturned:  (Node) -> T) -> [T]   {
+        var array: [T] = []
+        if let currentNode = node {
+            array.append(closer(currentNode))
+            array = array + mapNext(node: currentNode.lhs, closer: closer, closerWhenReturned: closerWhenReturned)
+            array = array + mapNext(node: currentNode.rhs, closer: closer, closerWhenReturned: closerWhenReturned)
+            array.append(closerWhenReturned(currentNode))
+        }
+        return array
+    }
+
+    
     
     func forEach<T>(closer:  (Node) -> T) -> Void {
         forEachNext(node: self.rootNode, closer: closer)

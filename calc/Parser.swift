@@ -24,6 +24,27 @@ enum ParseError: Error {
     }
 }
 
+extension Node {
+    var desctiontionWhenNodeStart: String {
+        get {
+            if lhs != nil && parent != nil {
+                return "(\(description)"
+            }
+            return "\(description) "
+        }
+    }
+    
+    var desctiontionWhenNodeEnd: String {
+        get {
+            if lhs != nil && parent != nil {
+                return ")"
+            }
+            return ""
+        }
+    }
+
+}
+
 class Parser {
     
     private let lexer: Lexer
@@ -61,6 +82,7 @@ class Parser {
         self.symbolTable = SymbolTable()
     }
     
+   
     public func nodesDescription() -> String {
         guard let rootNode = self.rootNode else {
             return ""
@@ -69,14 +91,30 @@ class Parser {
             if sentenceNode.lhs == nil && sentenceNode.rhs == nil { // 空行
                 return result
             }
-            let traverser = Traverser(rootNode: sentenceNode)
-            let desc = traverser.description
+            //let traverser = Traverser(rootNode: sentenceNode)
+            //let desc = traverser.description
+            /*
             if result.count == 0 { // 1行目
                 return ""
             }
-            return "\(result) \n \(desc)"
+             */
+            
+            let traverser = Traverser(rootNode: sentenceNode)
+            let descriptions: [String] = traverser.map(closer: {node in
+                return node.desctiontionWhenNodeStart
+            },
+                          closerWhenReturned: {node in
+                return node.desctiontionWhenNodeEnd
+            })
+            let descString = descriptions.joined(separator: "")
+            
+            return "\(result) \n \(descString)"
         }
         return desc
+    }
+    
+    private func nodeDescription(node: Node) -> String {
+        return ""
     }
     
     /**
