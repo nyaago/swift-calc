@@ -93,12 +93,6 @@ class Parser {
             }
             //let traverser = Traverser(rootNode: sentenceNode)
             //let desc = traverser.description
-            /*
-            if result.count == 0 { // 1行目
-                return ""
-            }
-             */
-            
             let traverser = Traverser(rootNode: sentenceNode)
             let descriptions: [String] = traverser.map(closer: {node in
                 return node.desctiontionWhenNodeStart
@@ -107,7 +101,9 @@ class Parser {
                 return node.desctiontionWhenNodeEnd
             })
             let descString = descriptions.joined(separator: "")
-            
+            if result.count == 0 {
+                return descString
+            }
             return "\(result) \n \(descString)"
         }
         return desc
