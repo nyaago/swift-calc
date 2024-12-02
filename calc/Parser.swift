@@ -91,13 +91,12 @@ class Parser {
             if sentenceNode.lhs == nil && sentenceNode.rhs == nil { // 空行
                 return result
             }
-            //let traverser = Traverser(rootNode: sentenceNode)
-            //let desc = traverser.description
             let traverser = Traverser(rootNode: sentenceNode)
-            let descriptions: [String] = traverser.map(closer: {node in
+            let descriptions: [String] = traverser.map(
+            closer: {node in
                 return node.desctiontionWhenNodeStart
             },
-                          closerWhenReturned: {node in
+            closerWhenReturned: {node in
                 return node.desctiontionWhenNodeEnd
             })
             let descString = descriptions.joined(separator: "")
