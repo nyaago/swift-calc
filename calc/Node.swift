@@ -55,7 +55,6 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
     
-   
     class var priority: Int {
         get {
             return 0
@@ -101,6 +100,12 @@ class Node: CustomStringConvertible, Equatable {
     }
 
     var rightBrace: Bool {
+        get {
+            return false
+        }
+    }
+    
+    var isOperatable: Bool {
         get {
             return false
         }
@@ -276,6 +281,13 @@ class OperatorNode: Node {
             return super.isAssignmentOperator
         }
     }
+    
+    override var isOperatable: Bool {
+        get {
+            return true
+        }
+    }
+    
     
     override var value: NumericWrapper {
         get {
@@ -496,6 +508,6 @@ class SentenceNode: Node {
     }
     
     override var description: String {
-        return "sentence"
+        return ""
     }
 }
