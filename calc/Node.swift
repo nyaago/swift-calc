@@ -169,7 +169,13 @@ class RootNode: Node {
             if sentences.count == 0 {
                 return NumericWrapper(value: Double.nan)
             }
-            return sentences.last!.value
+            let reversed = sentences.reversed().drop(while: {e in
+                e.value.isNotValid
+            })
+            if reversed.count == 0 {
+                return NumericWrapper(value: Double.nan)
+            }
+            return reversed.first!.value
         }
         set {
             
@@ -474,7 +480,7 @@ class SentenceNode: Node {
     override var value: NumericWrapper {
         get {
             // 右側(後にある)式の結果を優先して返す
-            var val: NumericWrapper = 0
+            var val: NumericWrapper = NumericWrapper(value: Double.nan)
             if let lhs = self.lhs {
                 val = lhs.value
             }
