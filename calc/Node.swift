@@ -273,7 +273,7 @@ class OperatorNode: Node {
     override var canHasRhs: Bool {
         get {
             if isAssignmentOperator {
-                return false
+                return true
             }
             return true
         }
@@ -299,8 +299,10 @@ class OperatorNode: Node {
         get {
             var leftVal: NumericWrapper = NumericWrapper(value: Double.nan)
             var rightVal: NumericWrapper = NumericWrapper(value: Double.nan)
-            if let lhs = self.lhs {
-                leftVal = lhs.value
+            if !isAssignmentOperator {
+                if let lhs = self.lhs {
+                    leftVal = lhs.value
+                }
             }
             if let rhs = self.rhs {
                 rightVal = rhs.value
@@ -328,7 +330,7 @@ class OperatorNode: Node {
         }
     }
     
-    
+    /*
     override func highPriorityWith(other: Node) -> Bool {
         if self.isAssignmentOperator && other.isSymbol && other.parent is SentenceNode {
             return true
@@ -337,6 +339,7 @@ class OperatorNode: Node {
             return self.priority > other.priority
         }
     }
+     */
 }
 
 class BraceNode: Node {
@@ -404,6 +407,7 @@ class WordNode: Node {
         }
     }
     
+    /*
     override var priority: Int {
         get {
             if isLeftExpression {
@@ -417,6 +421,7 @@ class WordNode: Node {
             
         }
     }
+     */
     
     override var isSymbol: Bool {
         get {
@@ -440,10 +445,13 @@ class WordNode: Node {
             if let v = _value  {
                 return v
             }
-            guard let lhs = self.lhs else {
+            guard let parent = self.parent else {
                 return NumericWrapper(value: Double.nan)
             }
-            return lhs.value
+            if parent.isAssignmentOperator && parent.lhs == self {
+                return parent.value
+            }
+            return NumericWrapper(value: Double.nan)
         }
         set {
             self._value = newValue
@@ -452,7 +460,10 @@ class WordNode: Node {
     
     override var isLeftExpression:Bool {
         get {
-            if self.parent is SentenceNode {
+            guard let parent = self.parent else  {
+                return false
+            }
+            if parent.isAssignmentOperator {
                 return true
             }
             return false

@@ -64,14 +64,15 @@ class Traverser: CustomStringConvertible {
     }
 
     func reduceNext<T>(result: T, node: Node?, closer:  (Node, T) -> T) -> T {
+        var newResult = result
         if let currentNode = node {
-            var result = closer(currentNode, result)
             if currentNode.lhs != nil {
-                result = reduceNext(result: result, node: currentNode.lhs, closer: closer)
+                newResult = reduceNext(result: newResult, node: currentNode.lhs, closer: closer)
             }
             if currentNode.rhs != nil {
-                result = reduceNext(result: result, node: currentNode.rhs, closer: closer)
+                newResult = reduceNext(result: newResult, node: currentNode.rhs, closer: closer)
             }
+            newResult = closer(currentNode, newResult)
         }
         return result
     }
@@ -93,6 +94,22 @@ class Traverser: CustomStringConvertible {
         }
         return
     }
+
+    func forEachLeftWithCloser<T>(result: inout T, closer: (Node, inout T) -> Void) -> Void {
+        forEachLeftWithCloserNext(result: &result, node: self.rootNode, closer: closer)
+    }
+
+        
+    func forEachLeftWithCloserNext<T>( result: inout T, node: Node?, closer:  (Node, inout T) -> Void) -> Void {
+        if let currentNode = node {
+            if currentNode.lhs != nil {
+                forEachWithCloserNext(result: &result, node: currentNode.lhs, closer: closer)
+            }
+            closer(currentNode, &result)
+        }
+        return
+    }
+
     
     var description: String {
         get {
