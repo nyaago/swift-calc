@@ -175,8 +175,15 @@ class Parser {
                 return symbolTalbe
             } )
              */
+            
+            traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
+                _ = adoptSymbolValues(node: node, symbolTable: result)
+                
+                return
+            } )
             traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
                 _ = insertOrUpdateSymbol(node: node, symbolTable: result)
+                
                 return
             } )
         }
@@ -192,21 +199,18 @@ class Parser {
             guard let token = node.token else {
                 return symbolTable
             }
-            if let symbolValue = symbolTable[token.string] {
-                node.value = symbolValue
-            }
             if !symbolTable.contains(symbol: token.string) {
                 symbolTable.appendSymbol(symbol: token.string)
-                if node.isLeftExpression {
-                    if let parent = node.parent  {
-                        node.value = parent.value
-                    }
-                    if node.value.isValid {
-                        symbolTable[token.string] = node.value
-                    }
-                    else {
-                        symbolTable[token.string] = NumericWrapper(value: Double.nan)
-                    }
+            }
+            if node.isLeftExpression {
+                if let parent = node.parent  {
+                    node.value = parent.value
+                }
+                if node.value.isValid {
+                    symbolTable[token.string] = node.value
+                }
+                else {
+                    symbolTable[token.string] = NumericWrapper(value: Double.nan)
                 }
             }
             if node.value.isValid {
@@ -218,6 +222,17 @@ class Parser {
         return symbolTable
     }
     
+    private func adoptSymbolValues(node: Node, symbolTable: SymbolTable) -> SymbolTable {
+        if node.isSymbol {
+            guard let token = node.token else {
+                return symbolTable
+            }
+            if let symbolValue = symbolTable[token.string] {
+                node.value = symbolValue
+            }
+        }
+        return symbolTable
+    }
     private func insertNode(newNode: Node) -> Node? {
         var intertedNode: Node?
         if newNode.rightBrace {
