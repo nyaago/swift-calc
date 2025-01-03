@@ -17,28 +17,14 @@ struct ContentView: View {
     
     var body: some View {
         
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 10.0) {
             // 計算結果
-            Text("結果")
-                .font(.title)
-                .foregroundColor(Color.labelTextColor)
-                .background(Color.labelBackColor)
-            Text(viewModel.stringValue)
-                .font(.title)
-                .border(Color.textBackColor)
-                .frame(maxWidth: .infinity,
-                       minHeight: 30,
-                       alignment: .bottomTrailing)
-                .padding(EdgeInsets(top: 10.0, leading: 10.0,
-                                    bottom: 10.0, trailing: 10.0))
-                .foregroundColor(Color.textColor)
-                .background(Color.textBackColor)
+            ResultView(viewModel: self.viewModel)
+            // 入力
+            ExprInputView(viewModel: self.viewModel)
             // 解析結果
             PolishNotationView(viewModel: self.viewModel)
-            // 入力
-            
-            ExprInputView(viewModel: self.viewModel)
-            
+
             Button(action:  { onOk() }, label: {
                 Text("OK")
                     .font(.title)
