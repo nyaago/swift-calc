@@ -12,6 +12,7 @@ import Observation
     
     var expr: String?
     var stringValue: String = ""
+    var polishNotation: String = ""
 
     @ObservationIgnored private var parser: Parser?
     @ObservationIgnored private var lexer: Lexer?
@@ -49,23 +50,22 @@ import Observation
             self.currentValue = rootNode.value
             self.stringValue = rootNode.value.stringValue
         }
+        self.polishNotation = buildPolishNotation()
         return self.currentValue
     }
     
     var description: String {
         get {
-            return nodeDescription
+            return buildPolishNotation()
         }
     }
     
-    var nodeDescription: String {
-        get {
-            guard let parser = self.parser else {
-                return ""
-            }
-            
-            return parser.nodesDescription()
+    func buildPolishNotation() -> String {
+        guard let parser = self.parser else {
+            return ""
         }
+        
+        return parser.nodesDescription()
     }
 
     func lexerDescription() -> String {
