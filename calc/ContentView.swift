@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State var editText = ""
     var viewModel = CalcModel()
+    @FocusState var textEditorFocused: Bool
     
     init() {
         UITextView.appearance().backgroundColor = .clear
@@ -21,7 +22,7 @@ struct ContentView: View {
             // 計算結果
             ResultView(viewModel: self.viewModel)
             // 入力
-            ExprInputView(viewModel: self.viewModel)
+            ExprInputView(viewModel: self.viewModel, textEditorFocused: self.$textEditorFocused)
             // 解析結果
             PolishNotationView(viewModel: self.viewModel)
 
@@ -33,6 +34,9 @@ struct ContentView: View {
             })
         }
         .padding(.horizontal, 10.0)
+        .onTapGesture {
+            textEditorFocused = false
+        }
     }
     
     func onOk() {
