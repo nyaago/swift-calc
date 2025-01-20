@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    enum DetailedViewType: Int {
+        case polishNotation = 1
+        case list2 =  2
+        case list3 = 3
+    }
+    
     @State var editText = ""
+    @State var detailedViewType: DetailedViewType = .polishNotation
     var viewModel = CalcModel()
     
     init() {
@@ -23,7 +30,7 @@ struct ContentView: View {
                 // 入力
                 ExprInputView(viewModel: self.viewModel)
                 // 解析結果
-                PolishNotationView(viewModel: self.viewModel)
+                deitaledResultView
             }
             .padding(.horizontal, 10.0)
             .padding(.bottom, 20.0)
@@ -35,22 +42,21 @@ struct ContentView: View {
     
     private var itemGroup: some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
-
             Spacer()
             Button(action: {
-                print("Button 1 tapped")
+                self.detailedViewType = .polishNotation
             }) {
                 Image(systemName: "doc.text")
             }
             Spacer()
             Button(action: {
-                print("Button 2 tapped")
+                self.detailedViewType = .list2
             }) {
                 Image(systemName: "list.bullet.rectangle")
             }
             Spacer()
             Button(action: {
-                print("Button 3 tapped")
+                self.detailedViewType = .list3
             }) {
                 Image(systemName: "info")
             }
@@ -58,10 +64,19 @@ struct ContentView: View {
         }
     }
     
-    func onOk() {
-        // viewModel.expr = self.editText
-        // _ = viewModel.calc()
-        // print(self.viewModel.lexerDescription())
+    private var deitaledResultView: some View {
+        return AnyView( buildDeitaledResultView() )
+    }
+
+    private func buildDeitaledResultView() -> any View {
+        switch ( self.detailedViewType ) {
+        case .polishNotation:
+            return PolishNotationView(viewModel: self.viewModel)
+        case .list2:
+            return DummyTextView(viewModel: self.viewModel)
+        case .list3:
+            return DummyTextView(viewModel: self.viewModel)
+        }
     }
 }
 
@@ -74,10 +89,8 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-
 extension UIApplication {
     func closeKeyboard() {
         // sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
-
