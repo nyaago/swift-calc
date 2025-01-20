@@ -10,6 +10,7 @@ import SwiftUI
 struct ExprInputView: View {
     @State var editText = ""
     var viewModel: CalcModel
+    @FocusState.Binding var textEditorFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -20,6 +21,7 @@ struct ExprInputView: View {
                 .foregroundColor(Color.labelTextColor)
                 .background(Color.labelBackColor)
             TextEditor(text: $editText)
+                .focused(self.$textEditorFocused)
                 .keyboardType(.numbersAndPunctuation)
                 .font(.title)
                 .scrollContentBackground(Visibility.hidden)
@@ -40,10 +42,14 @@ struct ExprInputView: View {
                     _ = viewModel.calc()
                 }
         }
+        .onTapGesture {
+            self.textEditorFocused = false
+        }
     }
 }
 
-#Preview {
-    ExprInputView(viewModel: CalcModel())
-        .preferredColorScheme(.dark)
-}
+ #Preview {
+     @FocusState var focused: Bool
+     ExprInputView(viewModel: CalcModel(), textEditorFocused: $focused)
+         .preferredColorScheme(.dark)
+ }

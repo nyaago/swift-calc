@@ -17,6 +17,7 @@ struct ContentView: View {
     @State var editText = ""
     @State var detailedViewType: DetailedViewType = .polishNotation
     var viewModel = CalcModel()
+    @FocusState var textEditorFocused: Bool
     
     init() {
         UITextView.appearance().backgroundColor = .clear
@@ -28,7 +29,7 @@ struct ContentView: View {
                 // 計算結果
                 ResultView(viewModel: self.viewModel)
                 // 入力
-                ExprInputView(viewModel: self.viewModel)
+                ExprInputView(viewModel: self.viewModel, textEditorFocused: self.$textEditorFocused)
                 // 解析結果
                 deitaledResultView
             }
@@ -37,6 +38,9 @@ struct ContentView: View {
             .toolbar {
                 itemGroup
             }.background(Color.black)
+        }
+        .onTapGesture {
+            textEditorFocused = false
         }
     }
     
