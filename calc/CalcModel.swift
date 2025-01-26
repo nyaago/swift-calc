@@ -60,6 +60,10 @@ import Observation
         }
     }
     
+    var symbolTable: SymbolTable? {
+        return parser?.symbolTable
+    }
+    
     func buildPolishNotation() -> String {
         guard let parser = self.parser else {
             return ""
