@@ -32,7 +32,8 @@ enum NumericWrapperErrorType: Int8, CustomStringConvertible {
 
 }
 
-struct NumericWrapper: SignedNumeric, Comparable {
+struct NumericWrapper: SignedNumeric, Comparable, CustomStringConvertible {
+       
     
     static private let maxOfInt = Double(Int64.max)
     static private let minOfInt = Double(Int64.min)
@@ -45,6 +46,11 @@ struct NumericWrapper: SignedNumeric, Comparable {
     private var _value: Double?
     private var _errorType: NumericWrapperErrorType?
     
+    var description: String {
+        get {
+            return stringValue
+        }
+    }
     
     var valueType: NumericWrapperType {
         get {

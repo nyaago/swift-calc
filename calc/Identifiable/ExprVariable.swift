@@ -14,7 +14,8 @@ struct ExprVariable: Identifiable, Hashable {
     
     var listItemText: String {
         get {
-            return name
+            let valueString = value?.description ?? ""
+            return "\(name) = \(valueString)"
         }
     }
     
