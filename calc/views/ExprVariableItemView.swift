@@ -17,16 +17,7 @@ struct ExprVariableItemView: View {
 
 struct ExprVariablesView: View {
     var viewModel: CalcModel
-    var exprVariables: [ExprVariable] {
-        get {
-            guard let symbolTable = viewModel.symbolTable else {
-                return []
-            }
-            return symbolTable.asArray.map { symbolElement in
-                ExprVariable(name: symbolElement.name, value: symbolElement.value)
-            }
-        }
-    }
+    @Binding var exprVariables: [ExprVariable]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

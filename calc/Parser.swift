@@ -136,7 +136,7 @@ class Parser {
         }
         self._rootNode = RootNode(token: nil)
         try parseWithTokens()
-        try _ = semanticAnalize()
+        try _symbolTable = semanticAnalize()
         return self.rootNode!
     }
     
@@ -190,8 +190,10 @@ class Parser {
             traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
                 _ = insertOrUpdateSymbol(node: node, symbolTable: result)
                 
+
                 return
             } )
+
         }
 
         if symbolTable.invalidSymbols().count > 0 {
