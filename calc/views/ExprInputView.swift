@@ -10,6 +10,7 @@ import SwiftUI
 struct ExprInputView: View {
     @State var editText = ""
     var viewModel: CalcModel
+    @Binding var exprVariables: [ExprVariable]
     @FocusState.Binding var textEditorFocused: Bool
 
     var body: some View {
@@ -40,16 +41,28 @@ struct ExprInputView: View {
                 }.onChange(of: self.editText) { oldText, newText in
                     viewModel.expr = newText
                     _ = viewModel.calc()
+                    self.exprVariables = buildExprVariables()
+                    // exprVariables =
                 }
         }
         .onTapGesture {
             self.textEditorFocused = false
         }
     }
+    private func buildExprVariables() -> [ExprVariable] {
+        guard let symbolTable = viewModel.symbolTable else {
+            return []
+        }
+        return symbolTable.asArray.map { symbolElement in
+            ExprVariable(name: symbolElement.name, value: symbolElement.value)
+        }
+    }
+
 }
 
  #Preview {
+     @Previewable @State var exprVariables: [ExprVariable] = []
      @FocusState var focused: Bool
-     ExprInputView(viewModel: CalcModel(), textEditorFocused: $focused)
+     ExprInputView(viewModel: CalcModel(), exprVariables:$exprVariables, textEditorFocused: $focused)
          .preferredColorScheme(.dark)
  }

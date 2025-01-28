@@ -50,7 +50,7 @@ class Parser {
     private let lexer: Lexer
     private let source: String?
     private var tokens: [any Token]? = nil      // 未パースであれば null. パース開始以降0個以上の要素
-    private var symbolTable: SymbolTable
+    private var _symbolTable: SymbolTable
     private var _rootNode: RootNode? = nil
     private var _sentenceNde: SentenceNode? = nil
     private var bracketStack: Stack<Node> = Stack<Node>()
@@ -70,16 +70,22 @@ class Parser {
         }
     }
     
+    var symbolTable: SymbolTable {
+        get {
+            return _symbolTable
+        }
+    }
+    
     init(source: String) {
         self.source = source
         self.lexer = Lexer(source: source)
-        self.symbolTable = SymbolTable()
+        self._symbolTable = SymbolTable()
     }
     
     init(lexer: Lexer) {
         self.source = nil
         self.lexer = lexer
-        self.symbolTable = SymbolTable()
+        self._symbolTable = SymbolTable()
     }
     
    
@@ -130,7 +136,7 @@ class Parser {
         }
         self._rootNode = RootNode(token: nil)
         try parseWithTokens()
-        try _ = semanticAnalize()
+        try _symbolTable = semanticAnalize()
         return self.rootNode!
     }
     
@@ -184,8 +190,10 @@ class Parser {
             traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
                 _ = insertOrUpdateSymbol(node: node, symbolTable: result)
                 
+
                 return
             } )
+
         }
 
         if symbolTable.invalidSymbols().count > 0 {
@@ -200,22 +208,22 @@ class Parser {
                 return symbolTable
             }
             if !symbolTable.contains(symbol: token.string) {
-                symbolTable.appendSymbol(symbol: token.string)
+                _ = symbolTable.appendSymbol(symbol: token.string)
             }
             if node.isLeftExpression {
                 if let parent = node.parent  {
                     node.value = parent.value
                 }
                 if node.value.isValid {
-                    symbolTable[token.string] = node.value
+                    _ = symbolTable.assignSymbolValue(symbol: token.string, value:node.value)
                 }
                 else {
-                    symbolTable[token.string] = NumericWrapper(value: Double.nan)
+                    _ = symbolTable.assignSymbolValue(symbol: token.string, value:NumericWrapper(value: Double.nan))
                 }
             }
             if node.value.isValid {
                 if !symbolTable.containsValue(symbol: token.string) {
-                    symbolTable[token.string] = node.value
+                    _ = symbolTable.assignSymbolValue(symbol: token.string, value:node.value)
                 }
             }
         }
@@ -227,7 +235,8 @@ class Parser {
             guard let token = node.token else {
                 return symbolTable
             }
-            if let symbolValue = symbolTable[token.string] {
+            if let symbolElement = symbolTable[token.string] {
+                let symbolValue = symbolElement.value
                 node.value = symbolValue
             }
         }

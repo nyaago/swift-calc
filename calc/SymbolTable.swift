@@ -7,15 +7,23 @@
 
 
 // 変数をキーに数値を値にもつ単純な記号表
+
+struct SymbolElement {
+    let name: String
+    let value: NumericWrapper
+    let seqNumber: Int
+}
+
 class SymbolTable: CustomStringConvertible {
    
-    private var table: Dictionary<String, NumericWrapper>
+    private var table: Dictionary<String, SymbolElement>
+    private var seqNumber: Int = 1
     
     init() {
-        table = Dictionary<String, NumericWrapper>()
+        table = Dictionary<String, SymbolElement>()
     }
     
-    subscript(symbol: String) -> NumericWrapper? {
+    subscript(symbol: String) -> SymbolElement? {
         get {
             return table[symbol]
         }
@@ -24,44 +32,67 @@ class SymbolTable: CustomStringConvertible {
         }
     }
     
+   
     func contains(symbol: String) -> Bool {
         return table.keys.contains { $0 == symbol }
     }
     func containsValue(symbol: String) -> Bool {
-        guard let value = self[symbol] else {
+        guard let element = self[symbol] else {
             return false
         }
-        return value.isValid
+        return element.value.isValid
     }
-
-    func appendSymbol(symbol: String) {
-        table[symbol] = NumericWrapper(value:  Double.nan)
+    
+    func assignSymbolValue(symbol: String, value: NumericWrapper) -> SymbolElement {
+        let element = SymbolElement(name: symbol, value: value, seqNumber: self.seqNumber)
+        seqNumber += 1
+        self[symbol] = element
+        return table[symbol]!
+    }
+ 
+    func appendSymbol(symbol: String) -> SymbolElement {
+        let value = NumericWrapper(value:  Double.nan)
+        return assignSymbolValue(symbol: symbol, value: value)
     }
     
     func invalidSymbols() -> [String] {
-        var element = Array<String>()
+        var symbols = Array<String>()
         for key in table.keys {
-            guard let value = table[key] else {
-                element.append(key)
+            guard let element = table[key] else {
+                symbols.append(key)
                 continue
             }
-            if value.isNotValid {
-                element.append(key)
+            if element.value.isNotValid {
+                symbols.append(key)
                 continue
             }
         }
-        return element
+        return symbols
+    }
+    
+    var asArray: [SymbolElement] {
+        get {
+            return Array(table.values.sorted(by: { a, b in
+                a.seqNumber > b.seqNumber
+            }))
+        }
+    }
+    
+    var count: Int {
+        get {
+            table.count
+        }
     }
     
     var description: String {
         get {
-            var descElement = Array<String>()
+            var descArray = Array<String>()
             for key in table.keys {
-                let value = table[key]?.stringValue
+                let value = table[key]?.value.stringValue
                 let s = value ?? ""
-                descElement.append("\(key)=\(s)")
+                descArray.append("\(key)=\(s)")
             }
-            return descElement.joined(separator: "/")
+            return descArray.joined(separator: "/")
         }
     }
 }

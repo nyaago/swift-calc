@@ -10,13 +10,14 @@ import SwiftUI
 struct ContentView: View {
     enum DetailedViewType: Int {
         case polishNotation = 1
-        case list2 =  2
+        case exprVariableList =  2
         case list3 = 3
     }
     
     @State var editText = ""
     @State var detailedViewType: DetailedViewType = .polishNotation
     var viewModel = CalcModel()
+    @State var exprVariables: [ExprVariable] = []
     @FocusState var textEditorFocused: Bool
     
     init() {
@@ -29,9 +30,10 @@ struct ContentView: View {
                 // 計算結果
                 ResultView(viewModel: self.viewModel)
                 // 入力
-                ExprInputView(viewModel: self.viewModel, textEditorFocused: self.$textEditorFocused)
+                ExprInputView(viewModel: self.viewModel, exprVariables:$exprVariables, textEditorFocused: self.$textEditorFocused)
                 // 解析結果
-                deitaledResultView
+                DetailResultView(viewModel: self.viewModel, detailedViewType: self.detailedViewType, exprVariables: $exprVariables )
+                //deitaledResultView(viewModel: self.viewModel)
             }
             .padding(.horizontal, 10.0)
             .padding(.bottom, 20.0)
@@ -54,7 +56,7 @@ struct ContentView: View {
             }
             Spacer()
             Button(action: {
-                self.detailedViewType = .list2
+                self.detailedViewType = .exprVariableList
             }) {
                 Image(systemName: "list.bullet.rectangle")
             }
@@ -67,21 +69,8 @@ struct ContentView: View {
             Spacer()
         }
     }
-    
-    private var deitaledResultView: some View {
-        return AnyView( buildDeitaledResultView() )
-    }
-
-    private func buildDeitaledResultView() -> any View {
-        switch ( self.detailedViewType ) {
-        case .polishNotation:
-            return PolishNotationView(viewModel: self.viewModel)
-        case .list2:
-            return DummyTextView(viewModel: self.viewModel)
-        case .list3:
-            return DummyTextView(viewModel: self.viewModel)
-        }
-    }
+  
+   
 }
 
 struct ContentView_Previews: PreviewProvider {
