@@ -10,12 +10,14 @@
 
 struct SymbolElement {
     let name: String
-    var value: NumericWrapper
+    let value: NumericWrapper
+    let seqNumber: Int
 }
 
 class SymbolTable: CustomStringConvertible {
    
     private var table: Dictionary<String, SymbolElement>
+    private var seqNumber: Int = 1
     
     init() {
         table = Dictionary<String, SymbolElement>()
@@ -42,7 +44,8 @@ class SymbolTable: CustomStringConvertible {
     }
     
     func assignSymbolValue(symbol: String, value: NumericWrapper) -> SymbolElement {
-        let element = SymbolElement(name: symbol, value: value)
+        let element = SymbolElement(name: symbol, value: value, seqNumber: self.seqNumber)
+        seqNumber += 1
         self[symbol] = element
         return table[symbol]!
     }
@@ -69,7 +72,9 @@ class SymbolTable: CustomStringConvertible {
     
     var asArray: [SymbolElement] {
         get {
-            return Array(table.values)
+            return Array(table.values.sorted(by: { a, b in
+                a.seqNumber > b.seqNumber
+            }))
         }
     }
     
