@@ -13,7 +13,7 @@ struct DummyTextView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Dummy")
-                .font(.title)
+                .font(.headline)
                 .padding(EdgeInsets(top: 10.0, leading: 10.0,
                                     bottom: 5.0, trailing: 10.0))
                 .foregroundColor(Color.labelTextColor)

@@ -15,4 +15,5 @@ extension Color {
     static let editTextBackColor = Color("editTextBackColor")
     static let textBackColor = Color("textBackColor")
     static let accentColor = Color("accentColor")
+    static let listRowSeparatorColor = Color("listRowSeparatorColor")
 }
