@@ -26,7 +26,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            VStack(alignment: .leading, spacing: 10.0) {
+            VStack(spacing: 0.0) {
                 // 計算結果
                 ResultView(viewModel: self.viewModel)
                 // 入力
@@ -35,10 +35,10 @@ struct ContentView: View {
                 DetailResultView(viewModel: self.viewModel, detailedViewType: self.detailedViewType, exprVariables: $exprVariables )
                 //deitaledResultView(viewModel: self.viewModel)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.horizontal, 10.0)
-            .padding(.bottom, 20.0)
             .toolbar {
-                itemGroup
+                toolbarContent
             }.background(Color.black)
         }
         .onTapGesture {
@@ -46,31 +46,21 @@ struct ContentView: View {
         }
     }
     
-    private var itemGroup: some ToolbarContent {
-        ToolbarItemGroup(placement: .bottomBar) {
-            Spacer()
-            Button(action: {
-                self.detailedViewType = .polishNotation
-            }) {
-                Image(systemName: "doc.text")
+    private var toolbarContent: some ToolbarContent  {
+        ToolbarItem(placement: .primaryAction) {
+            Menu {
+                Button("Polish Notation", systemImage: "doc.text", action: {
+                    self.detailedViewType = .polishNotation
+                })
+                Button("Variables", systemImage: "list.bullet.rectangle", action: {
+                    self.detailedViewType = .exprVariableList
+                })
             }
-            Spacer()
-            Button(action: {
-                self.detailedViewType = .exprVariableList
-            }) {
-                Image(systemName: "list.bullet.rectangle")
+            label: { Label("", systemImage: "list.bullet")
             }
-            Spacer()
-            Button(action: {
-                self.detailedViewType = .list3
-            }) {
-                Image(systemName: "info")
-            }
-            Spacer()
         }
     }
-  
-   
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
