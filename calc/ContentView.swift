@@ -8,14 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    enum DetailedViewType: Int {
-        case polishNotation = 1
-        case exprVariableList =  2
-        case list3 = 3
-    }
     
     @State var editText = ""
-    @State var detailedViewType: DetailedViewType = .polishNotation
     var viewModel = CalcModel()
     @State var exprVariables: [ExprVariable] = []
     @FocusState var textEditorFocused: Bool
@@ -26,13 +20,16 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 0.0) {
+            VStack{
                 // 計算結果
                 ResultView(viewModel: self.viewModel)
                 // 入力
-                ExprInputView(viewModel: self.viewModel, exprVariables:$exprVariables, textEditorFocused: self.$textEditorFocused)
+                ExprInputView(viewModel: self.viewModel,
+                              exprVariables:$exprVariables,
+                              textEditorFocused: self.$textEditorFocused)
                 // 解析結果
-                DetailResultView(viewModel: self.viewModel, detailedViewType: self.detailedViewType, exprVariables: $exprVariables )
+                DetailResultView(viewModel: self.viewModel,
+                                 exprVariables: $exprVariables )
                 //deitaledResultView(viewModel: self.viewModel)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -49,12 +46,6 @@ struct ContentView: View {
     private var toolbarContent: some ToolbarContent  {
         ToolbarItem(placement: .primaryAction) {
             Menu {
-                Button("Polish Notation", systemImage: "doc.text", action: {
-                    self.detailedViewType = .polishNotation
-                })
-                Button("Variables", systemImage: "list.bullet.rectangle", action: {
-                    self.detailedViewType = .exprVariableList
-                })
             }
             label: { Label("", systemImage: "list.bullet")
             }

@@ -27,10 +27,10 @@ struct ExprInputView: View {
                 .font(.body)
                 .scrollContentBackground(Visibility.hidden)
                 .border(Color.labelBackColor)
-                .padding(EdgeInsets(top: 5.0, leading: 10.0,
-                                    bottom: 10.0, trailing: 10.0))
+                .padding(EdgeInsets(top: 0.0, leading: 0.0,
+                                    bottom: 0.0, trailing: 0.0))
                 .frame(maxWidth: .infinity,
-                       minHeight: 150.0,
+                       minHeight: 50.0,
                        maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,
                        alignment: .topLeading)
                 .offset(x: 0.0, y: -0)

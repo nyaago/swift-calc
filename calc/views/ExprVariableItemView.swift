@@ -26,10 +26,6 @@ struct ExprVariablesView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("変数一覧")
-                .font(.headline)
-                .foregroundColor(Color.labelTextColor)
-                .background(Color.labelBackColor)
             List(exprVariables) { exprVariable in
                 ExprVariableItemView(exprVariable: exprVariable)
                     .scrollContentBackground(.hidden)
