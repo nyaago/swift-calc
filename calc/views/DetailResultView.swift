@@ -24,11 +24,7 @@ struct DetailResultView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
                 Text(labelText)
-                    .font(.headline)
-                    .padding(EdgeInsets(top: 10.0, leading: 10.0,
-                                        bottom: 5.0, trailing: 10.0))
-                    .foregroundColor(Color.labelTextColor)
-                    .background(Color.labelBackColor)
+                    .modifier(LabelTextModifier())
                 Spacer()
             }
             .overlay(alignment: .bottomTrailing) {

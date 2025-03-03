@@ -16,26 +16,16 @@ struct ExprInputView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("式を入力")
-                .font(.headline)
-                .padding(EdgeInsets(top: 10.0, leading: 10.0,
-                                    bottom: 5.0, trailing: 10.0))
-                .foregroundColor(Color.labelTextColor)
-                .background(Color.labelBackColor)
+                .modifier(LabelTextModifier())
             TextEditor(text: $editText)
                 .focused(self.$textEditorFocused)
                 .keyboardType(.numbersAndPunctuation)
-                .font(.body)
                 .scrollContentBackground(Visibility.hidden)
-                .border(Color.labelBackColor)
-                .padding(EdgeInsets(top: 0.0, leading: 0.0,
-                                    bottom: 0.0, trailing: 0.0))
+                .modifier(MultiLineTextModifier())
                 .frame(maxWidth: .infinity,
                        minHeight: 50.0,
                        maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,
                        alignment: .topLeading)
-                .offset(x: 0.0, y: -0)
-                .foregroundColor(Color.textColor)
-                .background(Color.editTextBackColor)
                 .onAppear() {
                     // UIApplication.shared.closeKeyboard()
                 }.onChange(of: self.editText) { oldText, newText in

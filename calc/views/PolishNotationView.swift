@@ -15,17 +15,11 @@ struct PolishNotationView: View {
                 Text(viewModel.polishNotation)
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
-                    .font(.body)
-                    .border(Color.labelBackColor)
-                    .padding(EdgeInsets(top: 0, leading: 0,
-                                        bottom: 0, trailing: 0))
+                    .modifier(MultiLineTextModifier())
                     .frame(maxWidth: .infinity,
                            minHeight: 50,
                            maxHeight: .infinity,
                            alignment: .topLeading)
-                    .foregroundColor(Color.textColor)
-                    .background(Color.textBackColor)
-                    .offset(x: 0.0, y: -0)
             }
             .frame(maxWidth: .infinity,
                    minHeight: 50,

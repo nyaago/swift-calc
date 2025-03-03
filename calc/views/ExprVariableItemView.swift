@@ -28,14 +28,7 @@ struct ExprVariablesView: View {
         VStack(alignment: .leading, spacing: 0) {
             List(exprVariables) { exprVariable in
                 ExprVariableItemView(exprVariable: exprVariable)
-                    .scrollContentBackground(.hidden)
-                    .background(Color.textBackColor)
-                    .padding(EdgeInsets(top: 0, leading: 0,
-                                        bottom: 0, trailing: 0))
-                    .frame(maxWidth: .infinity,
-                           minHeight: 10,
-                           maxHeight: .infinity,
-                           alignment: .leading)
+                    .modifier(ListViewModifier())
             }
         }
     }

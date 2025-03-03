@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -81,6 +81,10 @@
 		72FD57AC26E3B1FE009F77D5 /* Lexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		72F8DED92D75ECE1004A1C2D /* viewModifier */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = viewModifier; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		723B22B6260B880200A616FA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -129,6 +133,7 @@
 		723B22BB260B880200A616FA /* calc */ = {
 			isa = PBXGroup;
 			children = (
+				72F8DED92D75ECE1004A1C2D /* viewModifier */,
 				72F8DED52D467F36004A1C2D /* Identifiable */,
 				724588CA2D11BE79007118DB /* views */,
 				72FC376F2CC4DECE0024BDDB /* SymbolTable.swift */,
@@ -211,6 +216,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				72F8DED92D75ECE1004A1C2D /* viewModifier */,
 			);
 			name = calc;
 			packageProductDependencies = (

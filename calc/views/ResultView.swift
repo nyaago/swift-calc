@@ -13,21 +13,9 @@ struct ResultView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("結果")
-                .font(.headline)
-                .padding(EdgeInsets(top: 10.0, leading: 10.0,
-                                    bottom: 5.0, trailing: 10.0))
-                .foregroundColor(Color.labelTextColor)
-                .background(Color.labelBackColor)
+                .modifier(LabelTextModifier())
             Text(viewModel.stringValue)
-                .font(.body)
-                .border(Color.textBackColor)
-                .frame(maxWidth: .infinity,
-                       minHeight: 20,
-                       alignment: .topLeading)
-                .padding(EdgeInsets(top: 10.0, leading: 10.0,
-                                    bottom: 10.0, trailing: 10.0))
-                .foregroundColor(Color.textColor)
-                .background(Color.textBackColor)
+                .modifier(SingleLineTextModifier())
         }
     }
 }
