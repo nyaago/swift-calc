@@ -133,6 +133,7 @@
 		723B22BB260B880200A616FA /* calc */ = {
 			isa = PBXGroup;
 			children = (
+				72984ABE2D8081830055B8B8 /* page */,
 				72F8DED92D75ECE1004A1C2D /* viewModifier */,
 				72F8DED52D467F36004A1C2D /* Identifiable */,
 				724588CA2D11BE79007118DB /* views */,
@@ -192,6 +193,13 @@
 				724588CB2D11BEB3007118DB /* ExprInputView.swift */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		72984ABE2D8081830055B8B8 /* page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = page;
 			sourceTree = "<group>";
 		};
 		72F8DED52D467F36004A1C2D /* Identifiable */ = {

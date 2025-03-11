@@ -19,7 +19,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack{
                 // 計算結果
                 ResultView(viewModel: self.viewModel)
@@ -36,7 +36,11 @@ struct ContentView: View {
             .padding(.horizontal, 10.0)
             .toolbar {
                 toolbarContent
-            }.background(Color.black)
+            }
+            .background(Color.black)
+            .navigationTitle("Home")            // ナビゲーションタイトル定義
+            .navigationBarTitleDisplayMode(.inline)
+
         }
         .onTapGesture {
             textEditorFocused = false
@@ -46,6 +50,8 @@ struct ContentView: View {
     private var toolbarContent: some ToolbarContent  {
         ToolbarItem(placement: .primaryAction) {
             Menu {
+                NavigationLink("test1", destination: DummyTextView(viewModel: viewModel))
+                NavigationLink("test2", destination: DummyTextView(viewModel: viewModel))
             }
             label: { Label("", systemImage: "list.bullet")
             }
