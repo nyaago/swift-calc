@@ -12,6 +12,7 @@ struct ContentView: View {
     @State var editText = ""
     var viewModel = CalcModel()
     @State var exprVariables: [ExprVariable] = []
+    @State var showDummySheet: Bool = false
     @FocusState var textEditorFocused: Bool
     
     init() {
@@ -45,11 +46,17 @@ struct ContentView: View {
         .onTapGesture {
             textEditorFocused = false
         }
+        .sheet(isPresented: $showDummySheet) {
+            DummySheetView(viewModel: viewModel)
+        }
     }
     
     private var toolbarContent: some ToolbarContent  {
         ToolbarItem(placement: .primaryAction) {
             Menu {
+                Button("DummySheet") {
+                    showDummySheet.toggle()
+                 }
                 NavigationLink("test1", destination: DummyTextView(viewModel: viewModel))
                 NavigationLink("test2", destination: DummyTextView(viewModel: viewModel))
             }
