@@ -8,16 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    enum DetailedViewType: Int {
-        case polishNotation = 1
-        case exprVariableList =  2
-        case list3 = 3
-    }
     
     @State var editText = ""
-    @State var detailedViewType: DetailedViewType = .polishNotation
     var viewModel = CalcModel()
     @State var exprVariables: [ExprVariable] = []
+    @State var showDummySheet: Bool = false
     @FocusState var textEditorFocused: Bool
     
     init() {
@@ -25,52 +20,51 @@ struct ContentView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 10.0) {
+        NavigationStack {
+            VStack{
                 // 計算結果
                 ResultView(viewModel: self.viewModel)
                 // 入力
-                ExprInputView(viewModel: self.viewModel, exprVariables:$exprVariables, textEditorFocused: self.$textEditorFocused)
+                ExprInputView(viewModel: self.viewModel,
+                              exprVariables:$exprVariables,
+                              textEditorFocused: self.$textEditorFocused)
                 // 解析結果
-                DetailResultView(viewModel: self.viewModel, detailedViewType: self.detailedViewType, exprVariables: $exprVariables )
+                DetailResultView(viewModel: self.viewModel,
+                                 exprVariables: $exprVariables )
                 //deitaledResultView(viewModel: self.viewModel)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.horizontal, 10.0)
-            .padding(.bottom, 20.0)
             .toolbar {
-                itemGroup
-            }.background(Color.black)
+                toolbarContent
+            }
+            .background(Color.black)
+            .navigationTitle("Home")            // ナビゲーションタイトル定義
+            .navigationBarTitleDisplayMode(.inline)
+
         }
         .onTapGesture {
             textEditorFocused = false
         }
-    }
-    
-    private var itemGroup: some ToolbarContent {
-        ToolbarItemGroup(placement: .bottomBar) {
-            Spacer()
-            Button(action: {
-                self.detailedViewType = .polishNotation
-            }) {
-                Image(systemName: "doc.text")
-            }
-            Spacer()
-            Button(action: {
-                self.detailedViewType = .exprVariableList
-            }) {
-                Image(systemName: "list.bullet.rectangle")
-            }
-            Spacer()
-            Button(action: {
-                self.detailedViewType = .list3
-            }) {
-                Image(systemName: "info")
-            }
-            Spacer()
+        .sheet(isPresented: $showDummySheet) {
+            DummySheetView(viewModel: viewModel)
         }
     }
-  
-   
+    
+    private var toolbarContent: some ToolbarContent  {
+        ToolbarItem(placement: .primaryAction) {
+            Menu {
+                Button("DummySheet") {
+                    showDummySheet.toggle()
+                 }
+                NavigationLink("test1", destination: DummyTextView(viewModel: viewModel))
+                NavigationLink("test2", destination: DummyTextView(viewModel: viewModel))
+            }
+            label: { Label("", systemImage: "list.bullet")
+            }
+        }
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

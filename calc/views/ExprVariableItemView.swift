@@ -12,6 +12,11 @@ struct ExprVariableItemView: View {
     
     var body: some View {
         Text(exprVariable.listItemText)
+            .font(.body)
+            .listRowBackground(Color.textBackColor)
+            .listRowSeparatorTint(Color.listRowSeparatorColor)
+            .padding(EdgeInsets(top: 5, leading: 0,
+                                bottom: 0, trailing: 0))
     }
 }
 
@@ -21,14 +26,9 @@ struct ExprVariablesView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("変数一覧")
-                .font(.title)
-                .padding(EdgeInsets(top: 10.0, leading: 10.0,
-                                    bottom: 5.0, trailing: 10.0))
-                .foregroundColor(Color.labelTextColor)
-                .background(Color.labelBackColor)
             List(exprVariables) { exprVariable in
                 ExprVariableItemView(exprVariable: exprVariable)
+                    .modifier(ListViewModifier())
             }
         }
     }
