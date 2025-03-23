@@ -21,7 +21,7 @@
 		72984AC02D8082B40055B8B8 /* DummySheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72984ABF2D8082AD0055B8B8 /* DummySheetView.swift */; };
 		729DA9882709FC380029B74B /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729DA9872709FC380029B74B /* Node.swift */; };
 		729DA98A270DDF7F0029B74B /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729DA989270DDF7F0029B74B /* Parser.swift */; };
-		72A56DD126B679B1005B7DBA /* color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A56DD026B679B1005B7DBA /* color.swift */; };
+		72A56DD126B679B1005B7DBA /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A56DD026B679B1005B7DBA /* Color.swift */; };
 		72B1B05E2D8FD884005858E3 /* LabelTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B1B0592D8FD884005858E3 /* LabelTextModifier.swift */; };
 		72B1B05F2D8FD884005858E3 /* ListViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B1B05A2D8FD884005858E3 /* ListViewModifier.swift */; };
 		72B1B0602D8FD884005858E3 /* MultilineTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B1B05B2D8FD884005858E3 /* MultilineTextModifier.swift */; };
@@ -75,7 +75,7 @@
 		72984ABF2D8082AD0055B8B8 /* DummySheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySheetView.swift; sourceTree = "<group>"; };
 		729DA9872709FC380029B74B /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		729DA989270DDF7F0029B74B /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
-		72A56DD026B679B1005B7DBA /* color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = color.swift; sourceTree = "<group>"; };
+		72A56DD026B679B1005B7DBA /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		72B1B0592D8FD884005858E3 /* LabelTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextModifier.swift; sourceTree = "<group>"; };
 		72B1B05A2D8FD884005858E3 /* ListViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModifier.swift; sourceTree = "<group>"; };
 		72B1B05B2D8FD884005858E3 /* MultilineTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextModifier.swift; sourceTree = "<group>"; };
@@ -150,8 +150,6 @@
 				723B22C0260B880200A616FA /* Assets.xcassets */,
 				723B22C5260B880200A616FA /* Info.plist */,
 				723B22C2260B880200A616FA /* Preview Content */,
-				72A56DD026B679B1005B7DBA /* color.swift */,
-				723B22BE260B880200A616FA /* ContentView.swift */,
 			);
 			path = calc;
 			sourceTree = "<group>";
@@ -190,6 +188,7 @@
 				72C132462D1B1746006B26FD /* ResultView.swift */,
 				72C132442D1B0A4E006B26FD /* PolishNotationView.swift */,
 				724588CB2D11BEB3007118DB /* ExprInputView.swift */,
+				72A56DD026B679B1005B7DBA /* Color.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -197,6 +196,7 @@
 		72984ABE2D8081830055B8B8 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				723B22BE260B880200A616FA /* ContentView.swift */,
 				72984ABF2D8082AD0055B8B8 /* DummySheetView.swift */,
 				72F8DEC52D3CA805004A1C2D /* DummyTextView.swift */,
 			);
@@ -387,7 +387,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72984AC02D8082B40055B8B8 /* DummySheetView.swift in Sources */,
-				72A56DD126B679B1005B7DBA /* color.swift in Sources */,
+				72A56DD126B679B1005B7DBA /* Color.swift in Sources */,
 				723B22BF260B880200A616FA /* ContentView.swift in Sources */,
 				72C132472D1B174D006B26FD /* ResultView.swift in Sources */,
 				721542A626DD18F400E5986C /* CalcModel.swift in Sources */,
