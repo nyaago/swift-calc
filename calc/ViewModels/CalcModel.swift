@@ -69,7 +69,7 @@ import Observation
             return ""
         }
         
-        return parser.nodesDescription()
+        return parser.polishNotationString()
     }
 
     func lexerDescription() -> String {

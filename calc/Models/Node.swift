@@ -186,10 +186,26 @@ class RootNode: Node {
         get {
             return _sentences
         }
+        set {
+            self._sentences = newValue
+        }
     }
     
     func appendSentence(sentenceNode: SentenceNode) {
         _sentences.append(sentenceNode)
+    }
+    
+    public func polishNotationDescription() -> String {
+        let traverser = Traverser(rootNode: self)
+        let descriptions: [String] = traverser.map(
+        closer: {node in
+            return node.desctiontionWhenNodeStart
+        },
+        closerWhenReturned: {node in
+            return node.desctiontionWhenNodeEnd
+        })
+        let descString = descriptions.joined(separator: "")
+        return descString
     }
 }
 
@@ -526,5 +542,18 @@ class SentenceNode: Node {
     
     override var description: String {
         return ""
+    }
+    
+    var polishNotationString: String {
+        let traverser = Traverser(rootNode: self)
+        let strings: [String] = traverser.map(
+        closer: {node in
+            return node.desctiontionWhenNodeStart
+        },
+        closerWhenReturned: {node in
+            return node.desctiontionWhenNodeEnd
+        })
+        let string = strings.joined(separator: "")
+        return string
     }
 }
