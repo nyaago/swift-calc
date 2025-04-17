@@ -13,7 +13,9 @@ import Observation
     var expr: String?
     var stringValue: String = ""
     var polishNotation: String = ""
-
+    var exprVariables: [ExprVariable] = []
+    var polishNotationExpr: [PolishNotationExpr] = []
+    
     @ObservationIgnored private var parser: Parser?
     @ObservationIgnored private var lexer: Lexer?
     private var currentValue: NumericWrapper?
@@ -51,6 +53,8 @@ import Observation
             self.stringValue = rootNode.value.stringValue
         }
         self.polishNotation = buildPolishNotationString()
+        self.exprVariables = buildExprVariables()
+        self.polishNotationExpr = buildPolishNotationExprs()
         return self.currentValue
     }
     
@@ -80,6 +84,16 @@ import Observation
         
         return parser.polishNotationString()
     }
+    
+    private func buildExprVariables() -> [ExprVariable] {
+        guard let symbolTable = symbolTable else {
+            return []
+        }
+        return symbolTable.asArray.map { symbolElement in
+            ExprVariable(name: symbolElement.name, value: symbolElement.value)
+        }
+    }
+
 
     func lexerDescription() -> String {
         guard let curLexer = self.lexer else {

@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @State var editText = ""
-    var viewModel = CalcModel()
+    @State var viewModel = CalcModel()
     @State var exprVariables: [ExprVariable] = []
     @State var polishNotationExprs: [PolishNotationExpr] = []
     @State var showDummySheet: Bool = false
@@ -24,16 +24,12 @@ struct ContentView: View {
         NavigationStack {
             VStack{
                 // 計算結果
-                ResultView(viewModel: self.viewModel)
+                ResultView(viewModel: self.$viewModel)
                 // 入力
-                ExprInputView(viewModel: self.viewModel,
-                              exprVariables:$exprVariables,
-                              polishNotationExpr: $polishNotationExprs,
+                ExprInputView(viewModel: self.$viewModel,
                               textEditorFocused: self.$textEditorFocused)
                 // 解析結果
-                DetailResultView(viewModel: self.viewModel,
-                                 exprVariables: $exprVariables,
-                                 polishNotationExprs: $polishNotationExprs)
+                DetailResultView(viewModel: self.$viewModel)
                 //deitaledResultView(viewModel: self.viewModel)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

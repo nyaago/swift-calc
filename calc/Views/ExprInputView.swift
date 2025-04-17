@@ -9,9 +9,7 @@ import SwiftUI
 
 struct ExprInputView: View {
     @State var editText = ""
-    var viewModel: CalcModel
-    @Binding var exprVariables: [ExprVariable]
-    @Binding var polishNotationExpr: [PolishNotationExpr]
+    @Binding var viewModel: CalcModel
     @FocusState.Binding var textEditorFocused: Bool
 
     var body: some View {
@@ -32,9 +30,6 @@ struct ExprInputView: View {
                 }.onChange(of: self.editText) { oldText, newText in
                     viewModel.expr = newText
                     _ = viewModel.calc()
-                    self.exprVariables = buildExprVariables()
-                    self.polishNotationExpr = viewModel.buildPolishNotationExprs()
-                    // exprVariables =
                 }
         }
         .onTapGesture {
@@ -52,12 +47,9 @@ struct ExprInputView: View {
 }
 
  #Preview {
-     @Previewable @State var exprVariables: [ExprVariable] = []
-     @Previewable @State var polishNotationExpr: [PolishNotationExpr] = []
+     @Previewable @State var calcModel: CalcModel = CalcModel()
      @FocusState var focused: Bool
-     ExprInputView(viewModel: CalcModel(),
-                   exprVariables:$exprVariables,
-                   polishNotationExpr:$polishNotationExpr,
+     ExprInputView(viewModel: $calcModel,
                    textEditorFocused: $focused)
          .preferredColorScheme(.dark)
  }

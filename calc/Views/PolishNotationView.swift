@@ -28,12 +28,11 @@ struct PolishNotationItemView: View {
 
 
 struct PolishNotationView: View {
-    var viewModel: CalcModel
-    @Binding var polishNotationExprs: [PolishNotationExpr]
+    @Binding var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List(polishNotationExprs) { polishNotationExpr in
+            List($viewModel.polishNotationExpr) { $polishNotationExpr in
                 PolishNotationItemView(polishNotationExpr: polishNotationExpr)
                     .modifier(ListViewModifier())
             }
@@ -42,9 +41,8 @@ struct PolishNotationView: View {
 }
 
 #Preview {
-    @Previewable @State var polishNotationExprs: [PolishNotationExpr] = []
-    PolishNotationView(viewModel: CalcModel(),
-                       polishNotationExprs: $polishNotationExprs)
+    @Previewable @State var viewModel: CalcModel = CalcModel()
+    PolishNotationView(viewModel: $viewModel)
         .preferredColorScheme(.dark)
 }
 
