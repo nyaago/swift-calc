@@ -11,6 +11,7 @@ struct ExprInputView: View {
     @State var editText = ""
     var viewModel: CalcModel
     @Binding var exprVariables: [ExprVariable]
+    @Binding var polishNotationExpr: [PolishNotationExpr]
     @FocusState.Binding var textEditorFocused: Bool
 
     var body: some View {
@@ -32,6 +33,7 @@ struct ExprInputView: View {
                     viewModel.expr = newText
                     _ = viewModel.calc()
                     self.exprVariables = buildExprVariables()
+                    self.polishNotationExpr = viewModel.buildPolishNotationExprs()
                     // exprVariables =
                 }
         }
@@ -47,12 +49,15 @@ struct ExprInputView: View {
             ExprVariable(name: symbolElement.name, value: symbolElement.value)
         }
     }
-
 }
 
  #Preview {
      @Previewable @State var exprVariables: [ExprVariable] = []
+     @Previewable @State var polishNotationExpr: [PolishNotationExpr] = []
      @FocusState var focused: Bool
-     ExprInputView(viewModel: CalcModel(), exprVariables:$exprVariables, textEditorFocused: $focused)
+     ExprInputView(viewModel: CalcModel(),
+                   exprVariables:$exprVariables,
+                   polishNotationExpr:$polishNotationExpr,
+                   textEditorFocused: $focused)
          .preferredColorScheme(.dark)
  }

@@ -19,6 +19,7 @@ struct DetailResultView: View {
 
     @State var detailedViewType: DetailedViewType = .polishNotation
     @Binding var exprVariables: [ExprVariable]
+    @Binding var polishNotationExprs: [PolishNotationExpr]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -45,7 +46,7 @@ struct DetailResultView: View {
     private func buildDeitaledResultView(viewModel: CalcModel) -> any View {
         switch ( self.detailedViewType ) {
         case .polishNotation:
-            return PolishNotationView(viewModel: viewModel)
+            return PolishNotationView(viewModel: viewModel, polishNotationExprs: $polishNotationExprs)
         case .exprVariableList:
             return ExprVariablesView(viewModel: viewModel, exprVariables: $exprVariables)
         }

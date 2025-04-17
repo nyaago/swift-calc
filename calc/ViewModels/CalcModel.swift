@@ -50,13 +50,13 @@ import Observation
             self.currentValue = rootNode.value
             self.stringValue = rootNode.value.stringValue
         }
-        self.polishNotation = buildPolishNotation()
+        self.polishNotation = buildPolishNotationString()
         return self.currentValue
     }
     
     var description: String {
         get {
-            return buildPolishNotation()
+            return buildPolishNotationString()
         }
     }
     
@@ -64,7 +64,16 @@ import Observation
         return parser?.symbolTable
     }
     
-    func buildPolishNotation() -> String {
+    func buildPolishNotationExprs() -> [PolishNotationExpr] {
+        guard let parser = self.parser else {
+            return []
+        }
+        return parser.sentences.map { sentence in
+            PolishNotationExpr(expr: sentence.polishNotationString, value: sentence.value)
+        }
+    }
+    
+    func buildPolishNotationString() -> String {
         guard let parser = self.parser else {
             return ""
         }

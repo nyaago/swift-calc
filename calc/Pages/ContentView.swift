@@ -12,6 +12,7 @@ struct ContentView: View {
     @State var editText = ""
     var viewModel = CalcModel()
     @State var exprVariables: [ExprVariable] = []
+    @State var polishNotationExprs: [PolishNotationExpr] = []
     @State var showDummySheet: Bool = false
     @FocusState var textEditorFocused: Bool
     
@@ -27,10 +28,12 @@ struct ContentView: View {
                 // 入力
                 ExprInputView(viewModel: self.viewModel,
                               exprVariables:$exprVariables,
+                              polishNotationExpr: $polishNotationExprs,
                               textEditorFocused: self.$textEditorFocused)
                 // 解析結果
                 DetailResultView(viewModel: self.viewModel,
-                                 exprVariables: $exprVariables )
+                                 exprVariables: $exprVariables,
+                                 polishNotationExprs: $polishNotationExprs)
                 //deitaledResultView(viewModel: self.viewModel)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

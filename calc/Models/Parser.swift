@@ -87,7 +87,22 @@ class Parser {
         self.lexer = lexer
         self._symbolTable = SymbolTable()
     }
-    
+
+    public var sentences: [SentenceNode] {
+        guard let rootNode = self.rootNode else {
+            return []
+        }
+        let result:  [SentenceNode] = rootNode.sentences.reduce([]) { array, sentenceNode in
+            if sentenceNode.rhs != nil || sentenceNode.lhs != nil  {
+                array + [sentenceNode]
+            }
+            else {
+                array
+            }
+        }
+        return result
+    }
+
    
     public func polishNotationString() -> String {
         guard let rootNode = self.rootNode else {
