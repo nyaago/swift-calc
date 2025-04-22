@@ -11,8 +11,6 @@ struct ContentView: View {
     
     @State var editText = ""
     @State var viewModel = CalcModel()
-    @State var exprVariables: [ExprVariable] = []
-    @State var polishNotationExprs: [PolishNotationExpr] = []
     @State var showDummySheet: Bool = false
     @FocusState var textEditorFocused: Bool
     

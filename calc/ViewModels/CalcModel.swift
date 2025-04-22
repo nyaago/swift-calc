@@ -11,19 +11,28 @@ import Observation
 @Observable class CalcModel: CustomStringConvertible {
     
     var expr: String?
-    var stringValue: String = ""
-    var polishNotation: String = ""
     var exprVariables: [ExprVariable] = []
     var polishNotationExpr: [PolishNotationExpr] = []
-    
+    var currentValue: NumericWrapper?
+    var error: (any Error)?
+
     @ObservationIgnored private var parser: Parser?
     @ObservationIgnored private var lexer: Lexer?
-    private var currentValue: NumericWrapper?
+    
+    var stringValue: String {
+        get {
+            if let _ = self.error {
+                return ""
+            }
+            return currentValue?.stringValue ?? ""
+        }
+    }
     
     init() {
     }
    
     func calc()  -> NumericWrapper? {
+        self.error = nil
         guard let newExpr = self.expr else {
             return NumericWrapper(value: 0.0)
         }
@@ -32,11 +41,13 @@ import Observation
             let _ = try parser!.parse()
         }
         catch let error as ParseError {
-            self.stringValue = error.errorDescription ?? "error"
+            self.error = error
+            //self.stringValue = error.errorDescription ?? "error"
             return NumericWrapper(value: 0.0)
         }
-        catch {
-            self.stringValue = error.localizedDescription
+        catch let error  {
+            self.error = error
+            //self.stringValue = error.localizedDescription
             return NumericWrapper(value: 0.0)
         }
         
@@ -50,20 +61,13 @@ import Observation
                 return NumericWrapper(value: 0.0)
             }
             self.currentValue = rootNode.value
-            self.stringValue = rootNode.value.stringValue
         }
-        self.polishNotation = buildPolishNotationString()
         self.exprVariables = buildExprVariables()
         self.polishNotationExpr = buildPolishNotationExprs()
         return self.currentValue
     }
     
-    var description: String {
-        get {
-            return buildPolishNotationString()
-        }
-    }
-    
+   
     var symbolTable: SymbolTable? {
         return parser?.symbolTable
     }
@@ -94,15 +98,20 @@ import Observation
         }
     }
 
+    @ObservationIgnored var description: String {
+        get {
+            return buildPolishNotationString()
+        }
+    }
 
-    func lexerDescription() -> String {
+    @ObservationIgnored var  lexerDescription:  String {
         guard let curLexer = self.lexer else {
             return "Experation not input"
         }
         return curLexer.description
     }
 
-    var tokens : [any Token]? {
+    @ObservationIgnored var tokens : [any Token]? {
         get  {
             guard let curLexer = self.lexer else {
                 return []
