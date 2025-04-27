@@ -88,10 +88,10 @@ struct NumericWrapper: SignedNumeric, Comparable, CustomStringConvertible {
     var stringValue: String {
         get {
             if isNotValid {
-                guard let errorType = self.errotType else {
+                guard let _ = self.errotType else {
                     return "?"
                 }
-                return errorType.description
+                return "?"
             }
             if valueType == .Double {
                 return String(value)
