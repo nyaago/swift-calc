@@ -87,33 +87,37 @@ class Parser {
         self.lexer = lexer
         self._symbolTable = SymbolTable()
     }
-    
+
+    public var sentences: [SentenceNode] {
+        guard let rootNode = self.rootNode else {
+            return []
+        }
+        let result:  [SentenceNode] = rootNode.sentences.reduce([]) { array, sentenceNode in
+            if sentenceNode.rhs != nil || sentenceNode.lhs != nil  {
+                array + [sentenceNode]
+            }
+            else {
+                array
+            }
+        }
+        return result
+    }
+
    
-    public func nodesDescription() -> String {
+    public func polishNotationString() -> String {
         guard let rootNode = self.rootNode else {
             return ""
         }
         let desc = rootNode.sentences.reduce("") { result, sentenceNode in
-            if sentenceNode.lhs == nil && sentenceNode.rhs == nil { // 空行
-                return result
-            }
-            let traverser = Traverser(rootNode: sentenceNode)
-            let descriptions: [String] = traverser.map(
-            closer: {node in
-                return node.desctiontionWhenNodeStart
-            },
-            closerWhenReturned: {node in
-                return node.desctiontionWhenNodeEnd
-            })
-            let descString = descriptions.joined(separator: "")
+            let string = sentenceNode.polishNotationString
             if result.count == 0 {
-                return descString
+                return string
             }
-            return "\(result) \n \(descString)"
+            return "\(result)\n\(string)"
         }
         return desc
     }
-    
+        
     private func nodeDescription(node: Node) -> String {
         return ""
     }
@@ -137,6 +141,7 @@ class Parser {
         self._rootNode = RootNode(token: nil)
         try parseWithTokens()
         try _symbolTable = semanticAnalize()
+        self.rootNode!.sentences = self.compactSentences(nodes: self.rootNode!.sentences)
         return self.rootNode!
     }
     
@@ -304,4 +309,15 @@ class Parser {
             return newNode
         }
     }
+    // Node配列中から要素が空のものを省いたものを返す
+    public func compactSentences(nodes: [SentenceNode]) -> [SentenceNode] {
+        let nodes: [SentenceNode] = nodes.reduce([]) { result, node in
+            if node.lhs == nil && node.rhs == nil { // 空行
+                return result
+            }
+            return result + [node]
+        }
+        return nodes
+    }
+
 }

@@ -11,17 +11,28 @@ import Observation
 @Observable class CalcModel: CustomStringConvertible {
     
     var expr: String?
-    var stringValue: String = ""
-    var polishNotation: String = ""
+    var exprVariables: [ExprVariable] = []
+    var polishNotationExpr: [PolishNotationExpr] = []
+    var currentValue: NumericWrapper?
+    var error: (any Error)?
 
     @ObservationIgnored private var parser: Parser?
     @ObservationIgnored private var lexer: Lexer?
-    private var currentValue: NumericWrapper?
+    
+    var stringValue: String {
+        get {
+            if let _ = self.error {
+                return ""
+            }
+            return currentValue?.stringValue ?? ""
+        }
+    }
     
     init() {
     }
    
     func calc()  -> NumericWrapper? {
+        self.error = nil
         guard let newExpr = self.expr else {
             return NumericWrapper(value: 0.0)
         }
@@ -30,11 +41,13 @@ import Observation
             let _ = try parser!.parse()
         }
         catch let error as ParseError {
-            self.stringValue = error.errorDescription ?? "error"
+            self.error = error
+            //self.stringValue = error.errorDescription ?? "error"
             return NumericWrapper(value: 0.0)
         }
-        catch {
-            self.stringValue = error.localizedDescription
+        catch let error  {
+            self.error = error
+            //self.stringValue = error.localizedDescription
             return NumericWrapper(value: 0.0)
         }
         
@@ -48,38 +61,57 @@ import Observation
                 return NumericWrapper(value: 0.0)
             }
             self.currentValue = rootNode.value
-            self.stringValue = rootNode.value.stringValue
         }
-        self.polishNotation = buildPolishNotation()
+        self.exprVariables = buildExprVariables()
+        self.polishNotationExpr = buildPolishNotationExprs()
         return self.currentValue
     }
     
-    var description: String {
-        get {
-            return buildPolishNotation()
-        }
-    }
-    
+   
     var symbolTable: SymbolTable? {
         return parser?.symbolTable
     }
     
-    func buildPolishNotation() -> String {
+    func buildPolishNotationExprs() -> [PolishNotationExpr] {
+        guard let parser = self.parser else {
+            return []
+        }
+        return parser.sentences.map { sentence in
+            PolishNotationExpr(expr: sentence.polishNotationString, value: sentence.value)
+        }
+    }
+    
+    func buildPolishNotationString() -> String {
         guard let parser = self.parser else {
             return ""
         }
         
-        return parser.nodesDescription()
+        return parser.polishNotationString()
+    }
+    
+    private func buildExprVariables() -> [ExprVariable] {
+        guard let symbolTable = symbolTable else {
+            return []
+        }
+        return symbolTable.asArray.map { symbolElement in
+            ExprVariable(name: symbolElement.name, value: symbolElement.value)
+        }
     }
 
-    func lexerDescription() -> String {
+    @ObservationIgnored var description: String {
+        get {
+            return buildPolishNotationString()
+        }
+    }
+
+    @ObservationIgnored var  lexerDescription:  String {
         guard let curLexer = self.lexer else {
             return "Experation not input"
         }
         return curLexer.description
     }
 
-    var tokens : [any Token]? {
+    @ObservationIgnored var tokens : [any Token]? {
         get  {
             guard let curLexer = self.lexer else {
                 return []

@@ -21,6 +21,8 @@
 		72984AC02D8082B40055B8B8 /* DummySheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72984ABF2D8082AD0055B8B8 /* DummySheetView.swift */; };
 		729DA9882709FC380029B74B /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729DA9872709FC380029B74B /* Node.swift */; };
 		729DA98A270DDF7F0029B74B /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729DA989270DDF7F0029B74B /* Parser.swift */; };
+		72A3FBC82DA6AB2800BC9CE3 /* PolishNotationExpr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A3FBC72DA6AB1000BC9CE3 /* PolishNotationExpr.swift */; };
+		72A3FBCA2DA6AF0600BC9CE3 /* ListItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A3FBC92DA6AEF900BC9CE3 /* ListItemViewModifier.swift */; };
 		72A56DD126B679B1005B7DBA /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A56DD026B679B1005B7DBA /* Color.swift */; };
 		72B1B05E2D8FD884005858E3 /* LabelTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B1B0592D8FD884005858E3 /* LabelTextModifier.swift */; };
 		72B1B05F2D8FD884005858E3 /* ListViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B1B05A2D8FD884005858E3 /* ListViewModifier.swift */; };
@@ -75,6 +77,8 @@
 		72984ABF2D8082AD0055B8B8 /* DummySheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySheetView.swift; sourceTree = "<group>"; };
 		729DA9872709FC380029B74B /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		729DA989270DDF7F0029B74B /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		72A3FBC72DA6AB1000BC9CE3 /* PolishNotationExpr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolishNotationExpr.swift; sourceTree = "<group>"; };
+		72A3FBC92DA6AEF900BC9CE3 /* ListItemViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemViewModifier.swift; sourceTree = "<group>"; };
 		72A56DD026B679B1005B7DBA /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		72B1B0592D8FD884005858E3 /* LabelTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextModifier.swift; sourceTree = "<group>"; };
 		72B1B05A2D8FD884005858E3 /* ListViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModifier.swift; sourceTree = "<group>"; };
@@ -206,6 +210,7 @@
 		72B1B05D2D8FD884005858E3 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
+				72A3FBC92DA6AEF900BC9CE3 /* ListItemViewModifier.swift */,
 				72B1B0592D8FD884005858E3 /* LabelTextModifier.swift */,
 				72B1B05A2D8FD884005858E3 /* ListViewModifier.swift */,
 				72B1B05B2D8FD884005858E3 /* MultilineTextModifier.swift */,
@@ -247,6 +252,7 @@
 		72F8DED52D467F36004A1C2D /* Identifiables */ = {
 			isa = PBXGroup;
 			children = (
+				72A3FBC72DA6AB1000BC9CE3 /* PolishNotationExpr.swift */,
 				72F8DED42D467F36004A1C2D /* ExprVariable.swift */,
 			);
 			path = Identifiables;
@@ -388,6 +394,7 @@
 			files = (
 				72984AC02D8082B40055B8B8 /* DummySheetView.swift in Sources */,
 				72A56DD126B679B1005B7DBA /* Color.swift in Sources */,
+				72A3FBC82DA6AB2800BC9CE3 /* PolishNotationExpr.swift in Sources */,
 				723B22BF260B880200A616FA /* ContentView.swift in Sources */,
 				72C132472D1B174D006B26FD /* ResultView.swift in Sources */,
 				721542A626DD18F400E5986C /* CalcModel.swift in Sources */,
@@ -395,6 +402,7 @@
 				724588CC2D11BEB3007118DB /* ExprInputView.swift in Sources */,
 				72F8DEC62D3CA80D004A1C2D /* DummyTextView.swift in Sources */,
 				72FD57AB26E116D8009F77D5 /* Scanner.swift in Sources */,
+				72A3FBCA2DA6AF0600BC9CE3 /* ListItemViewModifier.swift in Sources */,
 				72F8DED82D468989004A1C2D /* DetailResultView.swift in Sources */,
 				729DA98A270DDF7F0029B74B /* Parser.swift in Sources */,
 				72FC37702CC4DED20024BDDB /* SymbolTable.swift in Sources */,

@@ -21,12 +21,11 @@ struct ExprVariableItemView: View {
 }
 
 struct ExprVariablesView: View {
-    var viewModel: CalcModel
-    @Binding var exprVariables: [ExprVariable]
+    @Binding var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List(exprVariables) { exprVariable in
+            List($viewModel.exprVariables) { $exprVariable in
                 ExprVariableItemView(exprVariable: exprVariable)
                     .modifier(ListViewModifier())
             }
