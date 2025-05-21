@@ -77,9 +77,6 @@ class Node: CustomStringConvertible, Equatable {
             }
             return type(of: self).priority
         }
-        set(newValue) {
-            self.newPriority = newValue
-        }
     }
     var canHasRhs: Bool {
         get {
@@ -218,7 +215,6 @@ class IntegerNode: Node {
     override func highPriorityWith(other: Node) -> Bool {
         return self.priority > other.priority
     }
-
 }
 
 class NumericNode: Node {
@@ -264,9 +260,6 @@ class OperatorNode: Node {
             default:
                 return type(of: self).priority
             }
-        }
-        set(newValue) {
-            self.newPriority = newValue
         }
     }
     
@@ -358,9 +351,6 @@ class BraceNode: Node {
                 return RootNode.priority + 10
             }
         }
-        set(newValue) {
-            self.newPriority = newValue
-        }
     }
 
     override var leftBrace: Bool {
@@ -438,7 +428,6 @@ class WordNode: Node {
         }
     }
 
-    
     private var _value: NumericWrapper?
     override var value: NumericWrapper {
         get {
@@ -512,9 +501,6 @@ class SentenceNode: Node {
             else {
                 return Self.priority
             }
-        }
-        set(newValue) {
-            self.newPriority = newValue
         }
     }
     
