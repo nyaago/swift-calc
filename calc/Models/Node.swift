@@ -29,7 +29,6 @@ class NodeFactory {
     }
 }
 
-
 class Node: CustomStringConvertible, Equatable {
     let token: (any Token)?
     public var lhs: Node?
@@ -55,6 +54,7 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
     
+    // 結合度の高さ
     class var priority: Int {
         get {
             return 0
@@ -70,38 +70,44 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
 
+    // 結合度の高さ
     var priority: Int {
         get {
-            if let returnPriority = newPriority {
-                return returnPriority
-            }
             return type(of: self).priority
         }
     }
+    
+    
+    // 右の子ノードを持つことができるかどうか。
+    // 文や = は 右の子ノードを持つことができない
     var canHasRhs: Bool {
         get {
             return true
         }
     }
     
+    // 代入演算子 ( = )か?
     var isAssignmentOperator:Bool {
         get {
             return false
         }
     }
     
+    // brace で囲まれた式の起点であるかを判定する
     var leftBrace: Bool {
         get {
             return false
         }
     }
 
+    // brace で囲まれた式の終点であるかを判定する
     var rightBrace: Bool {
         get {
             return false
         }
     }
     
+    // 演算子か?
     var isOperatable: Bool {
         get {
             return false
@@ -123,6 +129,7 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
 
+    // 代入の左側 (代入される側)であるか?
     var isLeftExpression: Bool {
         get {
             return false
@@ -159,7 +166,6 @@ class RootNode: Node {
             return false
         }
     }
-    
     
     override var value: NumericWrapper {
         get {
@@ -322,17 +328,6 @@ class OperatorNode: Node {
             
         }
     }
-    
-    /*
-    override func highPriorityWith(other: Node) -> Bool {
-        if self.isAssignmentOperator && other.isSymbol && other.parent is SentenceNode {
-            return true
-        }
-        else {
-            return self.priority > other.priority
-        }
-    }
-     */
 }
 
 class BraceNode: Node {
@@ -342,13 +337,17 @@ class BraceNode: Node {
         }
     }
 
+    // 定義したけど,参照されないはず
+    // isLeftBrace と isRightBrace で判定しているため
     override var priority: Int {
         get {
-            if self.lhs == nil && self.rhs == nil && self.parent == nil  {
+            if self.lhs == nil && self.rhs == nil && self.parent == nil {
+                // 新規に挿入されるケース。優先度が低い = 他のノードの親になる
                 return type(of: self).priority
             }
             else {
-                return RootNode.priority + 10
+                // Brace 内の要素を挿入する場合、挿入される要素より結合度が低い。
+                return SentenceNode.priority + 5
             }
         }
     }
@@ -397,22 +396,6 @@ class WordNode: Node {
         }
     }
     
-    /*
-    override var priority: Int {
-        get {
-            if isLeftExpression {
-                return SentenceNode.priority + 1
-            }
-            else {
-                return Self.priority
-            }
-        }
-        set {
-            
-        }
-    }
-     */
-    
     override var isSymbol: Bool {
         get {
             return true
@@ -459,8 +442,6 @@ class WordNode: Node {
         }
     }
     
-    
-    
     override func highPriorityWith(other: Node) -> Bool {
         return self.priority > other.priority
     }
@@ -475,7 +456,6 @@ class SentenceNode: Node {
             return RootNode.priority + 5
         }
     }
-   
     
     override var value: NumericWrapper {
         get {
