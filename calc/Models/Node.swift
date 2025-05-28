@@ -450,7 +450,6 @@ class WordNode: Node {
 
 class SentenceNode: Node {
     
-    
     override class var priority: Int {
         get {
             return RootNode.priority + 5

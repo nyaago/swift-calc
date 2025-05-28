@@ -43,6 +43,7 @@ class SymbolTable: CustomStringConvertible {
         return element.value.isValid
     }
     
+    @discardableResult
     func assignSymbolValue(symbol: String, value: NumericWrapper) -> SymbolElement {
         let element = SymbolElement(name: symbol, value: value, seqNumber: self.seqNumber)
         seqNumber += 1
@@ -50,6 +51,7 @@ class SymbolTable: CustomStringConvertible {
         return table[symbol]!
     }
  
+    @discardableResult
     func appendSymbol(symbol: String) -> SymbolElement {
         let value = NumericWrapper(value:  Double.nan)
         return assignSymbolValue(symbol: symbol, value: value)
