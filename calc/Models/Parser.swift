@@ -42,7 +42,6 @@ extension Node {
             return ""
         }
     }
-
 }
 
 class Parser {
@@ -167,7 +166,7 @@ class Parser {
     
     private func parseWithToken(token: any Token) {
         let node = NodeFactory.createNode(token: token)
-        _ = insertNode(newNode: node)
+        insertNode(newNode: node)
     }
     
     private func semanticAnalize() throws -> SymbolTable {
@@ -188,17 +187,16 @@ class Parser {
              */
             
             traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
-                _ = adoptSymbolValues(node: node, symbolTable: result)
+                adoptSymbolValues(node: node, symbolTable: result)
                 
                 return
             } )
             traverser.forEachWithCloser(result: &symbolTable, closer: { node, result in
-                _ = insertOrUpdateSymbol(node: node, symbolTable: result)
+                insertOrUpdateSymbol(node: node, symbolTable: result)
                 
 
                 return
             } )
-
         }
 
         if symbolTable.invalidSymbols().count > 0 {
@@ -207,46 +205,56 @@ class Parser {
         return symbolTable
     }
     
+    // Symbol　の Node であれば Symbol Table への追加を行う。
+    // また、子要素に式があれば値を設定
+    @discardableResult
     private func insertOrUpdateSymbol(node: Node, symbolTable: SymbolTable) -> SymbolTable {
-        if node.isSymbol {
-            guard let token = node.token else {
-                return symbolTable
-            }
-            if !symbolTable.contains(symbol: token.string) {
-                _ = symbolTable.appendSymbol(symbol: token.string)
-            }
-            if node.isLeftExpression {
-                if let parent = node.parent  {
-                    node.value = parent.value
-                }
-                if node.value.isValid {
-                    _ = symbolTable.assignSymbolValue(symbol: token.string, value:node.value)
-                }
-                else {
-                    _ = symbolTable.assignSymbolValue(symbol: token.string, value:NumericWrapper(value: Double.nan))
-                }
+        if !node.isSymbol {
+            return symbolTable
+        }
+        guard let token = node.token else {
+            return symbolTable
+        }
+        if !symbolTable.contains(symbol: token.string) {
+            symbolTable.appendSymbol(symbol: token.string)
+        }
+        if node.isLeftExpression {
+            if let parent = node.parent  {
+                node.value = parent.value
             }
             if node.value.isValid {
-                if !symbolTable.containsValue(symbol: token.string) {
-                    _ = symbolTable.assignSymbolValue(symbol: token.string, value:node.value)
-                }
+                symbolTable.assignSymbolValue(symbol: token.string, value:node.value)
+            }
+            else {
+                symbolTable.assignSymbolValue(symbol: token.string, value:NumericWrapper(value: Double.nan))
+            }
+        }
+        if node.value.isValid {
+            if !symbolTable.containsValue(symbol: token.string) {
+                symbolTable.assignSymbolValue(symbol: token.string, value:node.value)
             }
         }
         return symbolTable
     }
     
+    // Symbol ノードにシンボルテーブルの値を適用する
+    @discardableResult
     private func adoptSymbolValues(node: Node, symbolTable: SymbolTable) -> SymbolTable {
-        if node.isSymbol {
-            guard let token = node.token else {
-                return symbolTable
-            }
-            if let symbolElement = symbolTable[token.string] {
-                let symbolValue = symbolElement.value
-                node.value = symbolValue
-            }
+        if !node.isSymbol {
+            return symbolTable
+        }
+        guard let token = node.token else {
+            return symbolTable
+        }
+        if let symbolElement = symbolTable[token.string] {
+            let symbolValue = symbolElement.value
+            node.value = symbolValue
         }
         return symbolTable
     }
+    
+    // return 挿入されたNode
+    @discardableResult
     private func insertNode(newNode: Node) -> Node? {
         var intertedNode: Node?
         if newNode.rightBrace {
@@ -268,12 +276,14 @@ class Parser {
 
         return intertedNode
     }
-    
+
+    // return 挿入されたNode
+    @discardableResult
     private func insertNodeAt(newNode: Node, currentNode: Node?, parentNode: Node?) -> Node? {
         if newNode.rightBrace {
             return currentNode
         }
-        if newNode.highPriorityWith(other: currentNode!) {
+        if newNode.highPrecedenceWith(other: currentNode!) {
             if currentNode!.lhs == nil {
                 currentNode!.lhs = newNode
                 newNode.parent = currentNode

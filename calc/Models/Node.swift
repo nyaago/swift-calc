@@ -22,13 +22,12 @@ class NodeFactory {
         case TokenKind.rightBracket:
             return RightBraceNode(token: token)
         case .word:
-            return WordNode(token: token)
+            return SymbolNode(token: token)
         case .expressionSeparator:
             return SentenceNode(token: token)
         }
     }
 }
-
 
 class Node: CustomStringConvertible, Equatable {
     let token: (any Token)?
@@ -36,7 +35,7 @@ class Node: CustomStringConvertible, Equatable {
     public var rhs: Node?
     public var parent: Node?
     
-    fileprivate var newPriority: Int?
+    fileprivate var newPrecedence: Int?
     
     init(token: (any Token)?) {
         self.token = token
@@ -55,7 +54,8 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
     
-    class var priority: Int {
+    // 結合度の高さ
+    class var precedence: Int {
         get {
             return 0
         }
@@ -70,41 +70,44 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
 
-    var priority: Int {
+    // 結合度の高さ
+    var precedence: Int {
         get {
-            if let returnPriority = newPriority {
-                return returnPriority
-            }
-            return type(of: self).priority
-        }
-        set(newValue) {
-            self.newPriority = newValue
+            return type(of: self).precedence
         }
     }
+    
+    
+    // 右の子ノードを持つことができるかどうか。
+    // 文や = は 右の子ノードを持つことができない
     var canHasRhs: Bool {
         get {
             return true
         }
     }
     
+    // 代入演算子 ( = )か?
     var isAssignmentOperator:Bool {
         get {
             return false
         }
     }
     
+    // brace で囲まれた式の起点であるかを判定する
     var leftBrace: Bool {
         get {
             return false
         }
     }
 
+    // brace で囲まれた式の終点であるかを判定する
     var rightBrace: Bool {
         get {
             return false
         }
     }
     
+    // 演算子か?
     var isOperatable: Bool {
         get {
             return false
@@ -126,6 +129,7 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
 
+    // 代入の左側 (代入される側)であるか?
     var isLeftExpression: Bool {
         get {
             return false
@@ -142,8 +146,8 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
     
-    func highPriorityWith(other: Node) -> Bool {
-        return self.priority > other.priority
+    func highPrecedenceWith(other: Node) -> Bool {
+        return self.precedence > other.precedence
     }
 }
 
@@ -152,7 +156,7 @@ class RootNode: Node {
     private var _sentences: Array<SentenceNode> = Array()
     
     
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
             return 0
         }
@@ -162,7 +166,6 @@ class RootNode: Node {
             return false
         }
     }
-    
     
     override var value: NumericWrapper {
         get {
@@ -210,7 +213,7 @@ class RootNode: Node {
 }
 
 class IntegerNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
             return 1000
         }
@@ -231,16 +234,15 @@ class IntegerNode: Node {
         }
     }
     
-    override func highPriorityWith(other: Node) -> Bool {
-        return self.priority > other.priority
+    override func highPrecedenceWith(other: Node) -> Bool {
+        return self.precedence > other.precedence
     }
-
 }
 
 class NumericNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return IntegerNode.priority
+            return IntegerNode.precedence
         }
     }
     
@@ -262,27 +264,24 @@ class NumericNode: Node {
 }
 
 class OperatorNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return IntegerNode.priority - 100
+            return IntegerNode.precedence - 100
         }
     }
     
-    override var priority: Int {
+    override var precedence: Int {
         get {
             switch self.string {
             case "+", "-":
-                return type(of: self).priority - 10
+                return type(of: self).precedence - 10
             case "*", "/":
-                return type(of: self).priority - 5
+                return type(of: self).precedence - 5
             case "=":
-                return SentenceNode.priority + 5
+                return SentenceNode.precedence + 5
             default:
-                return type(of: self).priority
+                return type(of: self).precedence
             }
-        }
-        set(newValue) {
-            self.newPriority = newValue
         }
     }
     
@@ -345,37 +344,27 @@ class OperatorNode: Node {
             
         }
     }
-    
-    /*
-    override func highPriorityWith(other: Node) -> Bool {
-        if self.isAssignmentOperator && other.isSymbol && other.parent is SentenceNode {
-            return true
-        }
-        else {
-            return self.priority > other.priority
-        }
-    }
-     */
 }
 
 class BraceNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
             return 10000
         }
     }
 
-    override var priority: Int {
+    // 定義したけど,参照されないはず
+    // isLeftBrace と isRightBrace で判定しているため
+    override var precedence: Int {
         get {
-            if self.lhs == nil && self.rhs == nil && self.parent == nil  {
-                return type(of: self).priority
+            if self.lhs == nil && self.rhs == nil && self.parent == nil {
+                // 新規に挿入されるケース。優先度が低い = 他のノードの親になる
+                return type(of: self).precedence
             }
             else {
-                return RootNode.priority + 10
+                // Brace 内の要素を挿入する場合、挿入される要素より結合度が低い。
+                return SentenceNode.precedence + 5
             }
-        }
-        set(newValue) {
-            self.newPriority = newValue
         }
     }
 
@@ -404,9 +393,9 @@ class BraceNode: Node {
 }
 
 class RightBraceNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return BraceNode.priority
+            return BraceNode.precedence
         }
     }
     override var rightBrace: Bool {
@@ -416,28 +405,12 @@ class RightBraceNode: Node {
     }
 }
 
-class WordNode: Node {
-    override class var priority: Int {
+class SymbolNode: Node {
+    override class var precedence: Int {
         get {
-            return IntegerNode.priority
+            return IntegerNode.precedence
         }
     }
-    
-    /*
-    override var priority: Int {
-        get {
-            if isLeftExpression {
-                return SentenceNode.priority + 1
-            }
-            else {
-                return Self.priority
-            }
-        }
-        set {
-            
-        }
-    }
-     */
     
     override var isSymbol: Bool {
         get {
@@ -454,7 +427,6 @@ class WordNode: Node {
         }
     }
 
-    
     private var _value: NumericWrapper?
     override var value: NumericWrapper {
         get {
@@ -486,23 +458,19 @@ class WordNode: Node {
         }
     }
     
-    
-    
-    override func highPriorityWith(other: Node) -> Bool {
-        return self.priority > other.priority
+    override func highPrecedenceWith(other: Node) -> Bool {
+        return self.precedence > other.precedence
     }
 
 }
 
 class SentenceNode: Node {
     
-    
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return RootNode.priority + 5
+            return RootNode.precedence + 5
         }
     }
-   
     
     override var value: NumericWrapper {
         get {
@@ -520,17 +488,14 @@ class SentenceNode: Node {
             
         }
     }
-    override var priority: Int {
+    override var precedence: Int {
         get {
             if parent != nil {
                 return 1000
             }
             else {
-                return Self.priority
+                return Self.precedence
             }
-        }
-        set(newValue) {
-            self.newPriority = newValue
         }
     }
     
