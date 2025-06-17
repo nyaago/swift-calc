@@ -278,7 +278,7 @@ class Parser {
         if newNode.rightBrace {
             return currentNode
         }
-        if newNode.highPriorityWith(other: currentNode!) {
+        if newNode.highPrecedenceWith(other: currentNode!) {
             if currentNode!.lhs == nil {
                 currentNode!.lhs = newNode
                 newNode.parent = currentNode

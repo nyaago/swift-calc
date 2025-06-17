@@ -35,7 +35,7 @@ class Node: CustomStringConvertible, Equatable {
     public var rhs: Node?
     public var parent: Node?
     
-    fileprivate var newPriority: Int?
+    fileprivate var newPrecedence: Int?
     
     init(token: (any Token)?) {
         self.token = token
@@ -55,7 +55,7 @@ class Node: CustomStringConvertible, Equatable {
     }
     
     // 結合度の高さ
-    class var priority: Int {
+    class var precedence: Int {
         get {
             return 0
         }
@@ -71,9 +71,9 @@ class Node: CustomStringConvertible, Equatable {
     }
 
     // 結合度の高さ
-    var priority: Int {
+    var precedence: Int {
         get {
-            return type(of: self).priority
+            return type(of: self).precedence
         }
     }
     
@@ -146,8 +146,8 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
     
-    func highPriorityWith(other: Node) -> Bool {
-        return self.priority > other.priority
+    func highPrecedenceWith(other: Node) -> Bool {
+        return self.precedence > other.precedence
     }
 }
 
@@ -156,7 +156,7 @@ class RootNode: Node {
     private var _sentences: Array<SentenceNode> = Array()
     
     
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
             return 0
         }
@@ -197,7 +197,7 @@ class RootNode: Node {
 }
 
 class IntegerNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
             return 1000
         }
@@ -218,15 +218,15 @@ class IntegerNode: Node {
         }
     }
     
-    override func highPriorityWith(other: Node) -> Bool {
-        return self.priority > other.priority
+    override func highPrecedenceWith(other: Node) -> Bool {
+        return self.precedence > other.precedence
     }
 }
 
 class NumericNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return IntegerNode.priority
+            return IntegerNode.precedence
         }
     }
     
@@ -248,23 +248,23 @@ class NumericNode: Node {
 }
 
 class OperatorNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return IntegerNode.priority - 100
+            return IntegerNode.precedence - 100
         }
     }
     
-    override var priority: Int {
+    override var precedence: Int {
         get {
             switch self.string {
             case "+", "-":
-                return type(of: self).priority - 10
+                return type(of: self).precedence - 10
             case "*", "/":
-                return type(of: self).priority - 5
+                return type(of: self).precedence - 5
             case "=":
-                return SentenceNode.priority + 5
+                return SentenceNode.precedence + 5
             default:
-                return type(of: self).priority
+                return type(of: self).precedence
             }
         }
     }
@@ -331,7 +331,7 @@ class OperatorNode: Node {
 }
 
 class BraceNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
             return 10000
         }
@@ -339,15 +339,15 @@ class BraceNode: Node {
 
     // 定義したけど,参照されないはず
     // isLeftBrace と isRightBrace で判定しているため
-    override var priority: Int {
+    override var precedence: Int {
         get {
             if self.lhs == nil && self.rhs == nil && self.parent == nil {
                 // 新規に挿入されるケース。優先度が低い = 他のノードの親になる
-                return type(of: self).priority
+                return type(of: self).precedence
             }
             else {
                 // Brace 内の要素を挿入する場合、挿入される要素より結合度が低い。
-                return SentenceNode.priority + 5
+                return SentenceNode.precedence + 5
             }
         }
     }
@@ -377,9 +377,9 @@ class BraceNode: Node {
 }
 
 class RightBraceNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return BraceNode.priority
+            return BraceNode.precedence
         }
     }
     override var rightBrace: Bool {
@@ -390,9 +390,9 @@ class RightBraceNode: Node {
 }
 
 class WordNode: Node {
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return IntegerNode.priority
+            return IntegerNode.precedence
         }
     }
     
@@ -442,17 +442,17 @@ class WordNode: Node {
         }
     }
     
-    override func highPriorityWith(other: Node) -> Bool {
-        return self.priority > other.priority
+    override func highPrecedenceWith(other: Node) -> Bool {
+        return self.precedence > other.precedence
     }
 
 }
 
 class SentenceNode: Node {
     
-    override class var priority: Int {
+    override class var precedence: Int {
         get {
-            return RootNode.priority + 5
+            return RootNode.precedence + 5
         }
     }
     
@@ -472,13 +472,13 @@ class SentenceNode: Node {
             
         }
     }
-    override var priority: Int {
+    override var precedence: Int {
         get {
             if parent != nil {
                 return 1000
             }
             else {
-                return Self.priority
+                return Self.precedence
             }
         }
     }
