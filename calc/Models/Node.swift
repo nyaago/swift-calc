@@ -22,7 +22,7 @@ class NodeFactory {
         case TokenKind.rightBracket:
             return RightBraceNode(token: token)
         case .word:
-            return WordNode(token: token)
+            return SymbolNode(token: token)
         case .expressionSeparator:
             return SentenceNode(token: token)
         }
@@ -389,7 +389,7 @@ class RightBraceNode: Node {
     }
 }
 
-class WordNode: Node {
+class SymbolNode: Node {
     override class var precedence: Int {
         get {
             return IntegerNode.precedence
