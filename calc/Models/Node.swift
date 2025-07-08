@@ -77,7 +77,6 @@ class Node: CustomStringConvertible, Equatable {
         }
     }
     
-    
     // 右の子ノードを持つことができるかどうか。
     // 文や = は 右の子ノードを持つことができない
     var canHasRhs: Bool {
@@ -308,7 +307,6 @@ class OperatorNode: Node {
             return true
         }
     }
-    
     
     override var value: NumericWrapper {
         get {
