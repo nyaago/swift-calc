@@ -26,17 +26,30 @@ enum ParseError: Error {
 
 extension Node {
     var desctiontionWhenNodeStart: String {
+        
         get {
-            if lhs != nil && parent != nil {
-                return "(\(description)"
+            if lhs != nil && rhs != nil && parent != nil {
+                // 左右の子がある、括弧に続けて要素
+                return "(\(description) "
             }
-            return "\(description) "
+            if parent?.lhs == self {
+                // 左の子ノード
+                return "\(description) "
+            }
+            else {
+                // 右の子ノード
+                if self.leftBrace {
+                    // brace は出力しない
+                    return ""
+                }
+                return "\(description)"
+            }
         }
     }
     
     var desctiontionWhenNodeEnd: String {
         get {
-            if lhs != nil && parent != nil {
+            if lhs != nil && rhs != nil && parent != nil {
                 return ")"
             }
             return ""
