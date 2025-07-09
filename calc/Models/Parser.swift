@@ -166,6 +166,9 @@ class Parser {
         curTokens.forEach{
             let token = $0
             if token.tokenKind == .expressionSeparator {
+                if let sentenceNode = currentSentenceNode {
+                    print("sentence = \(sentenceNode.sentenceText)")
+                }
                 // new sentence
                 currentSentenceNode = SentenceNode(token: token)
                 rootNode!.appendSentence(sentenceNode: currentSentenceNode!)
@@ -269,7 +272,8 @@ class Parser {
     // return 挿入されたNode
     @discardableResult
     private func insertNode(newNode: Node) -> Node? {
-        var intertedNode: Node?
+        var insertedNode: Node?
+        self.currentSentenceNode?.appendText(newTokenString: "\(newNode.tokenValue) ")
         if newNode.rightBrace {
             _ = bracketStack.pop()
         }
@@ -281,13 +285,13 @@ class Parser {
             else {
                 currentRootNode = bracketStack.peek()!
             }
-            intertedNode = insertNodeAt(newNode: newNode, currentNode: currentRootNode, parentNode: nil)
+            insertedNode = insertNodeAt(newNode: newNode, currentNode: currentRootNode, parentNode: nil)
         }
         if newNode.leftBrace {
             bracketStack.push(element: newNode)
         }
 
-        return intertedNode
+        return insertedNode
     }
 
     // return 挿入されたNode
