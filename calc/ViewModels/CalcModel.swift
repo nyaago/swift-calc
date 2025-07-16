@@ -32,6 +32,7 @@ import Observation
     init() {
     }
    
+    @discardableResult
     func calc()  -> NumericWrapper? {
         self.error = nil
         guard let newExpr = self.expr else {
@@ -53,10 +54,6 @@ import Observation
         }
         
         if let rootNode = parser?.rootNode {
-            if self.currentValue == rootNode.value {
-                // 値が変わらなければ更新しない
-                return NumericWrapper(value: 0.0)
-            }
             if self.currentValue?.isNotValid ?? true && rootNode.value.isNotValid {
                 // 無効値 -> 無効値なら更新しない
                 return NumericWrapper(value: 0.0)

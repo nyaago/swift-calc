@@ -29,7 +29,7 @@ struct ExprInputView: View {
                     // UIApplication.shared.closeKeyboard()
                 }.onChange(of: self.editText) { oldText, newText in
                     viewModel.expr = newText
-                    _ = viewModel.calc()
+                    viewModel.calc()
                 }
         }
         .onTapGesture {
