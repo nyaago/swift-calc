@@ -12,6 +12,7 @@ struct DetailResultView: View {
     enum DetailedViewType: Int {
         case polishNotation = 1
         case exprVariableList =  2
+        case sentences = 3
     }
 
     
@@ -46,6 +47,8 @@ struct DetailResultView: View {
             return PolishNotationView(viewModel: $viewModel)
         case .exprVariableList:
             return ExprVariablesView(viewModel: $viewModel)
+        case .sentences:
+            return SentencesView(viewModel: $viewModel)
         }
     }
     
@@ -56,6 +59,8 @@ struct DetailResultView: View {
                 return "Polish Notation"
             case .exprVariableList:
                 return "Expr Varible List"
+            case .sentences:
+                return "Sentence List"
             }
         }
     }
@@ -70,10 +75,12 @@ struct DetailResultView: View {
                 self.detailedViewType = .exprVariableList
             })
             .disabled(detailedViewType == .exprVariableList)
+            Button("Sentences", systemImage: "list.bullet.rectangle", action: {
+                self.detailedViewType = .sentences
+            })
+            .disabled(detailedViewType == .sentences)
         }
         label: { Label("Change", systemImage: "list.bullet")
         }
     }
-
-
 }

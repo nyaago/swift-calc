@@ -13,6 +13,7 @@ import Observation
     var expr: String?
     var exprVariables: [ExprVariable] = []
     var polishNotationExpr: [PolishNotationExpr] = []
+    var sentenceNodes: [SentenceNode] = []
     var currentValue: NumericWrapper?
     var error: (any Error)?
 
@@ -64,6 +65,7 @@ import Observation
         }
         self.exprVariables = buildExprVariables()
         self.polishNotationExpr = buildPolishNotationExprs()
+        self.sentenceNodes = buildSentenceNodes()
         return self.currentValue
     }
     
@@ -96,6 +98,13 @@ import Observation
         return symbolTable.asArray.map { symbolElement in
             ExprVariable(name: symbolElement.name, value: symbolElement.value)
         }
+    }
+    
+    private func buildSentenceNodes() -> [SentenceNode] {
+        guard let parser = self.parser else {
+            return []
+        }
+        return parser.sentences
     }
 
     @ObservationIgnored var description: String {
