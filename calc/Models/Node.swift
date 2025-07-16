@@ -46,6 +46,10 @@ class Node: CustomStringConvertible, Equatable {
     }
 
     var description: String {
+        return tokenValue
+    }
+    
+    var tokenValue: String {
         if let token = self.token {
             return token.description
         }
@@ -53,7 +57,6 @@ class Node: CustomStringConvertible, Equatable {
             return ""
         }
     }
-    
     // 結合度の高さ
     class var precedence: Int {
         get {
@@ -464,6 +467,8 @@ class SymbolNode: Node {
 
 class SentenceNode: Node {
     
+    private var _sentenceText = ""
+    
     override class var precedence: Int {
         get {
             return RootNode.precedence + 5
@@ -518,5 +523,17 @@ class SentenceNode: Node {
         })
         let string = strings.joined(separator: "")
         return string
+    }
+
+    var sentenceText: String {
+        get {
+            return _sentenceText;
+        }
+    }
+    
+    @discardableResult
+    func appendText(newTokenString: String) -> String {
+        _sentenceText += newTokenString;
+        return _sentenceText;
     }
 }
