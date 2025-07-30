@@ -25,7 +25,7 @@ struct ExprVariablesView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List($viewModel.exprVariables) { $exprVariable in
+            List(viewModel.exprVariables) { exprVariable in
                 ExprVariableItemView(exprVariable: exprVariable)
                     .modifier(ListViewModifier())
             }

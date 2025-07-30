@@ -30,17 +30,10 @@ struct SentenceView: View {
 struct SentencesView: View {
     @Binding var viewModel: CalcModel
     
-    var identigableSentenceNodes: [IdentigableSentenceNode] {
-        get {
-            viewModel.sentenceNodes.map { sentenceNode in
-                IdentigableSentenceNode(sentenceNode: sentenceNode)
-            }
-        }
-    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List(identigableSentenceNodes) { identigableSentenceNode in
+            List(viewModel.identigableSentenceNodes) { identigableSentenceNode in
                 SentenceView(identigableSentenceNode: identigableSentenceNode)
                     .modifier(ListViewModifier())
             }
