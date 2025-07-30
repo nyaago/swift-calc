@@ -33,6 +33,12 @@ struct IdentigableSentenceNode: Identifiable, Hashable {
         }
     }
     
+    var sentenceText: String {
+        get {
+            self.node.sentenceText
+        }
+    }
+    
     func hash(into: inout Hasher) {
         return id.hash(into: &into)
     }

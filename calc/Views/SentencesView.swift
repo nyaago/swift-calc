@@ -16,7 +16,7 @@ struct SentenceView: View {
                 .font(.body)
                 .frame(width: 60,
                        alignment: .leading)
-            Text(identigableSentenceNode.node.sentenceText)
+            Text(identigableSentenceNode.sentenceText)
                 .font(.body)
                 .frame(maxWidth: .infinity,
                        minHeight: 12,
