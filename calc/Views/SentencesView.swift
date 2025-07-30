@@ -11,12 +11,19 @@ struct SentenceView: View {
     var identigableSentenceNode: IdentigableSentenceNode
     
     var body: some View {
-        Text(identigableSentenceNode.node.sentenceText)
-            .font(.body)
-            .listRowBackground(Color.textBackColor)
-            .listRowSeparatorTint(Color.listRowSeparatorColor)
-            .padding(EdgeInsets(top: 5, leading: 0,
-                                bottom: 0, trailing: 0))
+        HStack(alignment: .center, spacing: 0) {
+            Text(identigableSentenceNode.strtingValue)
+                .font(.body)
+                .frame(width: 60,
+                       alignment: .leading)
+            Text(identigableSentenceNode.node.sentenceText)
+                .font(.body)
+                .frame(maxWidth: .infinity,
+                       minHeight: 12,
+                       maxHeight: .infinity,
+                       alignment: .topLeading)
+        }
+        .modifier(ListItemViewModifier())
     }
 }
 
