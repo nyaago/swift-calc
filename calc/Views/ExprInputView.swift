@@ -17,18 +17,49 @@ struct ExprInputView: View {
         case bySentence =  2
     }
 
+    @State var inputViewType: InputViewType = .full
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("式を入力")
-                .modifier(LabelTextModifier())
+            HStack(alignment: .center) {
+                Text("式を入力")
+                    .modifier(LabelTextModifier())
+                Spacer()
+            }.overlay(alignment: .bottomTrailing)  {
+                viewTypeMenu
+                    .frame(maxHeight: .infinity,
+                           alignment: .bottomTrailing)
+                    .padding(EdgeInsets(top: 10.0, leading: 10.0,
+                                        bottom: 5.0, trailing: 10.0))
+            }
             AnyView(buildInputView())
         }
     }
     
     private func buildInputView() -> any View {
-        FullExprInputView(editText: editText, viewModel: $viewModel, textEditorFocused: $textEditorFocused)
+        switch(self.inputViewType) {
+        case .full:
+            return FullExprInputView(editText: editText, viewModel: $viewModel, textEditorFocused: $textEditorFocused)
+        case .bySentence:
+            return DummyTextView(viewModel: viewModel)
+        }
     }
+    
+    private var viewTypeMenu: some View {
+        return Menu {
+            Button("Full Text", systemImage: "doc.text", action: {
+                self.inputViewType = .full
+            })
+            .disabled(inputViewType == .full)
+            Button("By Sentence", systemImage: "list.bullet.rectangle", action: {
+                self.inputViewType = .bySentence
+            })
+            .disabled(inputViewType == .bySentence)
+        }
+        label: { Label("Change", systemImage: "list.bullet")
+        }
+    }
+
 }
 
  #Preview {
