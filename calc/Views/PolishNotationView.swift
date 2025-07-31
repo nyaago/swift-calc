@@ -26,14 +26,13 @@ struct PolishNotationItemView: View {
     }
 }
 
-
 struct PolishNotationView: View {
     @Binding var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List($viewModel.polishNotationExpr) { $polishNotationExpr in
-                PolishNotationItemView(polishNotationExpr: polishNotationExpr)
+            List(viewModel.polishNotationExpr) { identigablePolishNotionExpr in
+                PolishNotationItemView(polishNotationExpr: identigablePolishNotionExpr)
                     .modifier(ListViewModifier())
             }
         }

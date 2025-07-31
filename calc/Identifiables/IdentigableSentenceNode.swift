@@ -20,7 +20,24 @@ struct IdentigableSentenceNode: Identifiable, Hashable {
             self._node
         }
     }
+
+    var value: NumericWrapper {
+        get {
+            return node.value
+        }
+    }
     
+    var strtingValue: String {
+        get {
+            return value.stringValue
+        }
+    }
+    
+    var sentenceText: String {
+        get {
+            self.node.sentenceText
+        }
+    }
     
     func hash(into: inout Hasher) {
         return id.hash(into: &into)
