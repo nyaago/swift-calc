@@ -14,7 +14,7 @@ import Observation
     var exprVariables: [ExprVariable] = []
     var polishNotationExpr: [PolishNotationExpr] = []
     var sentenceNodes: [SentenceNode] = []
-    var identigableSentenceNodes: [IdentigableSentenceNode] = []
+    var identifiableSentenceNode: [IdentifiableSentenceNode] = []
     var currentValue: NumericWrapper?
     var error: (any Error)?
 
@@ -64,7 +64,7 @@ import Observation
         self.sentenceNodes = buildSentenceNodes()
         self.exprVariables = buildExprVariables()
         self.polishNotationExpr = buildPolishNotationExprs()
-        self.identigableSentenceNodes = buildIdentigableSentenceNode()
+        self.identifiableSentenceNode = buildIdentifiableSentenceNode()
         return self.currentValue
     }
     
@@ -96,9 +96,9 @@ import Observation
         }
     }
     
-    private func buildIdentigableSentenceNode() -> [IdentigableSentenceNode] {
+    private func buildIdentifiableSentenceNode() -> [IdentifiableSentenceNode] {
         sentenceNodes.map { sentenceNode in
-            IdentigableSentenceNode(sentenceNode: sentenceNode)
+            IdentifiableSentenceNode(sentenceNode: sentenceNode)
         }
     }
     
