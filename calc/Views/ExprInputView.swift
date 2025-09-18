@@ -41,7 +41,7 @@ struct ExprInputView: View {
         case .full:
             return FullExprInputView(viewModel: $viewModel, textEditorFocused: $textEditorFocused)
         case .bySentence:
-            return DummyTextView(viewModel: viewModel)
+            return SentencesInputView(viewModel: $viewModel)
         }
     }
     

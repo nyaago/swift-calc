@@ -33,7 +33,7 @@ struct SentencesView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List(viewModel.identifiableSentenceNode) { identifiableSentenceNode in
+            List(viewModel.identifiableSentenceNodes) { identifiableSentenceNode in
                 SentenceView(identifiableSentenceNode: identifiableSentenceNode)
                     .modifier(ListViewModifier())
             }
