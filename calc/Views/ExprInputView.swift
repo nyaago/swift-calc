@@ -39,7 +39,7 @@ struct ExprInputView: View {
     private func buildInputView() -> any View {
         switch(self.inputViewType) {
         case .full:
-            return FullExprInputView(editText: editText, viewModel: $viewModel, textEditorFocused: $textEditorFocused)
+            return FullExprInputView(viewModel: $viewModel, textEditorFocused: $textEditorFocused)
         case .bySentence:
             return DummyTextView(viewModel: viewModel)
         }

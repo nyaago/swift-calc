@@ -12,6 +12,10 @@ struct FullExprInputView: View {
     @Binding var viewModel: CalcModel
     @FocusState.Binding var textEditorFocused: Bool
 
+    init(viewModel: Binding<CalcModel>, textEditorFocused: FocusState<Bool>.Binding) {
+        self._viewModel = viewModel
+        self._textEditorFocused = textEditorFocused
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -26,6 +30,7 @@ struct FullExprInputView: View {
                        alignment: .topLeading)
                 .onAppear() {
                     // UIApplication.shared.closeKeyboard()
+                    self.editText = self.viewModel.expr ?? ""
                 }.onChange(of: self.editText) { oldText, newText in
                     viewModel.expr = newText
                     viewModel.calc()
