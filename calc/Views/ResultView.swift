@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ResultView: View {
-    @Binding var viewModel: CalcModel
+    @Bindable var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -22,6 +22,6 @@ struct ResultView: View {
 
 #Preview {
     @State @Previewable var calcModel: CalcModel = CalcModel()
-    ResultView(viewModel: $calcModel)
+    ResultView(viewModel: calcModel)
         .preferredColorScheme(.dark)
 }

@@ -9,13 +9,15 @@ import SwiftUI
 
 struct FullExprInputView: View {
     @State var editText = ""
-    @Binding var viewModel: CalcModel
+    @Bindable var viewModel: CalcModel
     @FocusState.Binding var textEditorFocused: Bool
 
+    /*
     init(viewModel: Binding<CalcModel>, textEditorFocused: FocusState<Bool>.Binding) {
         self._viewModel = viewModel
         self._textEditorFocused = textEditorFocused
     }
+     */
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -53,7 +55,7 @@ struct FullExprInputView: View {
  #Preview {
      @Previewable @State var calcModel: CalcModel = CalcModel()
      @FocusState var focused: Bool
-     FullExprInputView(viewModel: $calcModel,
+     FullExprInputView(viewModel: calcModel,
                    textEditorFocused: $focused)
          .preferredColorScheme(.dark)
  }

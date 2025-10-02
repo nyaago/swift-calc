@@ -21,7 +21,7 @@ struct ExprVariableItemView: View {
 }
 
 struct ExprVariablesView: View {
-    @Binding var viewModel: CalcModel
+    @Bindable var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

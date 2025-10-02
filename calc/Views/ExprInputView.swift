@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExprInputView: View {
     @State var editText = ""
-    @Binding var viewModel: CalcModel
+    @Bindable var viewModel: CalcModel
     @FocusState.Binding var textEditorFocused: Bool
 
     enum InputViewType: Int {
@@ -39,9 +39,9 @@ struct ExprInputView: View {
     private func buildInputView() -> any View {
         switch(self.inputViewType) {
         case .full:
-            return FullExprInputView(viewModel: $viewModel, textEditorFocused: $textEditorFocused)
+            return FullExprInputView(viewModel: viewModel, textEditorFocused: $textEditorFocused)
         case .bySentence:
-            return SentencesInputView(viewModel: $viewModel)
+            return SentencesInputView(viewModel: viewModel)
         }
     }
     
@@ -65,7 +65,7 @@ struct ExprInputView: View {
  #Preview {
      @Previewable @State var calcModel: CalcModel = CalcModel()
      @FocusState var focused: Bool
-     ExprInputView(viewModel: $calcModel,
+     ExprInputView(viewModel: calcModel,
                    textEditorFocused: $focused)
          .preferredColorScheme(.dark)
  }

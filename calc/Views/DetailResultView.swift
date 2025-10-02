@@ -16,7 +16,7 @@ struct DetailResultView: View {
     }
 
     
-    @Binding var viewModel: CalcModel
+    @Bindable var viewModel: CalcModel
     @State var detailedViewType: DetailedViewType = .polishNotation
     
     var body: some View {
@@ -44,11 +44,11 @@ struct DetailResultView: View {
     private func buildDeitaledResultView(viewModel: CalcModel) -> any View {
         switch ( self.detailedViewType ) {
         case .polishNotation:
-            return PolishNotationView(viewModel: $viewModel)
+            return PolishNotationView(viewModel: viewModel)
         case .exprVariableList:
-            return ExprVariablesView(viewModel: $viewModel)
+            return ExprVariablesView(viewModel: viewModel)
         case .sentences:
-            return SentencesView(viewModel: $viewModel)
+            return SentencesView(viewModel: viewModel)
         }
     }
     

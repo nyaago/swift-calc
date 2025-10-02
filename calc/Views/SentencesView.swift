@@ -28,8 +28,7 @@ struct SentenceView: View {
 }
 
 struct SentencesView: View {
-    @Binding var viewModel: CalcModel
-    
+    @Bindable var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

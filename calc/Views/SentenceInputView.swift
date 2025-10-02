@@ -10,12 +10,14 @@ import SwiftUI
 struct SentenceInputView: View {
     var senteneNode: IdentifiableSentenceNode
     @State var sentenceText = ""
-    @Binding private var viewModel: CalcModel
+    @Bindable private var viewModel: CalcModel
     
-    init(senteneNode: IdentifiableSentenceNode, viewModel: Binding<CalcModel>, sentenceText: String = "") {
+    
+    init(senteneNode: IdentifiableSentenceNode, viewModel: CalcModel, sentenceText: String = "") {
         self.senteneNode = senteneNode
-        self._viewModel = viewModel
+        self.viewModel = viewModel
     }
+    
     
     var body: some View {
         Text(self.sentenceText)
@@ -37,7 +39,7 @@ struct SentenceInputView: View {
 }
 
 struct SentencesInputView: View {
-    @Binding private var viewModel: CalcModel
+    @Bindable private var viewModel: CalcModel
     @State var editMode: EditMode = .transient
 //    private var sentenceTexts: [Binding<String>] = []
     
@@ -48,8 +50,8 @@ struct SentencesInputView: View {
     }
      */
     
-    init(viewModel: Binding<CalcModel>) {
-       self._viewModel = viewModel
+    init(viewModel: CalcModel) {
+       self.viewModel = viewModel
         //        self.sentenceTexts = viewModel.identifiableSentenceNodes.map { e in e.sentenceText }
     }
     
@@ -57,11 +59,12 @@ struct SentencesInputView: View {
         VStack(alignment: .leading, spacing: 0) {
             List {
                 ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
-                    SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: $viewModel)
+                    SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
                 }
                 .onMove { indexSet, newIndex in
                 }
                 .onDelete(perform:  { indexSet in
+                    
                     
                 })
                 .onAppear() {
