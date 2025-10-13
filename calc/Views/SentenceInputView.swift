@@ -40,7 +40,7 @@ struct SentenceInputView: View {
 
 struct SentencesInputView: View {
     @Bindable private var viewModel: CalcModel
-    @State var editMode: EditMode = .transient
+    @State var editMode: EditMode = .inactive
 //    private var sentenceTexts: [Binding<String>] = []
     
     /*
@@ -57,21 +57,30 @@ struct SentencesInputView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List {
-                ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
-                    SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
+            NavigationStack {
+                List {
+                    ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
+                        SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
+                    }
+                    .onMove { indexSet, newIndex in
+                    }
+                    .onDelete(perform:  { indexSet in
+                        
+                        
+                    })
+                    .onAppear() {
+                        
+                    }
                 }
-                .onMove { indexSet, newIndex in
-                }
-                .onDelete(perform:  { indexSet in
-                    
-                    
-                })
-                .onAppear() {
-                
+                .environment(\.editMode, $editMode)
+                .navigationTitle("Sentence")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigation) {
+                        EditButton()
+                    }
                 }
             }
-            .environment(\.editMode, $editMode)
         }
     }
 
