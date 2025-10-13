@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct IdentigableSentenceNode: Identifiable, Hashable {
+struct IdentifiableSentenceNode: Identifiable, Hashable {
     let id = UUID()
-    let _node: SentenceNode
+    private var _node: SentenceNode
     
     init(sentenceNode: SentenceNode) {
         self._node = sentenceNode

@@ -94,6 +94,7 @@ class Parser {
         self._symbolTable = SymbolTable()
     }
     
+    
     init(lexer: Lexer) {
         self.source = nil
         self.lexer = lexer
@@ -179,7 +180,7 @@ class Parser {
             }
         }
     }
-    
+   
     private func parseWithToken(token: any Token) {
         let node = NodeFactory.createNode(token: token)
         insertNode(newNode: node)

@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @State var editText = ""
-    @State var viewModel = CalcModel()
+    var viewModel = CalcModel()
     @State var showDummySheet: Bool = false
     @FocusState var textEditorFocused: Bool
     
@@ -22,12 +22,12 @@ struct ContentView: View {
         NavigationStack {
             VStack{
                 // 計算結果
-                ResultView(viewModel: self.$viewModel)
+                ResultView(viewModel: self.viewModel)
                 // 入力
-                ExprInputView(viewModel: self.$viewModel,
+                ExprInputView(viewModel: self.viewModel,
                               textEditorFocused: self.$textEditorFocused)
                 // 解析結果
-                DetailResultView(viewModel: self.$viewModel)
+                DetailResultView(viewModel: self.viewModel)
                 //deitaledResultView(viewModel: self.viewModel)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct SentenceView: View {
-    var identigableSentenceNode: IdentigableSentenceNode
+    var identifiableSentenceNode: IdentifiableSentenceNode
     
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
-            Text(identigableSentenceNode.strtingValue)
+            Text(identifiableSentenceNode.strtingValue)
                 .font(.body)
                 .frame(width: 60,
                        alignment: .leading)
-            Text(identigableSentenceNode.sentenceText)
+            Text(identifiableSentenceNode.sentenceText)
                 .font(.body)
                 .frame(maxWidth: .infinity,
                        minHeight: 12,
@@ -28,13 +28,12 @@ struct SentenceView: View {
 }
 
 struct SentencesView: View {
-    @Binding var viewModel: CalcModel
-    
+    @Bindable var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List(viewModel.identigableSentenceNodes) { identigableSentenceNode in
-                SentenceView(identigableSentenceNode: identigableSentenceNode)
+            List(viewModel.identifiableSentenceNodes) { identifiableSentenceNode in
+                SentenceView(identifiableSentenceNode: identifiableSentenceNode)
                     .modifier(ListViewModifier())
             }
         }

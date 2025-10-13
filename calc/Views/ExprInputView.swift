@@ -9,47 +9,63 @@ import SwiftUI
 
 struct ExprInputView: View {
     @State var editText = ""
-    @Binding var viewModel: CalcModel
+    @Bindable var viewModel: CalcModel
     @FocusState.Binding var textEditorFocused: Bool
 
+    enum InputViewType: Int {
+        case full = 1
+        case bySentence =  2
+    }
+
+    @State var inputViewType: InputViewType = .full
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("式を入力")
-                .modifier(LabelTextModifier())
-            TextEditor(text: $editText)
-                .focused(self.$textEditorFocused)
-                .keyboardType(.numbersAndPunctuation)
-                .scrollContentBackground(Visibility.hidden)
-                .modifier(MultiLineTextModifier())
-                .frame(maxWidth: .infinity,
-                       minHeight: 50.0,
-                       maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,
-                       alignment: .topLeading)
-                .onAppear() {
-                    // UIApplication.shared.closeKeyboard()
-                }.onChange(of: self.editText) { oldText, newText in
-                    viewModel.expr = newText
-                    viewModel.calc()
-                }
-        }
-        .onTapGesture {
-            self.textEditorFocused = false
+            HStack(alignment: .center) {
+                Text("式を入力")
+                    .modifier(LabelTextModifier())
+                Spacer()
+            }.overlay(alignment: .bottomTrailing)  {
+                viewTypeMenu
+                    .frame(maxHeight: .infinity,
+                           alignment: .bottomTrailing)
+                    .padding(EdgeInsets(top: 10.0, leading: 10.0,
+                                        bottom: 5.0, trailing: 10.0))
+            }
+            AnyView(buildInputView())
         }
     }
-    private func buildExprVariables() -> [ExprVariable] {
-        guard let symbolTable = viewModel.symbolTable else {
-            return []
-        }
-        return symbolTable.asArray.map { symbolElement in
-            ExprVariable(name: symbolElement.name, value: symbolElement.value)
+    
+    private func buildInputView() -> any View {
+        switch(self.inputViewType) {
+        case .full:
+            return FullExprInputView(viewModel: viewModel, textEditorFocused: $textEditorFocused)
+        case .bySentence:
+            return SentencesInputView(viewModel: viewModel)
         }
     }
+    
+    private var viewTypeMenu: some View {
+        return Menu {
+            Button("Full Text", systemImage: "doc.text", action: {
+                self.inputViewType = .full
+            })
+            .disabled(inputViewType == .full)
+            Button("By Sentence", systemImage: "list.bullet.rectangle", action: {
+                self.inputViewType = .bySentence
+            })
+            .disabled(inputViewType == .bySentence)
+        }
+        label: { Label("Change", systemImage: "list.bullet")
+        }
+    }
+
 }
 
  #Preview {
      @Previewable @State var calcModel: CalcModel = CalcModel()
      @FocusState var focused: Bool
-     ExprInputView(viewModel: $calcModel,
+     ExprInputView(viewModel: calcModel,
                    textEditorFocused: $focused)
          .preferredColorScheme(.dark)
  }

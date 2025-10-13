@@ -27,7 +27,7 @@ struct PolishNotationItemView: View {
 }
 
 struct PolishNotationView: View {
-    @Binding var viewModel: CalcModel
+    @Bindable var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -41,7 +41,7 @@ struct PolishNotationView: View {
 
 #Preview {
     @Previewable @State var viewModel: CalcModel = CalcModel()
-    PolishNotationView(viewModel: $viewModel)
+    PolishNotationView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }
 
