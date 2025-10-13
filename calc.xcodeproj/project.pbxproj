@@ -10,7 +10,7 @@
 		72080351272AFD1A002C64BB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72080350272AFD1A002C64BB /* Stack.swift */; };
 		721542A626DD18F400E5986C /* CalcModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721542A526DD18F400E5986C /* CalcModel.swift */; };
 		723B22BD260B880200A616FA /* calcApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723B22BC260B880200A616FA /* calcApp.swift */; };
-		723B22BF260B880200A616FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723B22BE260B880200A616FA /* ContentView.swift */; };
+		723B22BF260B880200A616FA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723B22BE260B880200A616FA /* MainView.swift */; };
 		723B22C1260B880200A616FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 723B22C0260B880200A616FA /* Assets.xcassets */; };
 		723B22C4260B880200A616FA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 723B22C3260B880200A616FA /* Preview Assets.xcassets */; };
 		723B22CF260B880200A616FA /* calcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723B22CE260B880200A616FA /* calcTests.swift */; };
@@ -34,6 +34,8 @@
 		72B84DF62E42447700FCC1E2 /* SentenceInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B84DF52E42446D00FCC1E2 /* SentenceInputView.swift */; };
 		72C132452D1B0A7E006B26FD /* PolishNotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C132442D1B0A4E006B26FD /* PolishNotationView.swift */; };
 		72C132472D1B174D006B26FD /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C132462D1B1746006B26FD /* ResultView.swift */; };
+		72C4AC362E9CCD4A00D56868 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C4AC352E9CCD4A00D56868 /* MainTabView.swift */; };
+		72C4AC382E9CCE0B00D56868 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C4AC372E9CCE0B00D56868 /* ContentView.swift */; };
 		72F8DEC62D3CA80D004A1C2D /* DummyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F8DEC52D3CA805004A1C2D /* DummyTextView.swift */; };
 		72F8DECE2D467E72004A1C2D /* ExprVariableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F8DECD2D467E72004A1C2D /* ExprVariableItemView.swift */; };
 		72F8DED62D467F36004A1C2D /* ExprVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F8DED42D467F36004A1C2D /* ExprVariable.swift */; };
@@ -65,7 +67,7 @@
 		721542A526DD18F400E5986C /* CalcModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcModel.swift; sourceTree = "<group>"; };
 		723B22B9260B880200A616FA /* calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = calc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		723B22BC260B880200A616FA /* calcApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = calcApp.swift; sourceTree = "<group>"; };
-		723B22BE260B880200A616FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		723B22BE260B880200A616FA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		723B22C0260B880200A616FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		723B22C3260B880200A616FA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		723B22C5260B880200A616FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -94,6 +96,8 @@
 		72B84DF52E42446D00FCC1E2 /* SentenceInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceInputView.swift; sourceTree = "<group>"; };
 		72C132442D1B0A4E006B26FD /* PolishNotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolishNotationView.swift; sourceTree = "<group>"; };
 		72C132462D1B1746006B26FD /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		72C4AC352E9CCD4A00D56868 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		72C4AC372E9CCE0B00D56868 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		72F8DEC52D3CA805004A1C2D /* DummyTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTextView.swift; sourceTree = "<group>"; };
 		72F8DECD2D467E72004A1C2D /* ExprVariableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExprVariableItemView.swift; sourceTree = "<group>"; };
 		72F8DED42D467F36004A1C2D /* ExprVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExprVariable.swift; sourceTree = "<group>"; };
@@ -211,9 +215,11 @@
 		72984ABE2D8081830055B8B8 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				723B22BE260B880200A616FA /* ContentView.swift */,
+				723B22BE260B880200A616FA /* MainView.swift */,
 				72984ABF2D8082AD0055B8B8 /* DummySheetView.swift */,
 				72F8DEC52D3CA805004A1C2D /* DummyTextView.swift */,
+				72C4AC352E9CCD4A00D56868 /* MainTabView.swift */,
+				72C4AC372E9CCE0B00D56868 /* ContentView.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -406,10 +412,11 @@
 			files = (
 				72984AC02D8082B40055B8B8 /* DummySheetView.swift in Sources */,
 				72A56DD126B679B1005B7DBA /* Color.swift in Sources */,
+				72C4AC382E9CCE0B00D56868 /* ContentView.swift in Sources */,
 				72A3FBC82DA6AB2800BC9CE3 /* PolishNotationExpr.swift in Sources */,
 				72B84DF02E2698EC00FCC1E2 /* SentencesView.swift in Sources */,
 				72B84DF42E3BA8C400FCC1E2 /* FullExprInputView.swift in Sources */,
-				723B22BF260B880200A616FA /* ContentView.swift in Sources */,
+				723B22BF260B880200A616FA /* MainView.swift in Sources */,
 				72C132472D1B174D006B26FD /* ResultView.swift in Sources */,
 				721542A626DD18F400E5986C /* CalcModel.swift in Sources */,
 				728D262B2CB285990019BAC5 /* NumericWrapper.swift in Sources */,
@@ -429,6 +436,7 @@
 				72F8DECE2D467E72004A1C2D /* ExprVariableItemView.swift in Sources */,
 				7287444227285305009D2B5B /* Traverser.swift in Sources */,
 				72B84DF62E42447700FCC1E2 /* SentenceInputView.swift in Sources */,
+				72C4AC362E9CCD4A00D56868 /* MainTabView.swift in Sources */,
 				729DA9882709FC380029B74B /* Node.swift in Sources */,
 				72B1B05E2D8FD884005858E3 /* LabelTextModifier.swift in Sources */,
 				72B1B05F2D8FD884005858E3 /* ListViewModifier.swift in Sources */,
@@ -522,7 +530,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -594,7 +602,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -629,7 +637,7 @@
 				DEVELOPMENT_TEAM = Q62U4HU26P;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = calc/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -656,7 +664,7 @@
 				DEVELOPMENT_TEAM = Q62U4HU26P;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = calc/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
