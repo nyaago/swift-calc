@@ -32,19 +32,10 @@ struct ExprInputView: View {
                     .padding(EdgeInsets(top: 10.0, leading: 10.0,
                                         bottom: 5.0, trailing: 10.0))
             }
-            AnyView(buildInputView())
         }
     }
     
-    private func buildInputView() -> any View {
-        switch(self.inputViewType) {
-        case .full:
-            return FullExprInputView(viewModel: viewModel, textEditorFocused: $textEditorFocused)
-        case .bySentence:
-            return SentencesInputView(viewModel: viewModel)
-        }
-    }
-    
+   
     private var viewTypeMenu: some View {
         return Menu {
             Button("Full Text", systemImage: "doc.text", action: {

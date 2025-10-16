@@ -7,19 +7,12 @@
 
 import SwiftUI
 
+
 struct FullExprInputView: View {
     @State var editText = ""
     @Bindable var viewModel: CalcModel
     @FocusState.Binding var textEditorFocused: Bool
-    @State var showDummySheet: Bool = false
-
-
-    /*
-    init(viewModel: Binding<CalcModel>, textEditorFocused: FocusState<Bool>.Binding) {
-        self._viewModel = viewModel
-        self._textEditorFocused = textEditorFocused
-    }
-     */
+    @Binding var inputViewType: MainView.InputViewType
 
     var body: some View {
         NavigationStack {
@@ -53,20 +46,34 @@ struct FullExprInputView: View {
             }
             .navigationTitle("計算機")            // ナビゲーションタイトル定義
             .navigationBarTitleDisplayMode(.inline)
-            // dummy の sheet 表示
-            .sheet(isPresented: $showDummySheet) {
-                DummySheetView(viewModel: viewModel)
-            }
-            //
             .toolbar {
                 toolbarContent
             }
-
+            //
         }
         .onTapGesture {
             self.textEditorFocused = false
         }
     }
+    
+    private var toolbarContent: some ToolbarContent  {
+        ToolbarItem(placement: .primaryAction) {
+            Menu {
+                Button("Full Text", systemImage: "doc.text", action: {
+                    self.inputViewType = .full
+                })
+                .disabled(inputViewType == .full)
+                Button("By Sentence", systemImage: "list.bullet.rectangle", action: {
+                    self.inputViewType = .bySentence
+                })
+                .disabled(inputViewType == .bySentence)
+            }
+            label: {
+                Label("", systemImage: "list.bullet")
+            }
+        }
+    }
+
     private func buildExprVariables() -> [ExprVariable] {
         guard let symbolTable = viewModel.symbolTable else {
             return []
@@ -76,26 +83,14 @@ struct FullExprInputView: View {
         }
     }
     
-    // dummy の toolbar content
-    private var toolbarContent: some ToolbarContent  {
-        ToolbarItem(placement: .primaryAction) {
-            Menu {
-                Button("DummySheet") {
-                    showDummySheet.toggle()
-                 }
-                NavigationLink("test1", destination: DummyTextView(viewModel: viewModel))
-                NavigationLink("test2", destination: DummyTextView(viewModel: viewModel))
-            }
-            label: { Label("", systemImage: "list.bullet")
-            }
-        }
-    }
 }
 
  #Preview {
      @Previewable @State var calcModel: CalcModel = CalcModel()
+     @Previewable @State var inputViewType: MainView.InputViewType = .full
      @FocusState var focused: Bool
+     
      FullExprInputView(viewModel: calcModel,
-                   textEditorFocused: $focused)
+                       textEditorFocused: $focused, inputViewType: $inputViewType)
          .preferredColorScheme(.dark)
  }

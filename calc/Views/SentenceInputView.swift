@@ -12,7 +12,6 @@ struct SentenceInputView: View {
     @State var sentenceText = ""
     @Bindable private var viewModel: CalcModel
     
-    
     init(senteneNode: IdentifiableSentenceNode, viewModel: CalcModel, sentenceText: String = "") {
         self.senteneNode = senteneNode
         self.viewModel = viewModel
@@ -41,6 +40,8 @@ struct SentenceInputView: View {
 struct SentencesInputView: View {
     @Bindable private var viewModel: CalcModel
     @State var editMode: EditMode = .transient
+    @Binding var inputViewType: MainView.InputViewType
+
 //    private var sentenceTexts: [Binding<String>] = []
     
     /*
@@ -49,29 +50,54 @@ struct SentencesInputView: View {
         self._sentenceTexts = _sentenceTexts
     }
      */
-    
-    init(viewModel: CalcModel) {
-       self.viewModel = viewModel
+    init(viewModel: CalcModel, inputViewType: Binding<MainView.InputViewType>) {
+        self.viewModel = viewModel
+        self._inputViewType = inputViewType
         //        self.sentenceTexts = viewModel.identifiableSentenceNodes.map { e in e.sentenceText }
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            List {
-                ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
-                    SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 0) {
+                List {
+                    ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
+                        SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
+                    }
+                    .onMove { indexSet, newIndex in
+                    }
+                    .onDelete(perform:  { indexSet in
+                        
+                        
+                    })
+                    .onAppear() {
+                        
+                    }
                 }
-                .onMove { indexSet, newIndex in
-                }
-                .onDelete(perform:  { indexSet in
-                    
-                    
-                })
-                .onAppear() {
-                
+                .environment(\.editMode, $editMode)
+                .navigationTitle("計算機")            // ナビゲーションタイトル定義
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    toolbarContent
                 }
             }
-            .environment(\.editMode, $editMode)
+        }
+    }
+    
+    private var toolbarContent: some ToolbarContent  {
+        ToolbarItem(placement: .primaryAction) {
+            Menu {
+                Button("Full Text", systemImage: "doc.text", action: {
+                    self.inputViewType = .full
+                })
+                .disabled(inputViewType == .full)
+                Button("By Sentence", systemImage: "list.bullet.rectangle", action: {
+                    self.inputViewType = .bySentence
+                })
+                .disabled(inputViewType == .bySentence)
+            }
+            label: {
+                Label("", systemImage: "list.bullet")
+            }
         }
     }
 

@@ -27,51 +27,37 @@ struct MainView: View {
     var body: some View {
         // 入力
         AnyView(buildInputView())
-            //.frame(maxWidth: .infinity, maxHeight: .infinity)
-            //.padding(.horizontal, 10.0)
-            /*
-            .toolbar {
-                toolbarContent
-            }
-             */
-            //.background(Color.black)
-            /*
-            .navigationTitle("Home")            // ナビゲーションタイトル定義
-            .navigationBarTitleDisplayMode(.inline)
-             */
-
-        /*
-        .onTapGesture {
-            textEditorFocused = false
-        }
-        */
-        /*
-        .sheet(isPresented: $showDummySheet) {
-            DummySheetView(viewModel: viewModel)
-        }
-         */
     }
     
     private var toolbarContent: some ToolbarContent  {
         ToolbarItem(placement: .primaryAction) {
             Menu {
-                Button("DummySheet") {
-                    showDummySheet.toggle()
-                 }
-                NavigationLink("test1", destination: DummyTextView(viewModel: viewModel))
-                NavigationLink("test2", destination: DummyTextView(viewModel: viewModel))
+                Button("Full Text", systemImage: "doc.text", action: {
+                    self.inputViewType = .full
+                })
+                .disabled(inputViewType == .full)
+                Button("By Sentence", systemImage: "list.bullet.rectangle", action: {
+                    self.inputViewType = .bySentence
+                })
+                .disabled(inputViewType == .bySentence)
             }
-            label: { Label("", systemImage: "list.bullet")
+            label: {
+                Label("", systemImage: "list.bullet")
             }
         }
     }
     
+    
+    
     private func buildInputView() -> any View {
         switch(self.inputViewType) {
         case .full:
-            return FullExprInputView(viewModel: viewModel, textEditorFocused: $textEditorFocused)
+            return FullExprInputView(viewModel: viewModel,
+                                     textEditorFocused: $textEditorFocused,
+                                     inputViewType: self.$inputViewType)
         case .bySentence:
-            return SentencesInputView(viewModel: viewModel)
+            return SentencesInputView(viewModel: viewModel,
+                                      inputViewType: self.$inputViewType)
         }
     }
 }
