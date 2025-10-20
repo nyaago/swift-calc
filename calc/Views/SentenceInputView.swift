@@ -39,7 +39,7 @@ struct SentenceInputView: View {
 
 struct SentencesInputView: View {
     @Bindable private var viewModel: CalcModel
-    @State var editMode: EditMode = .transient
+    @State var editMode: EditMode = .inactive
     @Binding var inputViewType: MainView.InputViewType
 
 //    private var sentenceTexts: [Binding<String>] = []
@@ -79,6 +79,13 @@ struct SentencesInputView: View {
                 .toolbar {
                     toolbarContent
                 }
+                .toolbar {
+                    editToolbarContent
+                }
+                .toolbar {
+                    addToolbarContent
+                }
+                
             }
         }
     }
@@ -100,5 +107,28 @@ struct SentencesInputView: View {
             }
         }
     }
-
+    
+    private var editToolbarContent: some ToolbarContent {
+        let text: String = editMode == EditMode.inactive ? "Edit" : "Done"
+        return ToolbarItem(placement: .navigation) {
+            Button(text, action: {
+                if editMode == .inactive {
+                    editMode = .active
+                }
+                else {
+                    editMode = .inactive
+                }
+                    
+            })
+        }
+    }
+    
+    private var addToolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigation) {
+            Button("Add", systemImage: "plus", action: {
+                print("Add")
+            })
+            .disabled(editMode == .active)
+        }
+    }
 }
