@@ -41,6 +41,8 @@ struct SentencesInputView: View {
     @Bindable private var viewModel: CalcModel
     @State var editMode: EditMode = .inactive
     @Binding var inputViewType: MainView.InputViewType
+    
+    @State private var path: NavigationPath = NavigationPath()
 
 //    private var sentenceTexts: [Binding<String>] = []
     
@@ -56,12 +58,16 @@ struct SentencesInputView: View {
         //        self.sentenceTexts = viewModel.identifiableSentenceNodes.map { e in e.sentenceText }
     }
     
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 0) {
                 List {
                     ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
-                        SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
+                        NavigationLink(destination:
+                                        EditSentenceView(sentenceNode: identifiableSentenceNode, viewModel: viewModel)) {
+                            SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
+                        }
                     }
                     .onMove { indexSet, newIndex in
                     }
@@ -78,14 +84,9 @@ struct SentencesInputView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     toolbarContent
-                }
-                .toolbar {
                     editToolbarContent
-                }
-                .toolbar {
                     addToolbarContent
                 }
-                
             }
         }
     }

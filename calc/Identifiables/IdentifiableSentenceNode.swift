@@ -10,9 +10,11 @@ import SwiftUI
 struct IdentifiableSentenceNode: Identifiable, Hashable {
     let id = UUID()
     private var _node: SentenceNode
+    private var _text: String?
     
     init(sentenceNode: SentenceNode) {
         self._node = sentenceNode
+        self._text = sentenceNode.sentenceText
     }
 
     var node: SentenceNode {
@@ -36,6 +38,9 @@ struct IdentifiableSentenceNode: Identifiable, Hashable {
     var sentenceText: String {
         get {
             self.node.sentenceText
+        }
+        set {
+            _text = newValue
         }
     }
     

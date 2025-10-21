@@ -36,6 +36,7 @@
 		72C132472D1B174D006B26FD /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C132462D1B1746006B26FD /* ResultView.swift */; };
 		72C4AC362E9CCD4A00D56868 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C4AC352E9CCD4A00D56868 /* MainTabView.swift */; };
 		72C4AC382E9CCE0B00D56868 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C4AC372E9CCE0B00D56868 /* ContentView.swift */; };
+		72C4AC3A2EA682E700D56868 /* EditSentenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C4AC392EA682E700D56868 /* EditSentenceView.swift */; };
 		72F8DEC62D3CA80D004A1C2D /* DummyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F8DEC52D3CA805004A1C2D /* DummyTextView.swift */; };
 		72F8DECE2D467E72004A1C2D /* ExprVariableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F8DECD2D467E72004A1C2D /* ExprVariableItemView.swift */; };
 		72F8DED62D467F36004A1C2D /* ExprVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F8DED42D467F36004A1C2D /* ExprVariable.swift */; };
@@ -98,6 +99,7 @@
 		72C132462D1B1746006B26FD /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		72C4AC352E9CCD4A00D56868 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		72C4AC372E9CCE0B00D56868 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		72C4AC392EA682E700D56868 /* EditSentenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSentenceView.swift; sourceTree = "<group>"; };
 		72F8DEC52D3CA805004A1C2D /* DummyTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTextView.swift; sourceTree = "<group>"; };
 		72F8DECD2D467E72004A1C2D /* ExprVariableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExprVariableItemView.swift; sourceTree = "<group>"; };
 		72F8DED42D467F36004A1C2D /* ExprVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExprVariable.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				72C132442D1B0A4E006B26FD /* PolishNotationView.swift */,
 				724588CB2D11BEB3007118DB /* ExprInputView.swift */,
 				72A56DD026B679B1005B7DBA /* Color.swift */,
+				72C4AC392EA682E700D56868 /* EditSentenceView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				72F8DED62D467F36004A1C2D /* ExprVariable.swift in Sources */,
 				72B84DF22E269B5F00FCC1E2 /* IdentifiableSentenceNode.swift in Sources */,
 				723B22BD260B880200A616FA /* calcApp.swift in Sources */,
+				72C4AC3A2EA682E700D56868 /* EditSentenceView.swift in Sources */,
 				72F8DECE2D467E72004A1C2D /* ExprVariableItemView.swift in Sources */,
 				7287444227285305009D2B5B /* Traverser.swift in Sources */,
 				72B84DF62E42447700FCC1E2 /* SentenceInputView.swift in Sources */,
