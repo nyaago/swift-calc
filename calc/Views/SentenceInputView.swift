@@ -126,10 +126,16 @@ struct SentencesInputView: View {
     
     private var addToolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigation) {
+            NavigationLink(destination: NewSentenceView(viewModel: self.viewModel)) {
+                Text("Add")
+            }
+            .disabled(editMode == .active)
+            /*
             Button("Add", systemImage: "plus", action: {
                 print("Add")
             })
             .disabled(editMode == .active)
+             */
         }
     }
 }
