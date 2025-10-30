@@ -30,6 +30,7 @@ import Observation
         }
     }
     
+    /*
     var fullText : String {
         get {
             let texts: [String] = self.sentenceNodes.map({ node in
@@ -38,6 +39,7 @@ import Observation
             return texts.joined(separator: "\n")
         }
     }
+     */
     
     init() {
     }
@@ -77,7 +79,9 @@ import Observation
             }
         }
         self.parser = Parser(sentenceNodes: newSentences)
-        return _calc()
+        let value = _calc()
+        self.expr = self.parser?.rootNode?.text
+        return value
     }
     
     @discardableResult
@@ -91,7 +95,9 @@ import Observation
         var newSentences = self.sentenceNodes
         newSentences.append(newSentence)
         self.parser = Parser(sentenceNodes: newSentences)
-        return _calc()
+        let value = _calc()
+        self.expr = self.parser?.rootNode?.text
+        return value
     }
     
     private func _calc()  -> NumericWrapper? {

@@ -14,6 +14,16 @@ struct FullExprInputView: View {
     @FocusState.Binding var textEditorFocused: Bool
     @Binding var inputViewType: MainView.InputViewType
 
+    init(viewModel: CalcModel, textEditorFocused:  FocusState<Bool>.Binding, inputViewType: Binding<MainView.InputViewType>) {
+        self.viewModel = viewModel
+        self._inputViewType = inputViewType
+        self._textEditorFocused = textEditorFocused
+        if let newExpr = viewModel.expr {
+            self.editText = newExpr
+        }
+    }
+
+    
     var body: some View {
         NavigationStack {
             VStack{

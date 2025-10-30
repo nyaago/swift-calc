@@ -205,6 +205,14 @@ class RootNode: Node {
         }
     }
     
+    var text: String {
+        get {
+            _sentences.map { node in
+                node.sentenceText
+            }.joined(separator: "\n")
+        }
+    }
+    
     func appendSentence(sentenceNode: SentenceNode) {
         _sentences.append(sentenceNode)
     }
