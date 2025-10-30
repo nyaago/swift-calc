@@ -37,9 +37,15 @@ struct NewSentenceView: View {
     }
 
     private var doneToolbarContent: some ToolbarContent {
-        let text: String = "Done"
+        let labelText: String = "Done"
         return ToolbarItem(placement: .primaryAction) {
-            Button(text, action: {
+            Button(labelText, action: {
+                do {
+                    try viewModel.appendSentence(sentence: self.text)
+                }
+                catch {
+                    print("failed to append sentence")
+                }
                 dismiss()
             })
         }

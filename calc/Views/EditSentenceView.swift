@@ -16,7 +16,7 @@ struct EditSentenceView: View {
     
     init(sentenceNode: IdentifiableSentenceNode,  viewModel: CalcModel) {
         self.senteneNode = sentenceNode
-        text = sentenceNode.sentenceText
+        self.text = sentenceNode.sentenceText
         self.viewModel = viewModel
     }
     
@@ -38,9 +38,23 @@ struct EditSentenceView: View {
     }
     
     private var doneToolbarContent: some ToolbarContent {
-        let text: String = "Done"
+        let labelText: String = "Done"
         return ToolbarItem(placement: .primaryAction) {
-            Button(text, action: {
+            Button(labelText, action: {
+                guard let  index = viewModel.sentenceNodes.firstIndex(where: { node in
+                    node == senteneNode.node
+                })
+                else {
+                    dismiss()
+                    return
+                    
+                }
+                do {
+                    try viewModel.replaceSentenceBySentence(index: index, sentence: text)
+                }
+                catch {
+                    print("failed to replace sentence")
+                }
                 dismiss()
             })
         }

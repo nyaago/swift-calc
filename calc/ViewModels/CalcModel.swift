@@ -30,6 +30,15 @@ import Observation
         }
     }
     
+    var fullText : String {
+        get {
+            let texts: [String] = self.sentenceNodes.map({ node in
+                node.sentenceText
+            })
+            return texts.joined(separator: "\n")
+        }
+    }
+    
     init() {
     }
    
@@ -40,6 +49,53 @@ import Observation
             return NumericWrapper(value: 0.0)
         }
         self.parser = Parser(source: newExpr)
+        return _calc()
+    }
+    
+   
+    var symbolTable: SymbolTable? {
+        return parser?.symbolTable
+    }
+    
+   
+    //
+    @discardableResult
+    func replaceSentenceBySentence(index: Int, sentence: String) throws  -> NumericWrapper?  {
+        let replacedNode = sentenceNodes[index]
+        let parser = Parser(source: sentence)
+        try parser.parse()
+        if parser.sentences.isEmpty {
+            return currentValue
+        }
+        let newSentence: SentenceNode = parser.sentences[0]
+        let newSentences = sentenceNodes.map { node in
+            if replacedNode == node {
+                return newSentence
+            }
+            else {
+                return node
+            }
+        }
+        self.parser = Parser(sentenceNodes: newSentences)
+        return _calc()
+    }
+    
+    @discardableResult
+    func appendSentence(sentence: String) throws -> NumericWrapper? {
+        let parser = Parser(source: sentence)
+        try parser.parse()
+        if parser.sentences.isEmpty {
+            return currentValue
+        }
+        let newSentence: SentenceNode = parser.sentences[0]
+        var newSentences = self.sentenceNodes
+        newSentences.append(newSentence)
+        self.parser = Parser(sentenceNodes: newSentences)
+        return _calc()
+    }
+    
+    private func _calc()  -> NumericWrapper? {
+        self.error = nil
         do {
             let _ = try parser!.parse()
         }
@@ -66,11 +122,6 @@ import Observation
         self.polishNotationExpr = buildPolishNotationExprs()
         self.identifiableSentenceNodes = buildIdentifiableSentenceNodes()
         return self.currentValue
-    }
-    
-   
-    var symbolTable: SymbolTable? {
-        return parser?.symbolTable
     }
     
     func buildPolishNotationExprs() -> [PolishNotationExpr] {
@@ -109,6 +160,7 @@ import Observation
         return parser.sentences
     }
 
+    
     @ObservationIgnored var description: String {
         get {
             return buildPolishNotationString()

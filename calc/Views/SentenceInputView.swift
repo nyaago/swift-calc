@@ -30,9 +30,6 @@ struct SentenceInputView: View {
             }
             .onSubmit {
                 print("submit \(self.sentenceText)")
-               // senteneNode.sentenceText = self.sentenceText
-               // viewModel.sentenceNodes[0]
-                
             }
     }
 }
@@ -62,6 +59,9 @@ struct SentencesInputView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 0) {
+                // 計算結果
+                ResultView(viewModel: self.viewModel)
+
                 List {
                     ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
                         NavigationLink(destination:
@@ -130,12 +130,6 @@ struct SentencesInputView: View {
                 Text("Add")
             }
             .disabled(editMode == .active)
-            /*
-            Button("Add", systemImage: "plus", action: {
-                print("Add")
-            })
-            .disabled(editMode == .active)
-             */
         }
     }
 }

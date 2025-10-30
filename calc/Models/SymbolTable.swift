@@ -86,6 +86,12 @@ class SymbolTable: CustomStringConvertible {
         }
     }
     
+    var isEmpty: Bool {
+        get {
+            count == 0
+        }
+    }
+    
     var description: String {
         get {
             var descArray = Array<String>()
