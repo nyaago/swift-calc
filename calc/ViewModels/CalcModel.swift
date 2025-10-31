@@ -30,20 +30,6 @@ import Observation
         }
     }
     
-    /*
-    var fullText : String {
-        get {
-            let texts: [String] = self.sentenceNodes.map({ node in
-                node.sentenceText
-            })
-            return texts.joined(separator: "\n")
-        }
-    }
-     */
-    
-    init() {
-    }
-   
     @discardableResult
     func calc()  -> NumericWrapper? {
         self.error = nil
@@ -54,12 +40,10 @@ import Observation
         return _calc()
     }
     
-   
     var symbolTable: SymbolTable? {
         return parser?.symbolTable
     }
     
-   
     //
     @discardableResult
     func replaceSentenceBySentence(index: Int, sentence: String) throws  -> NumericWrapper?  {
