@@ -66,10 +66,14 @@ class Parser {
     private var _rootNode: RootNode? = nil
     private var _sentenceNde: SentenceNode? = nil
     private var bracketStack: Stack<Node> = Stack<Node>()
+    private var sentenceNodes: [SentenceNode]? = nil
        
     var rootNode: RootNode? {
         get {
             return _rootNode
+        }
+        set {
+            _rootNode = newValue
         }
     }
 
@@ -94,17 +98,24 @@ class Parser {
         self._symbolTable = SymbolTable()
     }
     
+    init(sentenceNodes: [SentenceNode]) {
+        self.source = ""
+        self.lexer = Lexer(source: "")
+        self._symbolTable = SymbolTable()
+        self.sentenceNodes = sentenceNodes
+    }
     
     init(lexer: Lexer) {
         self.source = nil
         self.lexer = lexer
         self._symbolTable = SymbolTable()
     }
-
+    
     public var sentences: [SentenceNode] {
         guard let rootNode = self.rootNode else {
             return []
         }
+        // 空の sentence を省く
         let result:  [SentenceNode] = rootNode.sentences.reduce([]) { array, sentenceNode in
             if sentenceNode.rhs != nil || sentenceNode.lhs != nil  {
                 array + [sentenceNode]
@@ -147,16 +158,24 @@ class Parser {
      - retuen rootNode
      - throws: ParseError
      */
+    @discardableResult
     func parse() throws -> RootNode {
-        if tokens == nil {
+        if tokens == nil && sentenceNodes == nil {
             try tokens = lexicalAnalize()
         }
-        self._rootNode = RootNode(token: nil)
-        try parseWithTokens()
+        if let sentenceNodes = self.sentenceNodes {
+            self._rootNode = RootNode(sentences: sentenceNodes)
+        }
+        else {
+            self._rootNode = RootNode(token: nil)
+            try parseWithTokens()
+        }
         try _symbolTable = semanticAnalize()
         self.rootNode!.sentences = self.compactSentences(nodes: self.rootNode!.sentences)
         return self.rootNode!
     }
+
+
     
     private func parseWithTokens() throws {
         guard let curTokens = tokens else {
@@ -180,13 +199,35 @@ class Parser {
             }
         }
     }
+    
+    /*
+    private func parseWithTokensBySentence() throws {
+        guard let curTokens = tokens else {
+            throw ParseError.logical(message: "tokens is null")
+        }
+        self.currentSentenceNode = SentenceNode(token: nil)
+        rootNode!.appendSentence(sentenceNode: currentSentenceNode!)
+        // 改行または終端まで繰り返し
+        curTokens.forEach{
+            let token = $0
+            if token.tokenKind == .expressionSeparator {
+                if let sentenceNode = currentSentenceNode {
+                    print("sentence = \(sentenceNode.sentenceText)")
+                }
+            }
+            else {
+                parseWithToken(token: $0)
+            }
+        }
+    }
+     */
    
     private func parseWithToken(token: any Token) {
         let node = NodeFactory.createNode(token: token)
         insertNode(newNode: node)
     }
     
-    private func semanticAnalize() throws -> SymbolTable {
+    func semanticAnalize() throws -> SymbolTable {
         guard let rootNode = self.rootNode else {
             return SymbolTable()
         }
@@ -219,6 +260,7 @@ class Parser {
         if symbolTable.invalidSymbols().count > 0 {
             //throw ParseError.symbolNotFound(symbolName: symbolTable.invalidSymbols()[0])
         }
+        self._symbolTable = symbolTable
         return symbolTable
     }
     
@@ -347,5 +389,4 @@ class Parser {
         }
         return nodes
     }
-
 }

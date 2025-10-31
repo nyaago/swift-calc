@@ -9,59 +9,57 @@ import SwiftUI
 
 struct MainView: View {
     
+    enum InputViewType: Int {
+        case full = 1
+        case bySentence =  2
+    }
+
     @State var editText = ""
     var viewModel = CalcModel()
     @State var showDummySheet: Bool = false
     @FocusState var textEditorFocused: Bool
+    @State var inputViewType: InputViewType = .full
     
     init() {
         UITextView.appearance().backgroundColor = .clear
     }
     
     var body: some View {
-        NavigationStack {
-            VStack{
-                // 計算結果
-                ResultView(viewModel: self.viewModel)
-                // 入力
-                ExprInputView(viewModel: self.viewModel,
-                              textEditorFocused: self.$textEditorFocused)
-                // 解析結果
-                DetailResultView(viewModel: self.viewModel)
-                //deitaledResultView(viewModel: self.viewModel)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.horizontal, 10.0)
-            .toolbar {
-                toolbarContent
-            }
-            .background(Color.black)
-            .navigationTitle("Home")            // ナビゲーションタイトル定義
-            .navigationBarTitleDisplayMode(.inline)
-
-        }
-        .onTapGesture {
-            textEditorFocused = false
-        }
-        .sheet(isPresented: $showDummySheet) {
-            DummySheetView(viewModel: viewModel)
-        }
+        // 入力
+        AnyView(buildInputView())
     }
     
     private var toolbarContent: some ToolbarContent  {
         ToolbarItem(placement: .primaryAction) {
             Menu {
-                Button("DummySheet") {
-                    showDummySheet.toggle()
-                 }
-                NavigationLink("test1", destination: DummyTextView(viewModel: viewModel))
-                NavigationLink("test2", destination: DummyTextView(viewModel: viewModel))
+                Button("Full Text", systemImage: "doc.text", action: {
+                    self.inputViewType = .full
+                })
+                .disabled(inputViewType == .full)
+                Button("By Sentence", systemImage: "list.bullet.rectangle", action: {
+                    self.inputViewType = .bySentence
+                })
+                .disabled(inputViewType == .bySentence)
             }
-            label: { Label("", systemImage: "list.bullet")
+            label: {
+                Label("", systemImage: "list.bullet")
             }
         }
     }
     
+    
+    
+    private func buildInputView() -> any View {
+        switch(self.inputViewType) {
+        case .full:
+            return FullExprInputView(viewModel: viewModel,
+                                     textEditorFocused: $textEditorFocused,
+                                     inputViewType: self.$inputViewType)
+        case .bySentence:
+            return SentencesInputView(viewModel: viewModel,
+                                      inputViewType: self.$inputViewType)
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {

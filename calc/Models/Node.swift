@@ -157,6 +157,15 @@ class RootNode: Node {
     
     private var _sentences: Array<SentenceNode> = Array()
     
+    init(sentences: [SentenceNode]) {
+        super.init(token: nil)
+        self._sentences = sentences
+    }
+    
+    override init(token: (any Token)?) {
+        super.init(token: token)
+    }
+
     
     override class var precedence: Int {
         get {
@@ -193,6 +202,14 @@ class RootNode: Node {
         }
         set {
             self._sentences = newValue
+        }
+    }
+    
+    var text: String {
+        get {
+            _sentences.map { node in
+                node.sentenceText
+            }.joined(separator: "\n")
         }
     }
     

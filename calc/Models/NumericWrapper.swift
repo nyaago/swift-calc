@@ -29,7 +29,6 @@ enum NumericWrapperErrorType: Int8, CustomStringConvertible {
             }
         }
     }
-
 }
 
 struct NumericWrapper: SignedNumeric, Comparable, CustomStringConvertible {
