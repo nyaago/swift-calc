@@ -14,7 +14,7 @@ import Observation
     var exprVariables: [ExprVariable] = []
     var polishNotationExpr: [PolishNotationExpr] = []
     var sentenceNodes: [SentenceNode] = []
-    var identifiableSentenceNodes: [IdentifiableSentenceNode] = []
+    var identifiableSentenceNodes: [SentenceNodeWrapper] = []
     var currentValue: NumericWrapper?
     var error: (any Error)?
 
@@ -137,9 +137,9 @@ import Observation
         }
     }
     
-    private func buildIdentifiableSentenceNodes() -> [IdentifiableSentenceNode] {
+    private func buildIdentifiableSentenceNodes() -> [SentenceNodeWrapper] {
         sentenceNodes.map { sentenceNode in
-            IdentifiableSentenceNode(sentenceNode: sentenceNode)
+            SentenceNodeWrapper(sentenceNode: sentenceNode)
         }
     }
     

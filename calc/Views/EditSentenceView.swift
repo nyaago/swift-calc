@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct EditSentenceView: View {
-    var senteneNode: IdentifiableSentenceNode
+    var senteneNode: SentenceNodeWrapper
     @Bindable private var viewModel: CalcModel
     @State var text: String
 
     @Environment(\.dismiss) private var dismiss
     
-    init(sentenceNode: IdentifiableSentenceNode,  viewModel: CalcModel) {
+    init(sentenceNode: SentenceNodeWrapper,  viewModel: CalcModel) {
         self.senteneNode = sentenceNode
         self.text = sentenceNode.sentenceText
         self.viewModel = viewModel

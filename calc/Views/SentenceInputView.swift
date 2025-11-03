@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct SentenceInputView: View {
-    var senteneNode: IdentifiableSentenceNode
+    var senteneNode: SentenceNodeWrapper
     @State var sentenceText = ""
     @Bindable private var viewModel: CalcModel
     
-    init(senteneNode: IdentifiableSentenceNode, viewModel: CalcModel, sentenceText: String = "") {
+    init(senteneNode: SentenceNodeWrapper, viewModel: CalcModel, sentenceText: String = "") {
         self.senteneNode = senteneNode
         self.viewModel = viewModel
     }

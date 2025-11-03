@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SentenceView: View {
-    var identifiableSentenceNode: IdentifiableSentenceNode
+    var identifiableSentenceNode: SentenceNodeWrapper
     
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
