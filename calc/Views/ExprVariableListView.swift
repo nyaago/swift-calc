@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ExprVariableItemView: View {
+struct ExprVariableRowView: View {
     var exprVariable: ExprVariable
     
     var body: some View {
@@ -20,13 +20,13 @@ struct ExprVariableItemView: View {
     }
 }
 
-struct ExprVariablesView: View {
+struct ExprVariableListView: View {
     @Bindable var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             List(viewModel.exprVariables) { exprVariable in
-                ExprVariableItemView(exprVariable: exprVariable)
+                ExprVariableRowView(exprVariable: exprVariable)
                     .modifier(ListViewModifier())
             }
         }

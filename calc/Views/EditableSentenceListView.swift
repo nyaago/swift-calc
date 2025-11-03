@@ -7,16 +7,15 @@
 
 import SwiftUI
 
-struct SentenceInputView: View {
-    var senteneNode: IdentifiableSentenceNode
+struct EditableSentenceRowView: View {
+    var senteneNode: SentenceNodeWrapper
     @State var sentenceText = ""
     @Bindable private var viewModel: CalcModel
     
-    init(senteneNode: IdentifiableSentenceNode, viewModel: CalcModel, sentenceText: String = "") {
+    init(senteneNode: SentenceNodeWrapper, viewModel: CalcModel, sentenceText: String = "") {
         self.senteneNode = senteneNode
         self.viewModel = viewModel
     }
-    
     
     var body: some View {
         Text(self.sentenceText)
@@ -34,27 +33,17 @@ struct SentenceInputView: View {
     }
 }
 
-struct SentencesInputView: View {
+struct EditableSentencesListView: View {
     @Bindable private var viewModel: CalcModel
     @State var editMode: EditMode = .inactive
     @Binding var inputViewType: MainView.InputViewType
     
     @State private var path: NavigationPath = NavigationPath()
 
-//    private var sentenceTexts: [Binding<String>] = []
-    
-    /*
-    init(viewModel: CalcModel, _sentenceTexts: [String]) {
-        self.viewModel = viewModel
-        self._sentenceTexts = _sentenceTexts
-    }
-     */
     init(viewModel: CalcModel, inputViewType: Binding<MainView.InputViewType>) {
         self.viewModel = viewModel
         self._inputViewType = inputViewType
-        //        self.sentenceTexts = viewModel.identifiableSentenceNodes.map { e in e.sentenceText }
     }
-    
     
     var body: some View {
         NavigationStack {
@@ -63,10 +52,10 @@ struct SentencesInputView: View {
                 ResultView(viewModel: self.viewModel)
 
                 List {
-                    ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
+                    ForEach(viewModel.sentenceNodesWrapper, id: \.self) { identifiableSentenceNode in
                         NavigationLink(destination:
                                         EditSentenceView(sentenceNode: identifiableSentenceNode, viewModel: viewModel)) {
-                            SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
+                            EditableSentenceRowView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
                         }
                     }
                     .onMove { indexSet, newIndex in

@@ -13,11 +13,12 @@ import Observation
     var expr: String?
     var exprVariables: [ExprVariable] = []
     var polishNotationExpr: [PolishNotationExpr] = []
-    var sentenceNodes: [SentenceNode] = []
-    var identifiableSentenceNodes: [IdentifiableSentenceNode] = []
+    
+    var sentenceNodesWrapper: [SentenceNodeWrapper] = []
     var currentValue: NumericWrapper?
     var error: (any Error)?
 
+    @ObservationIgnored private var sentenceNodes: [SentenceNode] = []
     @ObservationIgnored private var parser: Parser?
     @ObservationIgnored private var lexer: Lexer?
     
@@ -110,7 +111,7 @@ import Observation
         self.sentenceNodes = buildSentenceNodes()
         self.exprVariables = buildExprVariables()
         self.polishNotationExpr = buildPolishNotationExprs()
-        self.identifiableSentenceNodes = buildIdentifiableSentenceNodes()
+        self.sentenceNodesWrapper = buildIdentifiableSentenceNodes()
         return self.currentValue
     }
     
@@ -137,9 +138,9 @@ import Observation
         }
     }
     
-    private func buildIdentifiableSentenceNodes() -> [IdentifiableSentenceNode] {
+    private func buildIdentifiableSentenceNodes() -> [SentenceNodeWrapper] {
         sentenceNodes.map { sentenceNode in
-            IdentifiableSentenceNode(sentenceNode: sentenceNode)
+            SentenceNodeWrapper(sentenceNode: sentenceNode)
         }
     }
     
@@ -172,27 +173,4 @@ import Observation
             return curLexer.tokens
         }
     }
-    
-    /*
-    var stringValue: String {
-        get {
-            if let rootNode = parser?.rootNode {
-                return rootNode.value.stringValue
-            }
-            return ""
-        }
-    }
-     */
-    
-    /*
-    func toInt() -> Int {
-        let v = calc()
-        return Int(v)
-    }
-   
-    func toIntString() -> String {
-        let v = toInt()
-        return String(v)
-    }
-     */
 }

@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct PolishNotationItemView: View {
+struct PolishNotationRowView: View {
     var polishNotationExpr: PolishNotationExpr
     
     var body: some View {
@@ -26,13 +26,13 @@ struct PolishNotationItemView: View {
     }
 }
 
-struct PolishNotationView: View {
+struct PolishNotationListView: View {
     @Bindable var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             List(viewModel.polishNotationExpr) { identigablePolishNotionExpr in
-                PolishNotationItemView(polishNotationExpr: identigablePolishNotionExpr)
+                PolishNotationRowView(polishNotationExpr: identigablePolishNotionExpr)
                     .modifier(ListViewModifier())
             }
         }
@@ -41,7 +41,7 @@ struct PolishNotationView: View {
 
 #Preview {
     @Previewable @State var viewModel: CalcModel = CalcModel()
-    PolishNotationView(viewModel: viewModel)
+    PolishNotationListView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }
 
