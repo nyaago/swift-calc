@@ -63,7 +63,7 @@ struct EditableSentencesListView: View {
                 ResultView(viewModel: self.viewModel)
 
                 List {
-                    ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
+                    ForEach(viewModel.sentenceNodesWrapper, id: \.self) { identifiableSentenceNode in
                         NavigationLink(destination:
                                         EditSentenceView(sentenceNode: identifiableSentenceNode, viewModel: viewModel)) {
                             EditableSentenceRowView(senteneNode: identifiableSentenceNode, viewModel: viewModel)

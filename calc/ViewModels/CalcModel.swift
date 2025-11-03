@@ -13,11 +13,12 @@ import Observation
     var expr: String?
     var exprVariables: [ExprVariable] = []
     var polishNotationExpr: [PolishNotationExpr] = []
-    var sentenceNodes: [SentenceNode] = []
-    var identifiableSentenceNodes: [SentenceNodeWrapper] = []
+    
+    var sentenceNodesWrapper: [SentenceNodeWrapper] = []
     var currentValue: NumericWrapper?
     var error: (any Error)?
 
+    @ObservationIgnored private var sentenceNodes: [SentenceNode] = []
     @ObservationIgnored private var parser: Parser?
     @ObservationIgnored private var lexer: Lexer?
     
@@ -110,7 +111,7 @@ import Observation
         self.sentenceNodes = buildSentenceNodes()
         self.exprVariables = buildExprVariables()
         self.polishNotationExpr = buildPolishNotationExprs()
-        self.identifiableSentenceNodes = buildIdentifiableSentenceNodes()
+        self.sentenceNodesWrapper = buildIdentifiableSentenceNodes()
         return self.currentValue
     }
     

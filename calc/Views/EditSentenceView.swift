@@ -41,8 +41,8 @@ struct EditSentenceView: View {
         let labelText: String = "Done"
         return ToolbarItem(placement: .primaryAction) {
             Button(labelText, action: {
-                guard let  index = viewModel.sentenceNodes.firstIndex(where: { node in
-                    node == senteneNode.node
+                guard let  index = viewModel.sentenceNodesWrapper.firstIndex(where: { nodeWrapper in
+                    nodeWrapper.node == senteneNode.node
                 })
                 else {
                     dismiss()
