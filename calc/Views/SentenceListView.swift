@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct SentenceRowView: View {
-    var identifiableSentenceNode: SentenceNodeWrapper
+    var sentenceNode: SentenceNodeWrapper
     
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
-            Text(identifiableSentenceNode.strtingValue)
+            Text(sentenceNode.strtingValue)
                 .font(.body)
                 .frame(width: 60,
                        alignment: .leading)
-            Text(identifiableSentenceNode.sentenceText)
+            Text(sentenceNode.sentenceText)
                 .font(.body)
                 .frame(maxWidth: .infinity,
                        minHeight: 12,
@@ -32,8 +32,8 @@ struct SentenceListView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List(viewModel.identifiableSentenceNodes) { identifiableSentenceNode in
-                SentenceRowView(identifiableSentenceNode: identifiableSentenceNode)
+            List(viewModel.identifiableSentenceNodes) { sentenceNode in
+                SentenceRowView(sentenceNode: sentenceNode)
                     .modifier(ListViewModifier())
             }
         }
