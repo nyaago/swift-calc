@@ -46,7 +46,7 @@ struct DetailResultView: View {
         case .polishNotation:
             return PolishNotationListView(viewModel: viewModel)
         case .exprVariableList:
-            return ExprVariablesView(viewModel: viewModel)
+            return ExprVariableListView(viewModel: viewModel)
         case .sentences:
             return SentenceListView(viewModel: viewModel)
         }
