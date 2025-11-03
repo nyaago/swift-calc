@@ -44,7 +44,7 @@ struct DetailResultView: View {
     private func buildDeitaledResultView(viewModel: CalcModel) -> any View {
         switch ( self.detailedViewType ) {
         case .polishNotation:
-            return PolishNotationView(viewModel: viewModel)
+            return PolishNotationListView(viewModel: viewModel)
         case .exprVariableList:
             return ExprVariablesView(viewModel: viewModel)
         case .sentences:
