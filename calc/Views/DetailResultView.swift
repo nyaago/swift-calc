@@ -48,7 +48,7 @@ struct DetailResultView: View {
         case .exprVariableList:
             return ExprVariablesView(viewModel: viewModel)
         case .sentences:
-            return SentencesView(viewModel: viewModel)
+            return SentenceListView(viewModel: viewModel)
         }
     }
     

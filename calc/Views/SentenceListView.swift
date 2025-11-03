@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SentenceView: View {
+struct SentenceRowView: View {
     var identifiableSentenceNode: SentenceNodeWrapper
     
     var body: some View {
@@ -27,13 +27,13 @@ struct SentenceView: View {
     }
 }
 
-struct SentencesView: View {
+struct SentenceListView: View {
     @Bindable var viewModel: CalcModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             List(viewModel.identifiableSentenceNodes) { identifiableSentenceNode in
-                SentenceView(identifiableSentenceNode: identifiableSentenceNode)
+                SentenceRowView(identifiableSentenceNode: identifiableSentenceNode)
                     .modifier(ListViewModifier())
             }
         }
