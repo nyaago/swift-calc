@@ -85,6 +85,26 @@ import Observation
         return value
     }
     
+    @discardableResult
+    func moveSentence(from: Int, to: Int)  throws -> NumericWrapper? {
+        var newSentences = self.sentenceNodes
+        newSentences.swapAt(from, to)
+        self.parser = Parser(sentenceNodes: newSentences)
+        let value = _calc()
+        self.expr = self.parser?.rootNode?.text
+        return value
+    }
+
+    @discardableResult
+    func deleteSentence(index: Int) throws -> NumericWrapper? {
+        var newSentences = self.sentenceNodes
+        newSentences.remove(at: index)
+        self.parser = Parser(sentenceNodes: newSentences)
+        let value = _calc()
+        self.expr = self.parser?.rootNode?.text
+        return value
+    }
+    
     private func _calc()  -> NumericWrapper? {
         self.error = nil
         do {
