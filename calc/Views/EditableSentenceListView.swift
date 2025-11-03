@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SentenceInputView: View {
+struct EditableSentenceRowView: View {
     var senteneNode: SentenceNodeWrapper
     @State var sentenceText = ""
     @Bindable private var viewModel: CalcModel
@@ -34,7 +34,7 @@ struct SentenceInputView: View {
     }
 }
 
-struct SentencesInputView: View {
+struct EditableSentencesListView: View {
     @Bindable private var viewModel: CalcModel
     @State var editMode: EditMode = .inactive
     @Binding var inputViewType: MainView.InputViewType
@@ -66,7 +66,7 @@ struct SentencesInputView: View {
                     ForEach(viewModel.identifiableSentenceNodes, id: \.self) { identifiableSentenceNode in
                         NavigationLink(destination:
                                         EditSentenceView(sentenceNode: identifiableSentenceNode, viewModel: viewModel)) {
-                            SentenceInputView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
+                            EditableSentenceRowView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
                         }
                     }
                     .onMove { indexSet, newIndex in

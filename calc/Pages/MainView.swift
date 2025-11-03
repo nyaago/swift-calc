@@ -56,7 +56,7 @@ struct MainView: View {
                                      textEditorFocused: $textEditorFocused,
                                      inputViewType: self.$inputViewType)
         case .bySentence:
-            return SentencesInputView(viewModel: viewModel,
+            return EditableSentencesListView(viewModel: viewModel,
                                       inputViewType: self.$inputViewType)
         }
     }
