@@ -17,7 +17,6 @@ struct EditableSentenceRowView: View {
         self.viewModel = viewModel
     }
     
-    
     var body: some View {
         Text(self.sentenceText)
             .font(.body)
@@ -41,20 +40,10 @@ struct EditableSentencesListView: View {
     
     @State private var path: NavigationPath = NavigationPath()
 
-//    private var sentenceTexts: [Binding<String>] = []
-    
-    /*
-    init(viewModel: CalcModel, _sentenceTexts: [String]) {
-        self.viewModel = viewModel
-        self._sentenceTexts = _sentenceTexts
-    }
-     */
     init(viewModel: CalcModel, inputViewType: Binding<MainView.InputViewType>) {
         self.viewModel = viewModel
         self._inputViewType = inputViewType
-        //        self.sentenceTexts = viewModel.identifiableSentenceNodes.map { e in e.sentenceText }
     }
-    
     
     var body: some View {
         NavigationStack {

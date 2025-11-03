@@ -200,28 +200,6 @@ class Parser {
         }
     }
     
-    /*
-    private func parseWithTokensBySentence() throws {
-        guard let curTokens = tokens else {
-            throw ParseError.logical(message: "tokens is null")
-        }
-        self.currentSentenceNode = SentenceNode(token: nil)
-        rootNode!.appendSentence(sentenceNode: currentSentenceNode!)
-        // 改行または終端まで繰り返し
-        curTokens.forEach{
-            let token = $0
-            if token.tokenKind == .expressionSeparator {
-                if let sentenceNode = currentSentenceNode {
-                    print("sentence = \(sentenceNode.sentenceText)")
-                }
-            }
-            else {
-                parseWithToken(token: $0)
-            }
-        }
-    }
-     */
-   
     private func parseWithToken(token: any Token) {
         let node = NodeFactory.createNode(token: token)
         insertNode(newNode: node)
