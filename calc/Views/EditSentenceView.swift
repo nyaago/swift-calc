@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EditSentenceView: View {
-    var senteneNode: SentenceNodeWrapper
+    var senteneNode: SentenceNodeWrapper?
     @Bindable private var viewModel: CalcModel
     @State var text: String
 
@@ -17,6 +17,12 @@ struct EditSentenceView: View {
     init(sentenceNode: SentenceNodeWrapper,  viewModel: CalcModel) {
         self.senteneNode = sentenceNode
         self.text = sentenceNode.sentenceText
+        self.viewModel = viewModel
+    }
+    
+    // preview 用
+    init(text: String, viewModel: CalcModel) {
+        self.text = text
         self.viewModel = viewModel
     }
     
@@ -41,6 +47,9 @@ struct EditSentenceView: View {
         let labelText: String = "Done"
         return ToolbarItem(placement: .primaryAction) {
             Button(labelText, action: {
+                guard let senteneNode = self.senteneNode else {
+                    return
+                }
                 guard let  index = viewModel.sentenceNodesWrapper.firstIndex(where: { nodeWrapper in
                     nodeWrapper.node == senteneNode.node
                 })
@@ -70,9 +79,7 @@ struct EditSentenceView: View {
     }
 }
 
-/*
  #Preview {
  @Previewable @State var viewModel: CalcModel = CalcModel(expr: "a = 5 * 6 \nb = a + 5")
- EditSentenceView(senteneNode: SentenceNodeWrapper(), viewModel: viewModel
+     EditSentenceView(text: "a = 5 * 6 \n", viewModel: viewModel)
  }
- */
