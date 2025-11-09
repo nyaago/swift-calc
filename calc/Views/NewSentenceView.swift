@@ -62,6 +62,7 @@ struct NewSentenceView: View {
 }
 
 #Preview {
-    var viewModel = CalcModel()
+    @Previewable @State var viewModel: CalcModel = CalcModel(expr: "a = 5 * 6 \nb = a + 5")
     NewSentenceView(viewModel: viewModel)
+        .preferredColorScheme(.dark)
 }

@@ -138,3 +138,12 @@ struct EditableSentencesListView: View {
         }
     }
 }
+
+#Preview {
+    @Previewable @State var viewModel: CalcModel = CalcModel(expr: "a = 5 * 6 \nb = a + 5")
+    @Previewable @State var inputViewType: MainView.InputViewType = .full
+    
+    EditableSentencesListView(viewModel: viewModel, inputViewType: $inputViewType)
+        .preferredColorScheme(.dark)
+
+}

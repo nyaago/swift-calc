@@ -96,11 +96,11 @@ struct FullExprInputView: View {
 }
 
  #Preview {
-     @Previewable @State var calcModel: CalcModel = CalcModel()
+     @Previewable @State var viewModel: CalcModel = CalcModel(expr: "a = 5 * 6 \nb = a + 5")
      @Previewable @State var inputViewType: MainView.InputViewType = .full
      @FocusState var focused: Bool
      
-     FullExprInputView(viewModel: calcModel,
+     FullExprInputView(viewModel: viewModel,
                        textEditorFocused: $focused, inputViewType: $inputViewType)
          .preferredColorScheme(.dark)
  }
