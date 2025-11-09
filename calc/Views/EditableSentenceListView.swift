@@ -59,10 +59,26 @@ struct EditableSentencesListView: View {
                         }
                     }
                     .onMove { indexSet, newIndex in
+                        guard let from = indexSet.first else {
+                            return
+                        }
+                        do {
+                            try viewModel.moveSentence(from: from, to: newIndex)
+                        }
+                        catch {
+                            print("failed to move")
+                        }
                     }
                     .onDelete(perform:  { indexSet in
-                        
-                        
+                        guard let index = indexSet.first else {
+                            return
+                        }
+                        do {
+                            try viewModel.deleteSentence(index: index)
+                        }
+                        catch {
+                            print("failed to delete")
+                        }
                     })
                     .onAppear() {
                         
