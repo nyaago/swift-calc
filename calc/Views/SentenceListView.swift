@@ -39,3 +39,10 @@ struct SentenceListView: View {
         }
     }
 }
+
+#Preview {
+    @Previewable @State var viewModel: CalcModel = CalcModel(expr: "a = 5 * 6 \nb = a + 5")
+    
+    SentenceListView(viewModel: viewModel)
+        .preferredColorScheme(.dark)
+}

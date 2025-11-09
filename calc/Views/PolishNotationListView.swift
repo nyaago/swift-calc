@@ -40,7 +40,7 @@ struct PolishNotationListView: View {
 }
 
 #Preview {
-    @Previewable @State var viewModel: CalcModel = CalcModel()
+    @Previewable @State var viewModel: CalcModel = CalcModel(expr: "a = 5 * 6 \nb = a + 5")
     PolishNotationListView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }

@@ -72,7 +72,7 @@ struct EditSentenceView: View {
 
 /*
  #Preview {
- @State @Previewable var sentenceNode: IdentifiableSentenceNode = IdentifiableSentenceNode(sentenceNode: SentenceNode())
- EditSentenceView(senteneNode: $sentenceNode)
+ @Previewable @State var viewModel: CalcModel = CalcModel(expr: "a = 5 * 6 \nb = a + 5")
+ EditSentenceView(senteneNode: SentenceNodeWrapper(), viewModel: viewModel
  }
  */

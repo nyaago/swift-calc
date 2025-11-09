@@ -21,7 +21,7 @@ struct ResultView: View {
 }
 
 #Preview {
-    @State @Previewable var calcModel: CalcModel = CalcModel()
-    ResultView(viewModel: calcModel)
+    @Previewable @State var viewModel: CalcModel = CalcModel(expr: "a = 5 * 6 \nb = a + 5")
+    ResultView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }

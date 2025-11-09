@@ -22,6 +22,15 @@ import Observation
     @ObservationIgnored private var parser: Parser?
     @ObservationIgnored private var lexer: Lexer?
     
+    init() {
+        
+    }
+    
+    init(expr: String) {
+        self.expr = expr
+        calc()
+    }
+    
     var stringValue: String {
         get {
             if let _ = self.error {
