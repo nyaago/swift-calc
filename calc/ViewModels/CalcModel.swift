@@ -112,12 +112,10 @@ import Observation
         }
         catch let error as ParseError {
             self.error = error
-            //self.stringValue = error.errorDescription ?? "error"
             return NumericWrapper(value: 0.0)
         }
         catch let error  {
             self.error = error
-            //self.stringValue = error.localizedDescription
             return NumericWrapper(value: 0.0)
         }
         
