@@ -46,15 +46,14 @@ struct EditableSentencesListView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack(alignment: .leading, spacing: 0) {
                 // 計算結果
                 ResultView(viewModel: self.viewModel)
 
                 List {
                     ForEach(viewModel.sentenceNodesWrapper, id: \.self) { identifiableSentenceNode in
-                        NavigationLink(destination:
-                                        EditSentenceView(sentenceNode: identifiableSentenceNode, viewModel: viewModel)) {
+                        NavigationLink(value: identifiableSentenceNode) {
                             EditableSentenceRowView(senteneNode: identifiableSentenceNode, viewModel: viewModel)
                         }
                     }
@@ -81,8 +80,10 @@ struct EditableSentencesListView: View {
                         }
                     })
                     .onAppear() {
-                        
                     }
+                }
+                .navigationDestination(for: SentenceNodeWrapper.self) { identifiableSentenceNode in
+                    EditSentenceView(sentenceNode: identifiableSentenceNode, viewModel: viewModel)
                 }
                 .environment(\.editMode, $editMode)
                 .navigationTitle("計算機")            // ナビゲーションタイトル定義
