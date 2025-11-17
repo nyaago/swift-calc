@@ -92,6 +92,7 @@ struct EditableSentencesListView: View {
                     toolbarContent
                     editToolbarContent
                     addToolbarContent
+                    favoriteToolbarContent
                 }
             }
         }
@@ -129,6 +130,17 @@ struct EditableSentencesListView: View {
             })
         }
     }
+    
+    
+    private var favoriteToolbarContent: some ToolbarContent {
+        return ToolbarItem(placement: .navigationBarTrailing) {
+            
+            NavigationLink(destination: NewFavoriteView(expr: viewModel.expr ?? "")) {
+                Text("Favorite")
+            }
+        }
+    }
+
     
     private var addToolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigation) {

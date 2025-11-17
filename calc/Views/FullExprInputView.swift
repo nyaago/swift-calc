@@ -13,6 +13,8 @@ struct FullExprInputView: View {
     @Bindable var viewModel: CalcModel
     @FocusState.Binding var textEditorFocused: Bool
     @Binding var inputViewType: MainView.InputViewType
+    
+    @Environment(\.modelContext) private var context
 
     init(viewModel: CalcModel, textEditorFocused:  FocusState<Bool>.Binding, inputViewType: Binding<MainView.InputViewType>) {
         self.viewModel = viewModel
@@ -58,6 +60,7 @@ struct FullExprInputView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 toolbarContent
+                favoriteToolbarContent
             }
             //
         }
@@ -84,6 +87,16 @@ struct FullExprInputView: View {
         }
     }
 
+    private var favoriteToolbarContent: some ToolbarContent {
+        return ToolbarItem(placement: .navigationBarTrailing) {
+            Button("", systemImage: "square.and.arrow.down") {
+                
+                print("save!")
+            }
+        }
+    }
+
+    
     private func buildExprVariables() -> [ExprVariable] {
         guard let symbolTable = viewModel.symbolTable else {
             return []
@@ -93,6 +106,10 @@ struct FullExprInputView: View {
         }
     }
     
+    private func insertFavorite() {
+        let data = FavoriteExpr(expr: self.editText, title: "")
+        
+    }
 }
 
  #Preview {
