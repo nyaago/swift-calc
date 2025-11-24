@@ -13,6 +13,7 @@ struct NewFavoriteView: View {
     let expr: String
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     
     init(expr: String) {
         self.expr = expr
@@ -48,14 +49,8 @@ struct NewFavoriteView: View {
         let labelText: String = "Done"
         return ToolbarItem(placement: .primaryAction) {
             Button(labelText, action: {
-                do {
-                    
-                }
-                /*
-                catch {
-                    print("failed to append sentence")
-                }
-                 */
+                let favoriteExpr = FavoriteExpr(expr: expr, title: title)
+                modelContext.insert(favoriteExpr)
                 dismiss()
             })
         }

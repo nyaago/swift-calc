@@ -22,7 +22,7 @@ struct MainTabView: View {
                 MainView()
             }
             Tab("Bookmark", systemImage: "bookmark.square", value: SelectedTab.bookmark) {
-                Text("Dummy")
+                FavoriteListView()
                 
             }
         }
